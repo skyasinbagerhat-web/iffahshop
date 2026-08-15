@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Payment | IFFAH Shop</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header class="header">
+
+<div class="container">
+
+<h1>📱 Payment</h1>
+
+<p>পেমেন্ট সম্পন্ন করুন</p>
+
+</div>
+
+</header>
+
+<section class="products-page">
+
+<div class="container">
+
+<h2>পেমেন্ট মাধ্যম নির্বাচন করুন</h2>
+
+<div class="card">
+
+<label>
+
+<input type="radio" name="payment" value="bkash" checked>
+
+🩷 bKash
+
+</label>
+
+<br><br>
+
+<label>
+
+<input type="radio" name="payment" value="nagad">
+
+🧡 Nagad
+
+</label>
+
+<br><br>
+
+<label>
+
+<input type="radio" name="payment" value="rocket">
+
+💜 Rocket
+
+</label>
+
+<br><br>
+
+<input
+type="text"
+id="trxid"
+placeholder="Transaction ID লিখুন"
+required>
+
+<br><br>
+
+<button
+class="btn"
+onclick="submitPayment()">
+
+✅ Payment Submit
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div class="footer-box">
+
+<h3>IFFAH Shop</h3>
+
+<p>Secure Payment System</p>
+
+</div>
+
+<div class="footer-box">
+
+<h3>যোগাযোগ</h3>
+
+<p>📞 01978236232</p>
+
+<p>📍 বাংলাদেশ</p>
+
+</div>
+
+</div>
+
+<p class="copyright">
+
+© 2026 IFFAH Shop. All Rights Reserved.
+
+</p>
+
+</footer>
+
+<script>
+
+function submitPayment(){
+
+const trxid = document.getElementById("trxid").value.trim();
+
+if(trxid===""){
+
+alert("❌ Transaction ID লিখুন");
+
+return;
+
+}
+
+localStorage.setItem("paymentStatus","Paid");
+
+localStorage.setItem("transactionId",trxid);
+
+alert("✅ Payment Successful");
+
+window.location.href="checkout.html";
+
+}
+
+</script>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>

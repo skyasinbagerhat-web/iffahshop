@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Sales Summary | IFFAH Shop</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+
+<header class="header">
+
+<div class="container">
+
+<h1>💰 Sales Summary</h1>
+
+<p>IFFAH Shop Admin Dashboard</p>
+
+</div>
+
+</header>
+
+
+<section>
+
+<div class="container">
+
+<h2 class="text-center">
+📊 Sales Overview
+</h2>
+
+
+<div class="dashboard">
+
+
+<div class="dashboard-card">
+
+<h3>🛒 Total Orders</h3>
+
+<h2 id="salesTotalOrders">
+0
+</h2>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<h3>🚚 Delivered Orders</h3>
+
+<h2 id="salesDeliveredOrders">
+0
+</h2>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<h3>❌ Cancelled Orders</h3>
+
+<h2 id="salesCancelledOrders">
+0
+</h2>
+
+</div>
+
+
+<div class="dashboard-card">
+
+<h3>💰 Total Sales</h3>
+
+<h2 id="salesTotal">
+৳0
+</h2>
+
+</div>
+
+
+</div>
+
+
+<br>
+
+
+<h2 class="text-center">
+📋 Sales Details
+</h2>
+
+
+<div id="salesList">
+
+</div>
+
+
+<br>
+
+
+<div style="text-align:center;">
+
+<a
+href="admin.html"
+class="btn">
+
+⚙️ Admin Dashboard
+
+</a>
+
+
+<a
+href="products-admin.html"
+class="btn">
+
+📦 Products
+
+</a>
+
+
+<a
+href="confirmed-orders.html"
+class="btn">
+
+🟢 Confirmed Orders
+
+</a>
+
+
+<a
+href="delivered-orders.html"
+class="btn">
+
+🚚 Delivered Orders
+
+</a>
+
+
+<a
+href="cancelled-orders.html"
+class="btn">
+
+❌ Cancelled Orders
+
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+
+<footer class="footer">
+
+<div class="footer-container">
+
+
+<div class="footer-box">
+
+<h3>
+IFFAH Shop
+</h3>
+
+<p>
+Sales Summary
+</p>
+
+</div>
+
+
+<div class="footer-box">
+
+<h3>
+যোগাযোগ
+</h3>
+
+<p>
+📞 01978236232
+</p>
+
+<p>
+📍 বাংলাদেশ
+</p>
+
+</div>
+
+
+</div>
+
+
+<p class="copyright">
+
+© 2026 IFFAH Shop. All Rights Reserved.
+
+</p>
+
+</footer>
+
+
+<!-- ================================= -->
+<!-- LOGIN PROTECTION -->
+<!-- ================================= -->
+
+<script>
+
+if (
+localStorage.getItem("isLoggedIn")
+!== "true"
+) {
+
+window.location.href =
+"login.html";
+
+}
+
+</script>
+
+
+<script src="script.js"></script>
+
+
+<script>
+
+/* =========================================
+   SALES SUMMARY
+========================================= */
+
+function loadSalesSummary() {
+
+    const orders =
+        JSON.parse(
+            localStorage.getItem("orders")
+        ) || [];
+
+
+    let totalSales = 0;
+
+    let deliveredOrders = 0;
+
+    let cancelledOrders = 0;
+
+
+    orders.forEach(function(order) {
+
+        if (order.status === "Delivered") {
+
+            deliveredOrders++;
+
+            let orderTotal = 0;
+
+
+            if (order.products) {
+
+                order.products.forEach(
+                    function(item) {
+
+                        orderTotal +=
+                            Number(item.price) || 0;
+
+                    }
+                );
+
+            }
+
+
+            totalSales += orderTotal;
+
+        }
+
+
+        if (order.status === "Cancelled") {
+
+            cancelledOrders++;
+
+        }
+
+    });
+
+
+    document.getElementById(
+        "salesTotalOrders"
+    ).innerText =
+        orders.length;
+
+
+    document.getElementById(
+        "salesDeliveredOrders"
+    ).innerText =
+        deliveredOrders;
+
+
+    document.getElementById(
+        "salesCancelledOrders"
+    ).innerText =
+        cancelledOrders;
+
+
+    document.getElementById(
+        "salesTotal"
+    ).innerText =
+        "৳" + totalSales;
+
+
+    /* =====================================
+       SALES DETAILS
+    ===================================== */
+
+    const container =
+        document.getElementById(
+            "salesList"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    const delivered =
+        orders.filter(function(order) {
+
+            return order.status === "Delivered";
+
+        });
+
+
+    if (delivered.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="card">
+
+                <h3 style="text-align:center;">
+
+                    📭 এখনো কোনো Delivered Order নেই
+
+                </h3>
+
+                <p style="text-align:center;">
+
+                    Delivered Order হলে
+                    এখানে Sales Details দেখা যাবে।
+
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    let html = "";
+
+
+    delivered.forEach(function(order) {
+
+        let total = 0;
+
+
+        order.products.forEach(
+            function(item) {
+
+                total +=
+                    Number(item.price) || 0;
+
+            }
+        );
+
+
+        let productsHTML = "";
+
+
+        order.products.forEach(
+            function(item) {
+
+                productsHTML += `
+
+                    <p>
+
+                        📦 ${item.name}
+
+                        — ৳${item.price}
+
+                    </p>
+
+                `;
+
+            }
+        );
+
+
+        html += `
+
+            <div class="card">
+
+                <h3>
+
+                    👤 ${order.name}
+
+                </h3>
+
+
+                <p>
+
+                    🆔 Order ID:
+
+                    <strong>
+
+                        ${order.id}
+
+                    </strong>
+
+                </p>
+
+
+                <p>
+
+                    📞 ${order.phone}
+
+                </p>
+
+
+                <p>
+
+                    📍 ${order.address}
+
+                </p>
+
+
+                <hr>
+
+
+                ${productsHTML}
+
+
+                <hr>
+
+
+                <p>
+
+                    📦 মোট পণ্য:
+
+                    <strong>
+
+                        ${order.products.length}
+
+                    </strong>
+
+                </p>
+
+
+                <p>
+
+                    💰 Sales Amount:
+
+                    <strong>
+
+                        ৳${total}
+
+                    </strong>
+
+                </p>
+
+
+                <p>
+
+                    📅 ${order.date}
+
+                </p>
+
+
+                <p>
+
+                    📌 Status:
+
+                    <strong>
+
+                        🚚 Delivered
+
+                    </strong>
+
+                </p>
+
+            </div>
+
+        `;
+
+    });
+
+
+    container.innerHTML =
+        html;
+
+}
+
+
+loadSalesSummary();
+
+</script>
+
+
+</body>
+
+</html>

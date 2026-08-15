@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>My Profile | IFFAH Shop</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+/* ================================
+   USER PROFILE
+================================ */
+
+.profile-page {
+
+    max-width: 650px;
+
+    margin: 30px auto;
+
+    padding: 0 15px;
+
+}
+
+
+.profile-card {
+
+    background: #fff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 18px;
+
+    padding: 25px;
+
+    box-shadow:
+        0 6px 25px rgba(0,0,0,.08);
+
+}
+
+
+.profile-top {
+
+    text-align: center;
+
+    margin-bottom: 25px;
+
+}
+
+
+.profile-avatar {
+
+    width: 80px;
+
+    height: 80px;
+
+    margin: 0 auto 12px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #16a34a,
+            #166534
+        );
+
+    color: #fff;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 36px;
+
+}
+
+
+.profile-top h2 {
+
+    margin: 5px 0;
+
+    color: #166534;
+
+}
+
+
+.profile-top p {
+
+    margin: 0;
+
+    color: #777;
+
+    font-size: 14px;
+
+}
+
+
+/* ================================
+   INFORMATION
+================================ */
+
+.profile-info {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+}
+
+
+.profile-item {
+
+    background: #f8fafc;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 10px;
+
+    padding: 13px 15px;
+
+}
+
+
+.profile-label {
+
+    font-size: 12px;
+
+    color: #777;
+
+    margin-bottom: 4px;
+
+}
+
+
+.profile-value {
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    color: #222;
+
+    word-break: break-word;
+
+}
+
+
+/* ================================
+   BUTTONS
+================================ */
+
+.profile-buttons {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+
+    margin-top: 22px;
+
+}
+
+
+.profile-btn {
+
+    border: none;
+
+    border-radius: 9px;
+
+    padding: 12px;
+
+    text-decoration: none;
+
+    text-align: center;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+
+}
+
+
+.home-btn {
+
+    background: #f1f5f9;
+
+    color: #334155;
+
+}
+
+
+.logout-btn {
+
+    background: #fee2e2;
+
+    color: #dc2626;
+
+}
+
+
+.profile-btn:hover {
+
+    transform: translateY(-1px);
+
+}
+
+
+/* ================================
+   NOT LOGIN
+================================ */
+
+.not-login {
+
+    text-align: center;
+
+    padding: 30px 15px;
+
+}
+
+
+.not-login h2 {
+
+    color: #166534;
+
+}
+
+
+.not-login p {
+
+    color: #777;
+
+    margin-bottom: 20px;
+
+}
+
+
+.login-link {
+
+    display: inline-block;
+
+    background: #166534;
+
+    color: #fff;
+
+    text-decoration: none;
+
+    padding: 12px 22px;
+
+    border-radius: 9px;
+
+    font-weight: 700;
+
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
+@media(max-width:600px) {
+
+    .profile-card {
+
+        padding: 18px;
+
+    }
+
+
+    .profile-buttons {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================================
+     HEADER
+================================ -->
+
+<header class="header">
+
+<div class="container">
+
+<h1>
+🛍️ IFFAH Shop
+</h1>
+
+<p>
+👤 My Profile
+</p>
+
+<div class="menu">
+
+<a
+href="index.html"
+class="btn">
+
+🏠 হোম
+
+</a>
+
+
+<a
+href="products.html"
+class="btn">
+
+🛍️ পণ্য
+
+</a>
+
+
+<a
+href="cart.html"
+class="btn">
+
+🛒 কার্ট
+
+</a>
+
+</div>
+
+</div>
+
+</header>
+
+
+<!-- USER AUTH BUTTON -->
+
+<div id="userAuthBox"></div>
+
+
+<!-- ================================
+     PROFILE
+================================ -->
+
+<section>
+
+<div class="profile-page">
+
+<div
+id="profileContainer"
+class="profile-card">
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================================
+     FOOTER
+================================ -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div class="footer-box">
+
+<h3>
+IFFAH Shop
+</h3>
+
+<p>
+বিশ্বাসের সাথে মানসম্মত পণ্য।
+</p>
+
+</div>
+
+
+<div class="footer-box">
+
+<h3>
+যোগাযোগ
+</h3>
+
+<p>
+📞 01978236232
+</p>
+
+<p>
+📍 বাংলাদেশ
+</p>
+
+</div>
+
+</div>
+
+
+<p class="copyright">
+
+© 2026 IFFAH Shop. All Rights Reserved.
+
+</p>
+
+</footer>
+
+
+<!-- ================================
+     PROFILE SCRIPT
+================================ -->
+
+<script>
+
+/* =================================
+   CHECK LOGIN
+================================= */
+
+const loggedIn =
+    localStorage.getItem(
+        "iffahUserLoggedIn"
+    ) === "true";
+
+
+const container =
+    document.getElementById(
+        "profileContainer"
+    );
+
+
+/* =================================
+   NOT LOGIN
+================================= */
+
+if (!loggedIn) {
+
+
+    container.innerHTML = `
+
+        <div class="not-login">
+
+            <div class="profile-avatar">
+
+                👤
+
+            </div>
+
+
+            <h2>
+                Login Required
+            </h2>
+
+
+            <p>
+                আপনার Profile দেখতে
+                প্রথমে User Login করুন।
+            </p>
+
+
+            <a
+                href="user-login.html"
+                class="login-link">
+
+                🔐 User Login
+
+            </a>
+
+        </div>
+
+    `;
+
+
+}
+
+
+/* =================================
+   LOGGED IN
+================================= */
+
+else {
+
+
+    let user = null;
+
+
+    try {
+
+        user =
+            JSON.parse(
+                localStorage.getItem(
+                    "iffahCurrentUser"
+                )
+            );
+
+    }
+
+    catch(error) {
+
+        user = null;
+
+    }
+
+
+    if (!user) {
+
+        localStorage.removeItem(
+            "iffahUserLoggedIn"
+        );
+
+        container.innerHTML = `
+
+            <div class="not-login">
+
+                <h2>
+                    ⚠️ Account তথ্য পাওয়া যায়নি
+                </h2>
+
+                <p>
+                    আবার Login করুন।
+                </p>
+
+                <a
+                    href="user-login.html"
+                    class="login-link">
+
+                    🔐 User Login
+
+                </a>
+
+            </div>
+
+        `;
+
+    }
+
+
+    else {
+
+
+        let registrationDate =
+            "তথ্য নেই";
+
+
+        if (user.registeredAt) {
+
+            try {
+
+                registrationDate =
+                    new Date(
+                        user.registeredAt
+                    ).toLocaleDateString(
+                        "bn-BD",
+                        {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric"
+                        }
+                    );
+
+            }
+
+            catch(error) {
+
+                registrationDate =
+                    user.registeredAt;
+
+            }
+
+        }
+
+
+        container.innerHTML = `
+
+            <div class="profile-top">
+
+                <div class="profile-avatar">
+
+                    👤
+
+                </div>
+
+
+                <h2>
+
+                    ${escapeProfileHTML(
+                        user.name || "User"
+                    )}
+
+                </h2>
+
+
+                <p>
+                    IFFAH Shop User Account
+                </p>
+
+            </div>
+
+
+            <div class="profile-info">
+
+
+                <div class="profile-item">
+
+                    <div class="profile-label">
+                        👤 নাম
+                    </div>
+
+                    <div class="profile-value">
+
+                        ${escapeProfileHTML(
+                            user.name || "তথ্য নেই"
+                        )}
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-item">
+
+                    <div class="profile-label">
+                        📞 মোবাইল নম্বর
+                    </div>
+
+                    <div class="profile-value">
+
+                        ${escapeProfileHTML(
+                            user.mobile || "তথ্য নেই"
+                        )}
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-item">
+
+                    <div class="profile-label">
+                        🔑 Username
+                    </div>
+
+                    <div class="profile-value">
+
+                        ${escapeProfileHTML(
+                            user.username || "তথ্য নেই"
+                        )}
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-item">
+
+                    <div class="profile-label">
+                        📍 ঠিকানা
+                    </div>
+
+                    <div class="profile-value">
+
+                        ${escapeProfileHTML(
+                            user.address || "তথ্য নেই"
+                        )}
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-item">
+
+                    <div class="profile-label">
+                        📅 Registration Date
+                    </div>
+
+                    <div class="profile-value">
+
+                        ${registrationDate}
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="profile-buttons">
+
+                <a
+                    href="index.html"
+                    class="profile-btn home-btn">
+
+                    🏠 হোমে যান
+
+                </a>
+
+
+                <button
+                    type="button"
+                    class="profile-btn logout-btn"
+                    onclick="profileLogout()">
+
+                    🚪 Logout
+
+                </button>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =================================
+   LOGOUT
+================================= */
+
+function profileLogout() {
+
+    localStorage.removeItem(
+        "iffahUserLoggedIn"
+    );
+
+
+    localStorage.removeItem(
+        "iffahCurrentUser"
+    );
+
+
+    alert(
+        "✅ আপনার Account থেকে Logout হয়েছে।"
+    );
+
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+/* =================================
+   ESCAPE HTML
+================================= */
+
+function escapeProfileHTML(text) {
+
+    return String(text || "")
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+</script>
+
+
+<!-- USER AUTH -->
+
+<script src="user-auth.js"></script>
+
+
+</body>
+
+</html>

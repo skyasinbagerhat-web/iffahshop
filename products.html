@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Products | IFFAH Shop</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+/* =====================================================
+   PRODUCTS PAGE - PROFESSIONAL PRODUCT DESIGN
+===================================================== */
+
+.products-page {
+    padding: 25px 0 40px;
+}
+
+/* Product Grid */
+.products-page .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 18px;
+    align-items: start;
+}
+
+/* Product Card */
+.products-page .product-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+    transition: all 0.25s ease;
+    min-width: 0;
+}
+
+.products-page .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 9px 22px rgba(0,0,0,0.12);
+}
+
+/* Product Image */
+.products-page .product-card > img {
+    width: 100%;
+    height: 190px;
+    display: block;
+    object-fit: contain;
+    background: linear-gradient(135deg, #f8fafc, #eef2f7);
+    padding: 12px;
+    box-sizing: border-box;
+}
+
+/* Product Information */
+.products-page .product-info {
+    padding: 13px;
+}
+
+/* Product Name */
+.products-page .product-info h3 {
+    font-size: 17px;
+    line-height: 1.4;
+    margin: 0 0 6px;
+    color: #111827;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Price */
+.products-page .product-info .price {
+    font-size: 20px;
+    font-weight: 700;
+    color: #16a34a;
+    margin: 5px 0 7px;
+}
+
+/* Description */
+.products-page .product-info > p:not(.price) {
+    color: #6b7280;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0 0 12px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Buttons */
+.products-page .btn-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+
+/* All Product Buttons */
+.products-page .btn-small {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 36px;
+    padding: 7px 5px;
+
+    border-radius: 7px;
+    border: none;
+
+    text-decoration: none;
+    text-align: center;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+    box-sizing: border-box;
+
+    transition: 0.2s ease;
+}
+
+/* Hover */
+.products-page .btn-small:hover {
+    transform: translateY(-1px);
+}
+
+/* Order button - পুরো নিচে */
+.products-page .btn-group .btn-small:last-child {
+    grid-column: 1 / -1;
+}
+
+/* Search Box */
+.products-page .search-box {
+    max-width: 600px;
+    margin: 20px auto 25px;
+}
+
+.products-page .search-box input {
+    width: 100%;
+    height: 45px;
+    padding: 0 15px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+
+    font-size: 15px;
+    outline: none;
+
+    box-sizing: border-box;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+
+.products-page .search-box input:focus {
+    border-color: #16a34a;
+    box-shadow: 0 0 0 3px rgba(22,163,74,0.10);
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .products-page {
+        padding-top: 15px;
+    }
+
+    .products-page .product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .products-page .product-card {
+        border-radius: 12px;
+    }
+
+    .products-page .product-card > img {
+        height: 150px;
+        padding: 8px;
+    }
+
+    .products-page .product-info {
+        padding: 10px;
+    }
+
+    .products-page .product-info h3 {
+        font-size: 14px;
+    }
+
+    .products-page .product-info .price {
+        font-size: 17px;
+    }
+
+    .products-page .product-info > p:not(.price) {
+        font-size: 12px;
+    }
+
+    .products-page .btn-small {
+        font-size: 11px;
+        min-height: 34px;
+        padding: 6px 3px;
+    }
+}
+
+
+/* =====================================================
+   VERY SMALL MOBILE
+===================================================== */
+
+@media (max-width: 380px) {
+
+    .products-page .product-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .products-page .product-card > img {
+        height: 135px;
+    }
+
+    .products-page .product-info {
+        padding: 8px;
+    }
+
+    .products-page .product-info h3 {
+        font-size: 13px;
+    }
+
+    .products-page .product-info .price {
+        font-size: 16px;
+    }
+
+}
+
+</style>
+
+<style>
+/* =====================================================
+   FORCE PROFESSIONAL PRODUCTS GRID
+===================================================== */
+
+.products-page .product-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+    width: 100% !important;
+}
+
+.products-page .product-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+}
+
+.products-page .product-card > img {
+    height: 180px !important;
+    object-fit: contain !important;
+    padding: 10px !important;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+    .products-page .product-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .products-page .product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 10px !important;
+    }
+
+    .products-page .product-card > img {
+        height: 150px !important;
+    }
+}
+</style>
+
+
+</head>
+
+<body>
+
+<header class="header">
+
+<div class="container">
+
+<h1>🛍️ IFFAH Shop</h1>
+
+<p>আমাদের সকল পণ্য</p>
+
+<div class="menu">
+
+<a href="index.html" class="btn">🏠 Home</a>
+
+<a href="products.html" class="btn">🛍️ Products</a>
+
+<a href="cart.html" class="btn">
+🛒 Cart (<span id="cart-count">0</span>)
+</a>
+
+
+
+
+
+</div>
+
+</div>
+
+<div id="userAuthBox"></div>
+
+</header>
+
+<section class="products-page">
+
+<div class="container">
+
+<h2 class="text-center">
+আমাদের সকল পণ্য
+</h2>
+
+<div class="search-box">
+
+<input
+type="text"
+id="search"
+placeholder="🔍 পণ্য খুঁজুন..."
+onkeyup="searchProduct()">
+
+</div>
+
+<div
+class="product-grid"
+id="productList">
+
+<!-- Products script.js থেকে আসবে -->
+
+</div>
+
+</div>
+
+</section>
+
+<section>
+
+<div class="container">
+
+<div class="card">
+
+<h2 class="text-center">
+কেন IFFAH Shop?
+</h2>
+
+<br>
+
+<p style="text-align:center;">
+
+✔️ মানসম্মত পণ্য<br><br>
+
+✔️ সাশ্রয়ী মূল্য<br><br>
+
+✔️ দ্রুত ডেলিভারি<br><br>
+
+✔️ নিরাপদ অনলাইন অর্ডার
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div class="footer-box">
+
+<h3>IFFAH Shop</h3>
+
+<p>
+বিশ্বাসের সাথে মানসম্মত পণ্য।
+</p>
+
+</div>
+
+<div class="footer-box">
+
+<h3>যোগাযোগ</h3>
+
+<p>📞 01978236232</p>
+
+<p>📍 বাংলাদেশ</p>
+
+</div>
+</div>
+
+<p class="copyright">
+
+© 2026 IFFAH Shop. All Rights Reserved.
+
+</p>
+
+</footer>
+
+<script src="script.js"></script>
+
+<script src="user-auth.js"></script>
+
+</body>
+
+</html>

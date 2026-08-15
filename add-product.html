@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Add Product | IFFAH Shop</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header class="header">
+
+<div class="container">
+
+<h1>➕ নতুন পণ্য যোগ করুন</h1>
+
+<p>IFFAH Shop Admin Panel</p>
+
+</div>
+
+</header>
+
+<section class="products-page">
+
+<div class="container">
+
+<form id="productForm">
+
+<input
+type="text"
+id="name"
+placeholder="পণ্যের নাম"
+required>
+
+<input
+type="number"
+id="price"
+placeholder="দাম"
+required>
+
+<!-- Category -->
+<select
+    id="category"
+    required
+    style="
+        width:100%;
+        padding:12px;
+        margin:10px 0;
+        border:1px solid #ddd;
+        border-radius:8px;
+    ">
+
+    <option value="">
+        📂 ক্যাটাগরি নির্বাচন করুন
+    </option>
+
+    <option value="পোশাক">
+        👕 পোশাক
+    </option>
+
+    <option value="আতর ও পারফিউম">
+        🧴 আতর ও পারফিউম
+    </option>
+
+    <option value="খাবার ও মধু">
+        🍯 খাবার ও মধু
+    </option>
+
+    <option value="তাজা সবজি">
+        🥬 তাজা সবজি
+    </option>
+
+    <option value="তেল">
+        🛢️ তেল
+    </option>
+
+    <option value="মসলা">
+        🌶️ মসলা
+    </option>
+
+    <option value="ইলেকট্রনিক্স">
+        📱 ইলেকট্রনিক্স
+    </option>
+
+    <option value="ঘরোয়া পণ্য">
+        🏠 ঘরোয়া পণ্য
+    </option>
+
+    <option value="অন্যান্য">
+        🎁 অন্যান্য
+    </option>
+
+</select>
+
+<!-- Image URL -->
+<input
+type="text"
+id="image"
+placeholder="ছবির URL অথবা images/product.jpg">
+
+<p style="text-align:center; margin:10px 0;">
+    অথবা
+</p>
+
+<!-- Gallery Upload -->
+<label
+for="imageFile"
+class="btn"
+style="display:block; text-align:center; cursor:pointer;">
+
+🖼️ Gallery থেকে ছবি নির্বাচন করুন
+
+</label>
+
+<input
+type="file"
+id="imageFile"
+accept="image/*"
+style="display:none;">
+
+<!-- Preview -->
+<div
+id="imagePreviewBox"
+style="
+display:none;
+text-align:center;
+margin:15px 0;
+">
+
+<p>👁️ Image Preview</p>
+
+<img
+id="imagePreview"
+src=""
+alt="Preview"
+style="
+width:220px;
+height:220px;
+object-fit:contain;
+border:1px solid #ddd;
+border-radius:10px;
+">
+
+</div>
+
+
+<textarea
+id="description"
+placeholder="পণ্যের বিবরণ"></textarea>
+
+<button
+type="submit"
+class="btn">
+
+➕ Product Add
+
+</button>
+</form>
+
+<br>
+
+<div style="text-align:center;">
+
+<a href="index.html" class="btn">
+
+🏠 Home
+
+</a>
+
+<a href="admin.html" class="btn">
+
+⚙️ Admin Panel
+
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div class="footer-box">
+
+<h3>IFFAH Shop</h3>
+
+<p>Admin Product Management</p>
+
+</div>
+
+<div class="footer-box">
+
+<h3>যোগাযোগ</h3>
+
+<p>📞 01978236232</p>
+
+<p>📍 বাংলাদেশ</p>
+
+</div>
+
+</div>
+
+<p class="copyright">
+
+© 2026 IFFAH Shop. All Rights Reserved.
+
+</p>
+
+</footer>
+
+<script src="script.js"></script>
+
+<script>
+/* ==========================================
+   IFFAH SHOP - CATEGORY MANAGER CONNECT
+   Add Product Category Auto Load
+========================================== */
+
+(function () {
+
+    const categorySelect =
+        document.getElementById("category");
+
+    if (!categorySelect) {
+        return;
+    }
+
+    const defaultCategories = [
+        "পোশাক",
+        "আতর ও পারফিউম",
+        "খাবার ও মধু",
+        "তাজা সবজি",
+        "তেল",
+        "মসলা",
+        "ইলেকট্রনিক্স",
+        "ঘরোয়া পণ্য",
+        "অন্যান্য"
+    ];
+
+    function loadCategoriesToProduct() {
+
+        let categories = [];
+
+        try {
+
+            categories =
+                JSON.parse(
+                    localStorage.getItem(
+                        "iffahCategories"
+                    )
+                ) || [];
+
+        } catch (error) {
+
+            categories = [];
+
+        }
+
+        /*
+           Category Manager থেকে Category পাওয়া গেলে
+           সেটাই ব্যবহার হবে।
+        */
+
+        if (
+            !Array.isArray(categories) ||
+            categories.length === 0
+        ) {
+
+            categories =
+                defaultCategories;
+
+        }
+
+        /*
+           বর্তমানে নির্বাচিত Category মনে রাখা
+        */
+
+        const currentValue =
+            categorySelect.value;
+
+        /*
+           পুরোনো Option মুছে ফেলা
+        */
+
+        categorySelect.innerHTML = "";
+
+        /*
+           প্রথম Option
+        */
+
+        const firstOption =
+            document.createElement("option");
+
+        firstOption.value = "";
+
+        firstOption.textContent =
+            "ক্যাটাগরি নির্বাচন করুন";
+
+        firstOption.disabled = true;
+
+        firstOption.selected = true;
+
+        categorySelect.appendChild(
+            firstOption
+        );
+
+        /*
+           Category যোগ করা
+        */
+
+        categories.forEach(
+            function (category) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+                option.value =
+                    category;
+
+                option.textContent =
+                    category;
+
+                categorySelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+        /*
+           আগে কোনো Category নির্বাচিত থাকলে
+           সেটি আবার রাখা
+        */
+
+        if (
+            currentValue &&
+            categories.includes(
+                currentValue
+            )
+        ) {
+
+            categorySelect.value =
+                currentValue;
+
+        }
+
+    }
+
+    /*
+       প্রথমবার Load
+    */
+
+    loadCategoriesToProduct();
+
+    /*
+       প্রতি ১ সেকেন্ড পরপর Category Manager-এর
+       পরিবর্তন আছে কিনা দেখা হবে।
+
+       ফলে নতুন Category Add/Edit/Delete করলে
+       Add Product পেজ Refresh করলেও নতুন Category আসবে।
+    */
+
+    setInterval(
+        loadCategoriesToProduct,
+        1000
+    );
+
+})();
+</script>
+
+
+</body>
+
+</html>

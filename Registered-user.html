@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Registered Users | IFFAH Shop</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+/* =========================================
+   REGISTERED USER PAGE
+========================================= */
+
+.registered-user-page {
+
+    max-width: 1200px;
+
+    margin: 30px auto;
+
+    padding: 0 15px;
+
+}
+
+
+/* =========================================
+   CARD
+========================================= */
+
+.registered-user-card {
+
+    background: #fff;
+
+    border-radius: 18px;
+
+    padding: 22px;
+
+    border: 1px solid #e5e7eb;
+
+    box-shadow:
+        0 6px 25px rgba(0,0,0,.08);
+
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.registered-user-card h2 {
+
+    margin: 0 0 7px;
+
+    color: #0f5d3d;
+
+}
+
+
+.registered-user-subtitle {
+
+    color: #777;
+
+    margin-bottom: 20px;
+
+}
+
+
+/* =========================================
+   SEARCH
+========================================= */
+
+.user-search-box {
+
+    margin-bottom: 20px;
+
+}
+
+
+.user-search-box input {
+
+    width: 100%;
+
+    padding: 12px 14px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 9px;
+
+    box-sizing: border-box;
+
+    font-family: inherit;
+
+    font-size: 15px;
+
+}
+
+
+.user-search-box input:focus {
+
+    outline: none;
+
+    border-color: #0f5d3d;
+
+}
+
+
+/* =========================================
+   USER COUNT
+========================================= */
+
+.user-count {
+
+    background: #f0fdf4;
+
+    border: 1px solid #bbf7d0;
+
+    color: #166534;
+
+    padding: 12px 15px;
+
+    border-radius: 9px;
+
+    margin-bottom: 20px;
+
+    font-weight: 600;
+
+}
+
+
+/* =========================================
+   USER LIST
+========================================= */
+
+.registered-user-list {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 15px;
+
+}
+
+
+/* =========================================
+   USER CARD
+========================================= */
+
+.single-user-card {
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 13px;
+
+    padding: 17px;
+
+    background: #f8fafc;
+
+    transition: .2s ease;
+
+}
+
+
+.single-user-card:hover {
+
+    box-shadow:
+        0 5px 15px rgba(0,0,0,.08);
+
+    transform: translateY(-2px);
+
+}
+
+
+/* =========================================
+   USER NAME
+========================================= */
+
+.single-user-card h3 {
+
+    margin: 0 0 12px;
+
+    color: #111827;
+
+    font-size: 18px;
+
+}
+
+
+/* =========================================
+   USER INFORMATION
+========================================= */
+
+.user-info {
+
+    margin: 7px 0;
+
+    font-size: 14px;
+
+    color: #374151;
+
+    line-height: 1.5;
+
+}
+
+
+.user-info strong {
+
+    color: #111827;
+
+}
+
+
+/* =========================================
+   USER DATE
+========================================= */
+
+.user-date {
+
+    color: #6b7280;
+
+    font-size: 12px;
+
+    margin-top: 10px;
+
+}
+
+
+/* =========================================
+   DELETE BUTTON
+========================================= */
+
+.delete-user-btn {
+
+    width: 100%;
+
+    margin-top: 13px;
+
+    padding: 9px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #fee2e2;
+
+    color: #dc2626;
+
+    font-family: inherit;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+}
+
+
+.delete-user-btn:hover {
+
+    background: #fecaca;
+
+}
+
+
+/* =========================================
+   EMPTY
+========================================= */
+
+.no-users {
+
+    text-align: center;
+
+    padding: 45px 20px;
+
+    background: #f8fafc;
+
+    border-radius: 12px;
+
+    color: #777;
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:700px) {
+
+    .registered-user-list {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     HEADER
+========================================= -->
+
+<header class="header">
+
+<div class="container">
+
+<h1>
+👥 Registered Users
+</h1>
+
+<p>
+IFFAH Shop Admin Panel
+</p>
+
+
+<div class="menu">
+
+<a
+href="admin.html"
+class="btn">
+
+⚙️ Admin
+
+</a>
+
+
+<a
+href="index.html"
+class="btn">
+
+🏠 Home
+
+</a>
+
+</div>
+
+</div>
+
+</header>
+
+
+
+<!-- =========================================
+     MAIN
+========================================= -->
+
+<section>
+
+<div class="registered-user-page">
+
+
+<div class="registered-user-card">
+
+
+<h2>
+👥 Registered User List
+</h2>
+
+
+<p class="registered-user-subtitle">
+
+আপনার ওয়েবসাইটে যারা Registration করেছে
+তাদের তথ্য এখানে দেখা যাবে।
+
+</p>
+
+
+
+<!-- SEARCH -->
+
+<div class="user-search-box">
+
+<input
+
+type="text"
+
+id="userSearch"
+
+placeholder="🔍 নাম, মোবাইল অথবা Username দিয়ে খুঁজুন..."
+
+autocomplete="off"
+
+>
+
+</div>
+
+
+
+<!-- USER COUNT -->
+
+<div
+id="userCount"
+class="user-count">
+
+👥 মোট Registered User: 0 জন
+
+</div>
+
+
+
+<!-- USER LIST -->
+
+<div
+id="registeredUserList"
+class="registered-user-list">
+
+</div>
+
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =========================================
+     FOOTER
+========================================= -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+
+<div class="footer-box">
+
+<h3>
+IFFAH Shop
+</h3>
+
+<p>
+বিশ্বাসের সাথে মানসম্মত পণ্য।
+</p>
+
+</div>
+
+
+<div class="footer-box">
+
+<h3>
+যোগাযোগ
+</h3>
+
+<p>
+📞 01978236232
+</p>
+
+<p>
+📍 বাংলাদেশ
+</p>
+
+</div>
+
+
+</div>
+
+
+<p class="copyright">
+
+© 2026 IFFAH Shop. All Rights Reserved.
+
+</p>
+
+</footer>
+
+
+<!-- =========================================
+     SCRIPT
+========================================= -->
+
+<script>
+
+/* =========================================
+   GET USERS
+========================================= */
+
+function getRegisteredUsers() {
+
+    let users = [];
+
+    try {
+
+        users =
+            JSON.parse(
+                localStorage.getItem(
+                    "iffahUsers"
+                )
+            ) || [];
+
+    }
+
+    catch(error) {
+
+        users = [];
+
+    }
+
+
+    return Array.isArray(users)
+        ? users
+        : [];
+
+}
+
+
+
+/* =========================================
+   FORMAT DATE
+========================================= */
+
+function formatUserDate(dateString) {
+
+    if (!dateString) {
+
+        return "তারিখ পাওয়া যায়নি";
+
+    }
+
+
+    try {
+
+        const date =
+            new Date(dateString);
+
+
+        return date.toLocaleString(
+            "bn-BD",
+            {
+                dateStyle: "medium",
+                timeStyle: "short"
+            }
+        );
+
+    }
+
+    catch(error) {
+
+        return dateString;
+
+    }
+
+}
+
+
+
+/* =========================================
+   LOAD USERS
+========================================= */
+
+function loadRegisteredUsers(
+    searchText = ""
+) {
+
+
+    const container =
+        document.getElementById(
+            "registeredUserList"
+        );
+
+
+    const countBox =
+        document.getElementById(
+            "userCount"
+        );
+
+
+    if (!container) {
+
+        return;
+
+    }
+
+
+    const users =
+        getRegisteredUsers();
+
+
+    const search =
+        String(searchText)
+            .trim()
+            .toLowerCase();
+
+
+    const filteredUsers =
+        users.filter(
+            function(user) {
+
+
+                if (!search) {
+
+                    return true;
+
+                }
+
+
+                const name =
+                    String(
+                        user.name || ""
+                    ).toLowerCase();
+
+
+                const mobile =
+                    String(
+                        user.mobile || ""
+                    ).toLowerCase();
+
+
+                const username =
+                    String(
+                        user.username || ""
+                    ).toLowerCase();
+
+
+                return (
+
+                    name.includes(search) ||
+
+                    mobile.includes(search) ||
+
+                    username.includes(search)
+
+                );
+
+            }
+        );
+
+
+
+    /* =====================================
+       COUNT
+    ===================================== */
+
+    if (countBox) {
+
+        countBox.innerText =
+
+            "👥 মোট Registered User: " +
+
+            users.length +
+
+            " জন";
+
+    }
+
+
+
+    /* =====================================
+       NO USER
+    ===================================== */
+
+    if (
+        filteredUsers.length === 0
+    ) {
+
+
+        container.innerHTML = `
+
+            <div class="no-users">
+
+                <h3>
+                    👤 কোনো User পাওয়া যায়নি
+                </h3>
+
+                <p>
+                    এখনো কোনো User Registration করেনি
+                    অথবা আপনার Search-এর সাথে মিল পাওয়া যায়নি।
+                </p>
+
+            </div>
+
+        `;
+
+
+        return;
+
+    }
+
+
+
+    /* =====================================
+       CREATE USER CARDS
+    ===================================== */
+
+    let html = "";
+
+
+    filteredUsers.forEach(
+        function(user, index) {
+
+
+            const name =
+                escapeUserHTML(
+                    user.name
+                );
+
+
+            const mobile =
+                escapeUserHTML(
+                    user.mobile
+                );
+
+
+            const username =
+                escapeUserHTML(
+                    user.username
+                );
+
+
+            const address =
+                escapeUserHTML(
+                    user.address
+                );
+
+
+            const registeredAt =
+                formatUserDate(
+                    user.registeredAt
+                );
+
+
+
+            html += `
+
+                <div
+                    class="single-user-card"
+                >
+
+
+                    <h3>
+
+                        👤 ${name || "নাম নেই"}
+
+                    </h3>
+
+
+                    <div class="user-info">
+
+                        📞
+                        <strong>মোবাইল:</strong>
+
+                        ${mobile || "নেই"}
+
+                    </div>
+
+
+                    <div class="user-info">
+
+                        🔑
+                        <strong>Username:</strong>
+
+                        ${username || "নেই"}
+
+                    </div>
+
+
+                    <div class="user-info">
+
+                        📍
+                        <strong>ঠিকানা:</strong>
+
+                        ${address || "নেই"}
+
+                    </div>
+
+
+                    <div class="user-date">
+
+                        📅
+                        Registration:
+
+                        ${registeredAt}
+
+                    </div>
+
+
+                    <button
+
+                        type="button"
+
+                        class="delete-user-btn"
+
+                        onclick="
+                            deleteRegisteredUser('${escapeUserAttribute(user.id)}')
+                        "
+
+                    >
+
+                        🗑️ এই User Delete করুন
+
+                    </button>
+
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    container.innerHTML =
+        html;
+
+}
+
+
+
+/* =========================================
+   DELETE USER
+========================================= */
+
+function deleteRegisteredUser(
+    userId
+) {
+
+
+    if (!userId) {
+
+        return;
+
+    }
+
+
+    const users =
+        getRegisteredUsers();
+
+
+    const user =
+        users.find(
+            function(item) {
+
+                return String(
+                    item.id
+                ) ===
+                String(userId);
+
+            }
+        );
+
+
+    if (!user) {
+
+        alert(
+            "⚠️ User পাওয়া যায়নি।"
+        );
+
+        return;
+
+    }
+
+
+    const confirmed =
+        confirm(
+
+            "আপনি কি সত্যিই \"" +
+
+            (user.name || "এই User") +
+
+            "\"-কে Delete করতে চান?"
+
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    const updatedUsers =
+        users.filter(
+            function(item) {
+
+                return String(
+                    item.id
+                ) !==
+                String(userId);
+
+            }
+        );
+
+
+    localStorage.setItem(
+
+        "iffahUsers",
+
+        JSON.stringify(
+            updatedUsers
+        )
+
+    );
+
+
+    loadRegisteredUsers(
+        document
+            .getElementById(
+                "userSearch"
+            )
+            .value
+    );
+
+
+    alert(
+        "🗑️ User সফলভাবে Delete করা হয়েছে।"
+    );
+
+}
+
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeUserHTML(
+    text
+) {
+
+
+    return String(
+        text || ""
+    )
+
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+
+    .replace(
+        /</g,
+        "&lt;"
+    )
+
+    .replace(
+        />/g,
+        "&gt;"
+    )
+
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+
+/* =========================================
+   ESCAPE ATTRIBUTE
+========================================= */
+
+function escapeUserAttribute(
+    text
+) {
+
+
+    return String(
+        text || ""
+    )
+
+    .replace(
+        /\\/g,
+        "\\\\"
+    )
+
+    .replace(
+        /'/g,
+        "\\'"
+    )
+
+    .replace(
+        /"/g,
+        "&quot;"
+    );
+
+}
+
+
+
+/* =========================================
+   SEARCH
+========================================= */
+
+const userSearch =
+    document.getElementById(
+        "userSearch"
+    );
+
+
+if (userSearch) {
+
+
+    userSearch.addEventListener(
+
+        "input",
+
+        function() {
+
+
+            loadRegisteredUsers(
+                this.value
+            );
+
+
+        }
+
+    );
+
+}
+
+
+
+/* =========================================
+   START
+========================================= */
+
+loadRegisteredUsers();
+
+</script>
+
+
+</body>
+
+</html>

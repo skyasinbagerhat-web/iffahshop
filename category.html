@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Category | IFFAH Shop</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+/* =====================================================
+   CATEGORY PAGE LAYOUT
+===================================================== */
+
+.category-page {
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    gap: 25px;
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 15px;
+}
+
+
+/* =====================================================
+   CATEGORY SIDEBAR
+===================================================== */
+
+.category-sidebar {
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    padding: 18px;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,0.08);
+
+    border: 1px solid #eeeeee;
+
+    height: fit-content;
+
+    position: sticky;
+
+    top: 20px;
+}
+
+
+.category-sidebar-title {
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    margin-bottom: 15px;
+
+    padding-bottom: 12px;
+
+    border-bottom: 1px solid #eeeeee;
+
+}
+
+
+.category-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+
+}
+
+
+.category-item {
+
+    display: block;
+
+    width: 100%;
+
+    padding: 11px 12px;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    color: #333;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    transition: 0.2s ease;
+
+    box-sizing: border-box;
+
+}
+
+
+.category-item:hover {
+
+    background: #f1f5f9;
+
+    color: #166534;
+
+}
+
+
+.category-item.active {
+
+    background: #166534;
+
+    color: #ffffff;
+
+    box-shadow:
+        0 4px 10px rgba(22,101,52,0.20);
+
+}
+
+
+/* =====================================================
+   PRODUCTS AREA
+===================================================== */
+
+.category-products-area {
+
+    min-width: 0;
+
+}
+
+
+.category-header {
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    padding: 20px;
+
+    margin-bottom: 20px;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,0.06);
+
+    border: 1px solid #eeeeee;
+
+}
+
+
+.category-header h2 {
+
+    margin: 0 0 5px;
+
+    font-size: 25px;
+
+}
+
+
+.category-header p {
+
+    margin: 0;
+
+    color: #777;
+
+    font-size: 14px;
+
+}
+
+
+/* =====================================================
+   PRODUCT GRID
+===================================================== */
+
+.category-product-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(240px, 280px)
+        );
+
+    justify-content: start;
+
+    gap: 20px;
+
+}
+
+
+/* =====================================================
+   PRODUCT CARD
+===================================================== */
+
+.category-product-card {
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    border: 1px solid #eeeeee;
+
+    box-shadow:
+        0 5px 18px rgba(0,0,0,0.08);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+
+}
+
+
+.category-product-card:hover {
+
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.14);
+
+}
+
+
+/* =====================================================
+   PRODUCT IMAGE
+===================================================== */
+
+.category-product-image {
+
+    width: 100%;
+
+    height: 220px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f8fafc,
+            #eef2f7
+        );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 15px;
+
+    box-sizing: border-box;
+
+}
+
+
+.category-product-image img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: contain;
+
+    transition: 0.3s ease;
+
+}
+
+
+.category-product-card:hover
+.category-product-image img {
+
+    transform: scale(1.05);
+
+}
+
+
+/* =====================================================
+   PRODUCT INFO
+===================================================== */
+
+.category-product-info {
+
+    padding: 16px;
+
+}
+
+
+.category-product-category {
+
+    display: inline-block;
+
+    font-size: 12px;
+
+    background: #f1f5f9;
+
+    color: #475569;
+
+    padding: 5px 9px;
+
+    border-radius: 20px;
+
+    margin-bottom: 8px;
+
+}
+
+
+.category-product-info h3 {
+
+    margin: 5px 0 8px;
+
+    font-size: 18px;
+
+    line-height: 1.4;
+
+}
+
+
+.category-product-price {
+
+    font-size: 21px;
+
+    font-weight: 700;
+
+    margin: 5px 0 8px;
+
+}
+
+
+.category-product-description {
+
+    color: #666;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    min-height: 42px;
+
+    margin-bottom: 14px;
+
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.category-product-buttons {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 7px;
+
+}
+
+
+.category-product-btn {
+
+    border: none;
+
+    text-decoration: none;
+
+    text-align: center;
+
+    padding: 9px 6px;
+
+    border-radius: 8px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+}
+
+
+.category-product-btn:hover {
+
+    transform: translateY(-1px);
+
+}
+
+
+.details-btn {
+
+    background: #111827;
+
+    color: #ffffff;
+
+}
+
+
+.cart-btn {
+
+    background: #e5e7eb;
+
+    color: #111827;
+
+}
+
+
+.order-btn {
+
+    grid-column: 1 / -1;
+
+    background: #16a34a;
+
+    color: #ffffff;
+
+}
+
+
+/* =====================================================
+   NO PRODUCT
+===================================================== */
+
+.no-category-products {
+
+    text-align: center;
+
+    padding: 50px 20px;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,0.07);
+
+}
+
+
+.no-category-products h3 {
+
+    margin-bottom: 15px;
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 700px) {
+
+    .category-page {
+
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+
+        margin-top: 15px;
+
+    }
+
+
+    .category-sidebar {
+
+        position: static;
+
+        padding: 12px;
+
+    }
+
+
+    .category-sidebar-title {
+
+        margin-bottom: 10px;
+
+        font-size: 18px;
+
+    }
+
+
+    .category-list {
+
+        display: flex;
+
+        flex-direction: row;
+
+        overflow-x: auto;
+
+        gap: 7px;
+
+        padding-bottom: 5px;
+
+    }
+
+
+    .category-item {
+
+        width: auto;
+
+        white-space: nowrap;
+
+        flex-shrink: 0;
+
+        padding: 9px 12px;
+
+        background: #f5f5f5;
+
+    }
+
+
+    .category-item.active {
+
+        background: #166534;
+
+        color: white;
+
+    }
+
+
+    .category-product-grid {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 12px;
+
+    }
+
+
+    .category-product-image {
+
+        height: 170px;
+
+    }
+
+
+    .category-product-info {
+
+        padding: 12px;
+
+    }
+
+
+    .category-product-info h3 {
+
+        font-size: 15px;
+
+    }
+
+
+    .category-product-price {
+
+        font-size: 18px;
+
+    }
+
+
+    .category-product-description {
+
+        font-size: 13px;
+
+    }
+
+}
+
+
+@media (max-width: 420px) {
+
+    .category-product-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+<div class="container">
+
+<h1>
+🛍️ IFFAH Shop
+</h1>
+
+<p id="categoryTitle">
+📂 ক্যাটাগরি
+</p>
+
+<div class="menu">
+
+<a href="index.html" class="btn">
+🏠 হোম
+</a>
+
+<a href="category.html" class="btn">
+🛍️ সব পণ্য
+</a>
+
+
+<a href="cart.html" class="btn">
+🛒 কার্ট
+(<span id="cart-count">0</span>)
+</a>
+
+</div>
+
+</div>
+
+<div id="userAuthBox"></div>
+
+</header>
+
+
+<!-- =====================================================
+     CATEGORY + PRODUCTS
+===================================================== -->
+
+<div class="category-page">
+
+
+<!-- =====================================================
+     LEFT CATEGORY SIDEBAR
+===================================================== -->
+
+<aside class="category-sidebar">
+
+<div class="category-sidebar-title">
+📂 Product Category
+</div>
+
+
+<div
+class="category-list"
+id="categoryList">
+
+</div>
+
+</aside>
+
+
+<!-- =====================================================
+     RIGHT PRODUCTS
+===================================================== -->
+
+<main class="category-products-area">
+
+
+<div class="category-header">
+
+<h2 id="categoryHeading">
+📦 পণ্য
+</h2>
+
+<p id="categorySubHeading">
+এই ক্যাটাগরির সকল পণ্য
+</p>
+
+</div>
+
+
+<div
+class="category-product-grid"
+id="categoryProductList">
+
+</div>
+
+
+<div
+id="noCategoryProducts"
+class="no-category-products"
+style="display:none;">
+
+<h3>
+😔 এই ক্যাটাগরিতে এখনো কোনো Product নেই।
+</h3>
+
+<a
+href="products.html"
+class="btn">
+
+🛍️ সব পণ্য দেখুন
+
+</a>
+
+</div>
+
+
+</main>
+
+</div>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div class="footer-box">
+
+<h3>
+IFFAH Shop
+</h3>
+
+<p>
+বিশ্বাসের সাথে মানসম্মত পণ্য।
+</p>
+
+</div>
+
+
+<div class="footer-box">
+
+<h3>
+যোগাযোগ
+</h3>
+
+<p>
+📞 01978236232
+</p>
+
+<p>
+📍 বাংলাদেশ
+</p>
+
+</div>
+
+</div>
+
+
+<p class="copyright">
+
+© 2026 IFFAH Shop. All Rights Reserved.
+
+</p>
+
+</footer>
+
+
+<script src="script.js"></script>
+
+
+
+<script>
+
+/* =====================================================
+   IFFAH SHOP - CATEGORY SYSTEM
+===================================================== */
+
+
+/* =====================================================
+   ALL CATEGORY NAMES
+===================================================== */
+
+const defaultCategories = [
+
+    "পোশাক",
+
+    "আতর ও পারফিউম",
+
+    "খাবার ও মধু",
+
+    "তাজা সবজি",
+
+    "তেল",
+
+    "মসলা",
+
+    "ইলেকট্রনিক্স",
+
+    "ঘরোয়া পণ্য",
+
+    "অন্যান্য"
+
+];
+
+
+/* =====================================================
+   LOAD CATEGORY MENU
+===================================================== */
+
+function loadCategoryMenu() {
+
+    const categoryList =
+        document.getElementById("categoryList");
+
+
+    if (!categoryList) {
+        return;
+    }
+
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const selectedCategory =
+        params.get("category");
+
+
+    /*
+       Products থেকে যেসব Category
+       বর্তমানে আছে সেগুলোও নেওয়া হবে।
+    */
+
+    const allProducts =
+        JSON.parse(
+            localStorage.getItem("products")
+        ) || [];
+
+
+    const productCategories =
+        allProducts
+        .map(function(product) {
+
+            return String(
+                product.category || ""
+            ).trim();
+
+        })
+        .filter(function(category) {
+
+            return category !== "";
+
+        });
+
+
+    /*
+       Default + Product-এর Category
+       একসাথে করা হচ্ছে।
+    */
+
+    const allCategories = [
+        ...defaultCategories,
+        ...productCategories
+    ];
+
+
+    /*
+       Duplicate Category বাদ
+    */
+
+    const uniqueCategories =
+        [...new Set(allCategories)];
+
+
+    let html = "";
+
+
+    /* =================================================
+       ALL PRODUCTS
+    ================================================= */
+
+    let allActive = "";
+
+
+    if (!selectedCategory) {
+
+        allActive = "active";
+
+    }
+
+
+    html += `
+
+        <a
+            href="category.html"
+            class="category-item ${allActive}"
+        >
+            🛍️ সব পণ্য
+        </a>
+
+    `;
+
+
+    /* =================================================
+       CATEGORY LIST
+    ================================================= */
+
+    uniqueCategories.forEach(
+        function(category) {
+
+
+            let active = "";
+
+
+            if (
+                selectedCategory &&
+                String(selectedCategory).trim() ===
+                String(category).trim()
+            ) {
+
+                active = "active";
+
+            }
+
+
+            html += `
+
+                <a
+                    href="category.html?category=${encodeURIComponent(category)}"
+                    class="category-item ${active}"
+                >
+
+                    📂 ${category}
+
+                </a>
+
+            `;
+
+        }
+    );
+
+
+    categoryList.innerHTML = html;
+
+}
+
+
+/* =====================================================
+   LOAD CATEGORY PRODUCTS
+===================================================== */
+
+function loadCategoryProducts() {
+
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const selectedCategory =
+        params.get("category");
+
+
+    const title =
+        document.getElementById(
+            "categoryTitle"
+        );
+
+
+    const heading =
+        document.getElementById(
+            "categoryHeading"
+        );
+
+
+    const subHeading =
+        document.getElementById(
+            "categorySubHeading"
+        );
+
+
+    const container =
+        document.getElementById(
+            "categoryProductList"
+        );
+
+
+    const noProducts =
+        document.getElementById(
+            "noCategoryProducts"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    /* =================================================
+       GET ALL PRODUCTS
+    ================================================= */
+
+    const allProducts =
+        JSON.parse(
+            localStorage.getItem("products")
+        ) || [];
+
+
+    let categoryProducts = [];
+
+
+    /* =================================================
+       SHOW ALL PRODUCTS
+    ================================================= */
+
+    if (!selectedCategory) {
+
+
+        categoryProducts =
+            allProducts;
+
+
+        if (title) {
+
+            title.innerText =
+                "📂 সব পণ্য";
+
+        }
+
+
+        if (heading) {
+
+            heading.innerText =
+                "🛍️ সব পণ্য";
+
+        }
+
+
+        if (subHeading) {
+
+            subHeading.innerText =
+                "আমাদের সকল পণ্য";
+
+        }
+
+
+    }
+
+    /* =================================================
+       SHOW SELECTED CATEGORY
+    ================================================= */
+
+    else {
+
+
+        categoryProducts =
+            allProducts.filter(
+                function(product) {
+
+
+                    const productCategory =
+                        String(
+                            product.category || ""
+                        )
+                        .trim()
+                        .toLowerCase();
+
+
+                    const selected =
+                        String(
+                            selectedCategory
+                        )
+                        .trim()
+                        .toLowerCase();
+
+
+                    return (
+                        productCategory ===
+                        selected
+                    );
+
+                }
+            );
+
+
+        if (title) {
+
+            title.innerText =
+                "📂 " + selectedCategory;
+
+        }
+
+
+        if (heading) {
+
+            heading.innerText =
+                "📂 " + selectedCategory;
+
+        }
+
+
+        if (subHeading) {
+
+            subHeading.innerText =
+                selectedCategory +
+                " ক্যাটাগরির সকল পণ্য";
+
+        }
+
+    }
+
+
+    /* =================================================
+       NO PRODUCTS
+    ================================================= */
+
+    if (
+        categoryProducts.length === 0
+    ) {
+
+
+        container.innerHTML = "";
+
+
+        if (noProducts) {
+
+            noProducts.style.display =
+                "block";
+
+        }
+
+
+        return;
+
+    }
+
+
+    if (noProducts) {
+
+        noProducts.style.display =
+            "none";
+
+    }
+
+
+    /* =================================================
+       DISPLAY PRODUCTS
+    ================================================= */
+
+    container.innerHTML =
+        categoryProducts
+        .map(function(product) {
+
+
+            const description =
+                product.description
+                ? (
+                    product.description.length > 70
+                    ?
+                    product.description.substring(
+                        0,
+                        70
+                    ) + "..."
+                    :
+                    product.description
+                )
+                :
+                "মানসম্মত পণ্য";
+
+
+            return `
+
+                <div
+                    class="category-product-card"
+                >
+
+
+                    <!-- PRODUCT IMAGE -->
+
+                    <div
+                        class="category-product-image"
+                    >
+
+                        <img
+
+                            src="${
+                                product.image ||
+                                "images/no-image.png"
+                            }"
+
+                            alt="${product.name}"
+
+                            onerror="
+                                this.src='images/no-image.png'
+                            "
+
+                        >
+
+                    </div>
+
+
+                    <!-- PRODUCT INFORMATION -->
+
+                    <div
+                        class="category-product-info"
+                    >
+
+
+                        ${
+                            product.category
+                            ?
+                            `
+                            <span
+                                class="
+                                    category-product-category
+                                "
+                            >
+
+                                📂
+                                ${product.category}
+
+                            </span>
+                            `
+                            :
+                            ""
+                        }
+
+
+                        <h3>
+
+                            ${product.name}
+
+                        </h3>
+
+
+                        <p
+                            class="
+                                category-product-price
+                            "
+                        >
+
+                            ৳${product.price}
+
+                        </p>
+
+
+                        <p
+                            class="
+                                category-product-description
+                            "
+                        >
+
+                            ${description}
+
+                        </p>
+
+
+                        <!-- BUTTONS -->
+
+                        <div
+                            class="
+                                category-product-buttons
+                            "
+                        >
+
+
+                            <a
+                                href="
+                                    product.html?id=${product.id}
+                                "
+
+                                class="
+                                    category-product-btn
+                                    details-btn
+                                "
+                            >
+
+                                👁️ বিস্তারিত
+
+                            </a>
+
+
+                            <button
+
+                                class="
+                                    category-product-btn
+                                    cart-btn
+                                "
+
+                                onclick="
+                                    addToCartFromCategory(
+                                        '${product.id}'
+                                    )
+                                "
+                            >
+
+                                🛒 কার্ট
+
+                            </button>
+
+
+                            <button
+
+                                class="
+                                    category-product-btn
+                                    order-btn
+                                "
+
+                                onclick="
+                                    orderNowFromCategory(
+                                        '${product.id}'
+                                    )
+                                "
+                            >
+
+                                ⚡ এখনই অর্ডার
+
+                            </button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+            `;
+
+        })
+        .join("");
+
+}
+
+
+/* =====================================================
+   ADD TO CART
+===================================================== */
+
+function addToCartFromCategory(id) {
+
+
+    const allProducts =
+        JSON.parse(
+            localStorage.getItem("products")
+        ) || [];
+
+
+    const product =
+        allProducts.find(
+            function(item) {
+
+                return String(item.id) ===
+                       String(id);
+
+            }
+        );
+
+
+    if (!product) {
+
+        alert(
+            "❌ Product পাওয়া যায়নি"
+        );
+
+        return;
+
+    }
+
+
+    /*
+       তোমার মূল Cart System ব্যবহার করবে
+    */
+
+    if (
+        typeof addToCart ===
+        "function"
+    ) {
+
+
+        addToCart(
+            product.name,
+            product.price
+        );
+
+
+        updateCategoryCartCount();
+
+
+        return;
+
+    }
+
+
+    /*
+       Backup Cart
+    */
+
+    let cart =
+        JSON.parse(
+            localStorage.getItem("cart")
+        ) || [];
+
+
+    cart.push({
+
+        id: product.id,
+
+        name: product.name,
+
+        price: Number(
+            product.price
+        ),
+
+        image: product.image,
+
+        quantity: 1
+
+    });
+
+
+    localStorage.setItem(
+
+        "cart",
+
+        JSON.stringify(cart)
+
+    );
+
+
+    updateCategoryCartCount();
+
+
+    alert(
+        "✅ Product Cart-এ যোগ হয়েছে"
+    );
+
+}
+
+
+/* =====================================================
+   ORDER NOW
+===================================================== */
+
+function orderNowFromCategory(id) {
+
+
+    const allProducts =
+        JSON.parse(
+            localStorage.getItem("products")
+        ) || [];
+
+
+    const product =
+        allProducts.find(
+            function(item) {
+
+                return String(item.id) ===
+                       String(id);
+
+            }
+        );
+
+
+    if (!product) {
+
+        alert(
+            "❌ Product পাওয়া যায়নি"
+        );
+
+        return;
+
+    }
+
+
+    /*
+       তোমার মূল Buy Now System
+    */
+
+    if (
+        typeof buyNow ===
+        "function"
+    ) {
+
+
+        buyNow(
+
+            product.name,
+
+            product.price
+
+        );
+
+
+        return;
+
+    }
+
+
+    /*
+       Backup Buy Now
+    */
+
+    const orderProduct = {
+
+        id: product.id,
+
+        name: product.name,
+
+        price: Number(
+            product.price
+        ),
+
+        image: product.image,
+
+        quantity: 1
+
+    };
+
+
+    localStorage.setItem(
+
+        "buyNowProduct",
+
+        JSON.stringify(
+            orderProduct
+        )
+
+    );
+
+
+    window.location.href =
+        "checkout.html";
+
+}
+
+
+/* =====================================================
+   CART COUNT
+===================================================== */
+
+function updateCategoryCartCount() {
+
+
+    const cart =
+        JSON.parse(
+            localStorage.getItem("cart")
+        ) || [];
+
+
+    const count =
+        document.getElementById(
+            "cart-count"
+        );
+
+
+    if (count) {
+
+        count.innerText =
+            cart.length;
+
+    }
+
+}
+
+
+/* =====================================================
+   START CATEGORY SYSTEM
+===================================================== */
+
+loadCategoryMenu();
+
+loadCategoryProducts();
+
+updateCategoryCartCount();
+
+
+</script>
+
+
+<script>
+/* =====================================================
+   IFFAH CATEGORY MANAGER SYNC
+   category-manager.html → category.html
+===================================================== */
+
+(function () {
+
+    function getManagedCategories() {
+
+        try {
+
+            const saved =
+                localStorage.getItem("iffahCategories");
+
+            if (!saved) {
+                return [];
+            }
+
+            const data = JSON.parse(saved);
+
+            return Array.isArray(data)
+                ? data
+                : [];
+
+        } catch (error) {
+
+            console.error(
+                "Category Sync Error:",
+                error
+            );
+
+            return [];
+
+        }
+
+    }
+
+
+    function syncCategoryMenu() {
+
+        const categoryList =
+            document.getElementById(
+                "categoryList"
+            );
+
+        if (!categoryList) {
+            return;
+        }
+
+
+        const categories =
+            getManagedCategories();
+
+
+        if (categories.length === 0) {
+            return;
+        }
+
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        const selectedCategory =
+            (
+                params.get("category") || ""
+            )
+            .trim()
+            .toLowerCase();
+
+
+        let html = "";
+
+
+        /* ================================
+           ALL PRODUCTS
+        ================================= */
+
+        html += `
+
+            <a
+                href="category.html"
+                class="category-item ${
+                    selectedCategory === ""
+                        ? "active"
+                        : ""
+                }"
+            >
+
+                🛍️ সব পণ্য
+
+            </a>
+
+        `;
+
+
+        /* ================================
+           MANAGED CATEGORIES
+        ================================= */
+
+        categories.forEach(
+            function (category) {
+
+                const categoryName =
+                    String(category).trim();
+
+
+                if (!categoryName) {
+                    return;
+                }
+
+
+                const active =
+                    selectedCategory ===
+                    categoryName.toLowerCase()
+                        ? "active"
+                        : "";
+
+
+                html += `
+
+                    <a
+                        href="category.html?category=${encodeURIComponent(categoryName)}"
+                        class="category-item ${active}"
+                    >
+
+                        📂 ${escapeSyncText(
+                            categoryName
+                        )}
+
+                    </a>
+
+                `;
+
+            }
+        );
+
+
+        categoryList.innerHTML =
+            html;
+
+    }
+
+
+    function escapeSyncText(text) {
+
+        return String(text || "")
+
+            .replace(/&/g, "&amp;")
+
+            .replace(/</g, "&lt;")
+
+            .replace(/>/g, "&gt;")
+
+            .replace(/"/g, "&quot;")
+
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* =====================================
+       START
+    ===================================== */
+
+    if (
+        document.readyState ===
+        "loading"
+    ) {
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            syncCategoryMenu
+        );
+
+    } else {
+
+        syncCategoryMenu();
+
+    }
+
+
+})();
+</script>
+
+<script src="user-auth.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Customers | IFFAH Shop</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header class="header">
+
+<div class="container">
+
+<h1>👤 Customers</h1>
+
+<p>IFFAH Shop Admin Dashboard</p>
+
+</div>
+
+</header>
+
+
+<!-- ============================= -->
+<!-- CUSTOMER SUMMARY -->
+<!-- ============================= -->
+
+<section>
+
+<div class="container">
+
+<div class="dashboard-card"
+style="text-align:center;">
+
+<h3>👤 Total Customers</h3>
+
+<h2 id="customersPageTotal">
+0
+</h2>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ============================= -->
+<!-- CUSTOMER LIST -->
+<!-- ============================= -->
+
+<section>
+
+<div class="container">
+
+<h2 class="text-center">
+👥 Customer List
+</h2>
+
+<div id="customersPageList">
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ============================= -->
+<!-- MENU -->
+<!-- ============================= -->
+
+<section>
+
+<div class="container"
+style="text-align:center;">
+
+<a
+href="admin.html"
+class="btn">
+
+⚙️ Dashboard
+
+</a>
+
+<a
+href="orders.html"
+class="btn">
+
+🛒 All Orders
+
+</a>
+
+<button
+class="btn"
+onclick="logout()">
+
+🚪 Logout
+
+</button>
+
+</div>
+
+</section>
+
+
+<!-- ============================= -->
+<!-- FOOTER -->
+<!-- ============================= -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div class="footer-box">
+
+<h3>
+IFFAH Shop
+</h3>
+
+<p>
+Customer Management
+</p>
+
+</div>
+
+
+<div class="footer-box">
+
+<h3>
+যোগাযোগ
+</h3>
+
+<p>
+📞 01978236232
+</p>
+
+<p>
+📍 বাংলাদেশ
+</p>
+
+</div>
+
+</div>
+
+
+<p class="copyright">
+
+© 2026 IFFAH Shop. All Rights Reserved.
+
+</p>
+
+</footer>
+
+
+<!-- ============================= -->
+<!-- LOGIN PROTECTION -->
+<!-- ============================= -->
+
+<script>
+
+if (
+localStorage.getItem("isLoggedIn")
+!== "true"
+) {
+
+window.location.href =
+"login.html";
+
+}
+
+</script>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>

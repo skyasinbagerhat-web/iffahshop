@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>User Registration | IFFAH Shop</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.auth-page {
+    max-width: 520px;
+    margin: 30px auto;
+    padding: 0 15px;
+}
+
+.auth-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 6px 25px rgba(0,0,0,.08);
+    border: 1px solid #e5e7eb;
+}
+
+.auth-card h2 {
+    text-align: center;
+    color: #0f5d3d;
+    margin-bottom: 8px;
+}
+
+.auth-subtitle {
+    text-align: center;
+    color: #777;
+    margin-bottom: 22px;
+}
+
+.auth-card label {
+    display: block;
+    font-weight: 600;
+    margin: 12px 0 6px;
+}
+
+.auth-card input,
+.auth-card textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 15px;
+}
+
+.auth-card textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.auth-card input:focus,
+.auth-card textarea:focus {
+    outline: none;
+    border-color: #0f5d3d;
+}
+
+.register-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 13px;
+    border: none;
+    border-radius: 9px;
+    background: #0f5d3d;
+    color: #fff;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.register-btn:hover {
+    background: #28a745;
+}
+
+.auth-bottom {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid #eee;
+}
+
+.auth-bottom a {
+    color: #0f5d3d;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<header class="header">
+
+<div class="container">
+
+<h1>🛍️ IFFAH Shop</h1>
+
+<p>নতুন User Account তৈরি করুন</p>
+
+<div class="menu">
+
+<a href="index.html" class="btn">
+🏠 হোম
+</a>
+
+<a href="products.html" class="btn">
+🛍️ পণ্য
+</a>
+
+<a href="user-login.html" class="btn">
+🔐 User Login
+</a>
+
+</div>
+
+</div>
+
+</header>
+
+
+
+<section>
+
+<div class="auth-page">
+
+<div class="auth-card">
+
+<h2>📝 User Registration</h2>
+
+<p class="auth-subtitle">
+IFFAH Shop-এ আপনার Account তৈরি করুন
+</p>
+
+
+<form id="userRegisterForm">
+
+
+<label for="userName">
+👤 আপনার নাম
+</label>
+
+<input
+type="text"
+id="userName"
+placeholder="আপনার পূর্ণ নাম"
+required>
+
+
+<label for="userMobile">
+📞 মোবাইল নম্বর
+</label>
+
+<input
+type="tel"
+id="userMobile"
+placeholder="01XXXXXXXXX"
+required>
+
+
+<label for="userUsername">
+🔑 Username
+</label>
+
+<input
+type="text"
+id="userUsername"
+placeholder="একটি Username দিন"
+required
+autocomplete="username">
+
+
+<label for="userPassword">
+🔒 Password
+</label>
+
+<input
+type="password"
+id="userPassword"
+placeholder="একটি Password দিন"
+required
+autocomplete="new-password">
+
+
+<label for="userAddress">
+📍 ঠিকানা
+</label>
+
+<textarea
+id="userAddress"
+placeholder="আপনার সম্পূর্ণ ঠিকানা"
+required></textarea>
+
+
+<button
+type="submit"
+class="register-btn">
+
+📝 Registration করুন
+
+</button>
+
+
+</form>
+
+
+<div class="auth-bottom">
+
+<p>
+আগে থেকেই Account আছে?
+</p>
+
+<a href="user-login.html">
+🔐 User Login করুন
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div class="footer-box">
+
+<h3>IFFAH Shop</h3>
+
+<p>
+বিশ্বাসের সাথে মানসম্মত পণ্য।
+</p>
+
+</div>
+
+<div class="footer-box">
+
+<h3>যোগাযোগ</h3>
+
+<p>📞 01978236232</p>
+
+<p>📍 বাংলাদেশ</p>
+
+</div>
+
+</div>
+
+<p class="copyright">
+© 2026 IFFAH Shop. All Rights Reserved.
+</p>
+
+</footer>
+
+
+
+<script>
+
+document
+.getElementById("userRegisterForm")
+.addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+
+        const name =
+            document
+            .getElementById("userName")
+            .value
+            .trim();
+
+
+        const mobile =
+            document
+            .getElementById("userMobile")
+            .value
+            .trim();
+
+
+        const username =
+            document
+            .getElementById("userUsername")
+            .value
+            .trim();
+
+
+        const password =
+            document
+            .getElementById("userPassword")
+            .value;
+
+
+        const address =
+            document
+            .getElementById("userAddress")
+            .value
+            .trim();
+
+
+        if (
+            !name ||
+            !mobile ||
+            !username ||
+            !password ||
+            !address
+        ) {
+
+            alert(
+                "⚠️ সব তথ্য পূরণ করুন।"
+            );
+
+            return;
+
+        }
+
+
+        if (password.length < 4) {
+
+            alert(
+                "⚠️ Password কমপক্ষে ৪ অক্ষরের হতে হবে।"
+            );
+
+            return;
+
+        }
+
+
+        let users = [];
+
+
+        try {
+
+            users =
+                JSON.parse(
+                    localStorage.getItem(
+                        "iffahUsers"
+                    )
+                ) || [];
+
+        }
+
+        catch(error) {
+
+            users = [];
+
+        }
+
+
+        if (!Array.isArray(users)) {
+
+            users = [];
+
+        }
+
+
+        const usernameExists =
+            users.some(
+                function(user) {
+
+                    return String(
+                        user.username || ""
+                    )
+                    .toLowerCase()
+                    ===
+                    username.toLowerCase();
+
+                }
+            );
+
+
+        if (usernameExists) {
+
+            alert(
+                "⚠️ এই Username ইতিমধ্যে ব্যবহার করা হয়েছে।"
+            );
+
+            return;
+
+        }
+
+
+        const mobileExists =
+            users.some(
+                function(user) {
+
+                    return String(
+                        user.mobile || ""
+                    ) === mobile;
+
+                }
+            );
+
+
+        if (mobileExists) {
+
+            alert(
+                "⚠️ এই মোবাইল নম্বর দিয়ে আগে Registration করা হয়েছে।"
+            );
+
+            return;
+
+        }
+
+
+        const newUser = {
+
+            id:
+                Date.now().toString(),
+
+            name:
+                name,
+
+            mobile:
+                mobile,
+
+            username:
+                username,
+
+            password:
+                password,
+
+            address:
+                address,
+
+            registeredAt:
+                new Date().toISOString()
+
+        };
+
+
+        users.push(newUser);
+
+
+        localStorage.setItem(
+
+            "iffahUsers",
+
+            JSON.stringify(users)
+
+        );
+
+
+        alert(
+            "✅ Registration সফল হয়েছে!\n\nএখন আপনার Username ও Password দিয়ে Login করুন।"
+        );
+
+
+        /* =================================
+           USER LOGIN PAGE
+        ================================= */
+
+        window.location.href =
+            "user-login.html";
+
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

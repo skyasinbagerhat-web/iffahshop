@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Login | IFFAH Shop</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header class="header">
+
+<div class="container">
+
+<h1>🔐 Admin Login</h1>
+
+<p>IFFAH Shop</p>
+
+</div>
+
+</header>
+
+<section>
+
+<div class="container">
+
+<form id="loginForm">
+
+<input
+type="text"
+id="username"
+placeholder="Username"
+required>
+
+<input
+type="password"
+id="password"
+placeholder="Password"
+required>
+
+<button
+type="submit"
+class="btn">
+
+🔐 Login
+
+</button>
+</form>
+
+</div>
+
+</section>
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div class="footer-box">
+
+<h3>IFFAH Shop</h3>
+
+<p>Admin Login Panel</p>
+
+</div>
+
+<div class="footer-box">
+
+<h3>যোগাযোগ</h3>
+
+<p>📞 01978236232</p>
+
+<p>📍 বাংলাদেশ</p>
+
+</div>
+
+</div>
+
+<p class="copyright">
+
+© 2026 IFFAH Shop. All Rights Reserved.
+
+</p>
+
+</footer>
+
+<script>
+
+const loginForm = document.getElementById("loginForm");
+
+loginForm.addEventListener("submit", function(e){
+
+e.preventDefault();
+
+const username =
+document.getElementById("username").value;
+
+const password =
+document.getElementById("password").value;
+
+// আপনার ইচ্ছামতো Username ও Password
+if(username === "admin" && password === "12345"){
+
+localStorage.setItem("isLoggedIn","true");
+
+alert("✅ Login Successful");
+
+window.location.href = "admin.html";
+
+}else{
+
+alert("❌ Username অথবা Password ভুল");
+
+}
+
+});
+
+</script>
+
+</body>
+
+</html>

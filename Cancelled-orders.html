@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Cancelled Orders | IFFAH Shop</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+
+<header class="header">
+
+<div class="container">
+
+<h1>❌ Cancelled Orders</h1>
+
+<p>IFFAH Shop Admin</p>
+
+</div>
+
+</header>
+
+
+
+<section>
+
+<div class="container">
+
+<h2 class="text-center">
+
+❌ Cancelled Order List
+
+</h2>
+
+
+<div id="cancelledOrderList">
+
+</div>
+
+
+<br>
+
+
+<div style="text-align:center;">
+
+<a
+href="admin.html"
+class="btn">
+
+⚙️ Admin Dashboard
+
+</a>
+
+
+<a
+href="pending-orders.html"
+class="btn">
+
+⏳ Pending Orders
+
+</a>
+
+
+<a
+href="confirmed-orders.html"
+class="btn">
+
+🟢 Confirmed Orders
+
+</a>
+
+
+<a
+href="delivered-orders.html"
+class="btn">
+
+🚚 Delivered Orders
+
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<footer class="footer">
+
+<div class="footer-container">
+
+
+<div class="footer-box">
+
+<h3>
+IFFAH Shop
+</h3>
+
+<p>
+Cancelled Orders
+</p>
+
+</div>
+
+
+<div class="footer-box">
+
+<h3>
+যোগাযোগ
+</h3>
+
+<p>
+📞 01978236232
+</p>
+
+<p>
+📍 বাংলাদেশ
+</p>
+
+</div>
+
+
+</div>
+
+
+<p class="copyright">
+
+© 2026 IFFAH Shop. All Rights Reserved.
+
+</p>
+
+</footer>
+
+
+
+<!-- ================================= -->
+<!-- LOGIN PROTECTION -->
+<!-- ================================= -->
+
+<script>
+
+if (
+localStorage.getItem("isLoggedIn")
+!== "true"
+) {
+
+window.location.href =
+"login.html";
+
+}
+
+</script>
+
+
+
+<script src="script.js"></script>
+
+
+
+<script>
+
+/* =========================================
+   LOAD CANCELLED ORDERS
+========================================= */
+
+function loadCancelledOrders() {
+
+    const container =
+        document.getElementById(
+            "cancelledOrderList"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    const orders =
+        JSON.parse(
+            localStorage.getItem("orders")
+        ) || [];
+
+
+    const cancelledOrders =
+        orders.filter(function(order) {
+
+            return order.status === "Cancelled";
+
+        });
+
+
+    if (cancelledOrders.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="card">
+
+                <h3 style="text-align:center;">
+
+                    📭 কোনো Cancelled Order নেই
+
+                </h3>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    let html = "";
+
+
+    cancelledOrders.forEach(
+        function(order) {
+
+
+            let total = 0;
+
+
+            order.products.forEach(
+                function(item) {
+
+                    total +=
+                        Number(item.price);
+
+                }
+            );
+
+
+            let productHTML = "";
+
+
+            order.products.forEach(
+                function(item) {
+
+                    productHTML += `
+
+                        <p>
+
+                            📦 ${item.name}
+                            — ৳${item.price}
+
+                        </p>
+
+                    `;
+
+                }
+            );
+
+
+            html += `
+
+                <div class="card">
+
+                    <h3>
+
+                        👤 ${order.name}
+
+                    </h3>
+
+
+                    <p>
+
+                        🆔 Order ID:
+
+                        <strong>
+
+                            ${order.id}
+
+                        </strong>
+
+                    </p>
+
+
+                    <p>
+
+                        📞 ${order.phone}
+
+                    </p>
+
+
+                    <p>
+
+                        📍 ${order.address}
+
+                    </p>
+
+
+                    <p>
+
+                        💳 ${order.payment}
+
+                    </p>
+
+
+                    <hr>
+
+
+                    ${productHTML}
+
+
+                    <hr>
+
+
+                    <p>
+
+                        📦 মোট পণ্য:
+
+                        <strong>
+
+                            ${order.products.length}
+
+                        </strong>
+
+                    </p>
+
+
+                    <p>
+
+                        💰 মোট মূল্য:
+
+                        <strong>
+
+                            ৳${total}
+
+                        </strong>
+
+                    </p>
+
+
+                    <p>
+
+                        📅 ${order.date}
+
+                    </p>
+
+
+                    <p>
+
+                        📌 Status:
+
+                        <strong>
+
+                            ❌ Cancelled
+
+                        </strong>
+
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    container.innerHTML =
+        html;
+
+}
+
+
+loadCancelledOrders();
+
+</script>
+
+
+</body>
+
+</html>

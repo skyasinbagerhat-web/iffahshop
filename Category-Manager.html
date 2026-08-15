@@ -1,0 +1,779 @@
+ <!DOCTYPE html>
+<html lang="bn">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Category Manager | IFFAH Shop</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+/* ================================
+   CATEGORY MANAGER
+================================ */
+
+.category-manager {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 0 15px;
+}
+
+.category-box {
+    background: #fff;
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.08);
+}
+
+.category-box h2 {
+    color: #0f5d3d;
+    margin-bottom: 6px;
+}
+
+.category-box > p {
+    color: #777;
+    margin-bottom: 20px;
+}
+
+/* ADD CATEGORY */
+
+.add-category {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.add-category input {
+    flex: 1;
+    margin: 0;
+}
+
+.add-category button {
+    width: auto;
+    white-space: nowrap;
+    background: #0f5d3d;
+    color: #fff;
+    border: none;
+    padding: 0 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.add-category button:hover {
+    background: #28a745;
+}
+
+/* CATEGORY LIST */
+
+.category-list-manager {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.category-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 13px 15px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.category-name {
+    font-weight: 600;
+    color: #222;
+}
+
+.category-actions {
+    display: flex;
+    gap: 7px;
+}
+
+.category-actions button {
+    border: none;
+    border-radius: 7px;
+    padding: 7px 12px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+}
+
+.edit-category {
+    background: #f1f5f9;
+    color: #334155;
+}
+
+.delete-category {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.edit-category:hover {
+    background: #e2e8f0;
+}
+
+.delete-category:hover {
+    background: #fecaca;
+}
+
+/* EMPTY */
+
+.empty-category {
+    text-align: center;
+    padding: 30px;
+    color: #777;
+    background: #f8fafc;
+    border-radius: 10px;
+}
+
+/* MOBILE */
+
+@media(max-width:600px) {
+
+    .add-category {
+        flex-direction: column;
+    }
+
+    .add-category button {
+        height: 45px;
+    }
+
+    .category-row {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .category-actions {
+        width: 100%;
+    }
+
+    .category-actions button {
+        flex: 1;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- HEADER -->
+
+<header class="header">
+
+<div class="container">
+
+<h1>📂 IFFAH Shop</h1>
+
+<p>Category Manager</p>
+
+<div class="menu">
+
+<a href="admin.html" class="btn">
+⚙️ Admin
+</a>
+
+<a href="index.html" class="btn">
+🏠 Home
+</a>
+
+<a href="category.html" class="btn">
+📂 Categories
+</a>
+
+</div>
+
+</div>
+
+</header>
+
+
+<!-- CATEGORY MANAGER -->
+
+<section>
+
+<div class="category-manager">
+
+<div class="category-box">
+
+<h2>📂 Category Manager</h2>
+
+<p>
+এখান থেকে আপনার পণ্যের Category পরিচালনা করুন।
+</p>
+
+
+<!-- ADD CATEGORY -->
+
+<div class="add-category">
+
+<input
+type="text"
+id="newCategory"
+placeholder="নতুন Category নাম লিখুন..."
+autocomplete="off">
+
+<button
+type="button"
+onclick="addNewCategory()">
+
+➕ Category যোগ করুন
+
+</button>
+
+</div>
+
+
+<!-- CATEGORY LIST -->
+
+<div
+id="categoryListManager"
+class="category-list-manager">
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div class="footer-box">
+
+<h3>IFFAH Shop</h3>
+
+<p>
+বিশ্বাসের সাথে মানসম্মত পণ্য।
+</p>
+
+</div>
+
+<div class="footer-box">
+
+<h3>যোগাযোগ</h3>
+
+<p>📞 01978236232</p>
+
+<p>📍 বাংলাদেশ</p>
+
+</div>
+
+</div>
+
+<p class="copyright">
+
+© 2026 IFFAH Shop. All Rights Reserved.
+
+</p>
+
+</footer>
+
+
+<script>
+
+/* =========================================
+   CATEGORY MANAGER
+========================================= */
+
+
+/* DEFAULT CATEGORY */
+
+const defaultCategories = [
+
+    "পোশাক",
+    "আতর ও পারফিউম",
+    "খাবার ও মধু",
+    "তাজা সবজি",
+    "তেল",
+    "মসলা",
+    "ইলেকট্রনিক্স",
+    "ঘরোয়া পণ্য",
+    "অন্যান্য"
+
+];
+
+
+/* =========================================
+   LOAD CATEGORY
+========================================= */
+
+function getCategories() {
+
+    let categories = [];
+
+    try {
+
+        categories =
+            JSON.parse(
+                localStorage.getItem(
+                    "iffahCategories"
+                )
+            ) || [];
+
+    }
+
+    catch(error) {
+
+        categories = [];
+
+    }
+
+
+    /* প্রথমবার হলে Default Category */
+
+    if (
+        !Array.isArray(categories) ||
+        categories.length === 0
+    ) {
+
+        categories =
+            [...defaultCategories];
+
+        saveCategories(categories);
+
+    }
+
+
+    return categories;
+
+}
+
+
+/* =========================================
+   SAVE CATEGORY
+========================================= */
+
+function saveCategories(categories) {
+
+    localStorage.setItem(
+
+        "iffahCategories",
+
+        JSON.stringify(categories)
+
+    );
+
+}
+
+
+/* =========================================
+   SHOW CATEGORY
+========================================= */
+
+function loadCategoryManager() {
+
+    const container =
+        document.getElementById(
+            "categoryListManager"
+        );
+
+    if (!container) {
+        return;
+    }
+
+
+    const categories =
+        getCategories();
+
+
+    if (categories.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty-category">
+
+                📂 কোনো Category নেই।
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    let html = "";
+
+
+    categories.forEach(
+        function(category, index) {
+
+            html += `
+
+                <div class="category-row">
+
+                    <div class="category-name">
+
+                        📂 ${escapeHTML(category)}
+
+                    </div>
+
+                    <div class="category-actions">
+
+                        <button
+                            type="button"
+                            class="edit-category"
+                            onclick="editCategory(${index})">
+
+                            ✏️ Edit
+
+                        </button>
+
+                        <button
+                            type="button"
+                            class="delete-category"
+                            onclick="deleteCategory(${index})">
+
+                            🗑️ Delete
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    container.innerHTML = html;
+
+}
+
+
+/* =========================================
+   ADD CATEGORY
+========================================= */
+
+function addNewCategory() {
+
+    const input =
+        document.getElementById(
+            "newCategory"
+        );
+
+
+    if (!input) {
+        return;
+    }
+
+
+    const newCategory =
+        input.value.trim();
+
+
+    if (!newCategory) {
+
+        alert(
+            "⚠️ Category-এর নাম লিখুন।"
+        );
+
+        input.focus();
+
+        return;
+
+    }
+
+
+    const categories =
+        getCategories();
+
+
+    const exists =
+        categories.some(
+            function(category) {
+
+                return String(category)
+                    .trim()
+                    .toLowerCase() ===
+                    newCategory.toLowerCase();
+
+            }
+        );
+
+
+    if (exists) {
+
+        alert(
+            "⚠️ এই Category আগে থেকেই আছে।"
+        );
+
+        input.focus();
+
+        return;
+
+    }
+
+
+    categories.push(newCategory);
+
+
+    saveCategories(categories);
+
+
+    input.value = "";
+
+
+    loadCategoryManager();
+
+
+    alert(
+        "✅ নতুন Category যোগ হয়েছে।"
+    );
+
+}
+
+
+/* =========================================
+   EDIT CATEGORY
+========================================= */
+
+function editCategory(index) {
+
+    const categories =
+        getCategories();
+
+
+    if (
+        index < 0 ||
+        index >= categories.length
+    ) {
+
+        return;
+
+    }
+
+
+    const oldName =
+        categories[index];
+
+
+    const newName =
+        prompt(
+            "Category-এর নতুন নাম লিখুন:",
+            oldName
+        );
+
+
+    if (newName === null) {
+
+        return;
+
+    }
+
+
+    const cleanName =
+        newName.trim();
+
+
+    if (!cleanName) {
+
+        alert(
+            "⚠️ Category-এর নাম খালি রাখা যাবে না।"
+        );
+
+        return;
+
+    }
+
+
+    const duplicate =
+        categories.some(
+            function(category, i) {
+
+                if (i === index) {
+                    return false;
+                }
+
+                return String(category)
+                    .trim()
+                    .toLowerCase() ===
+                    cleanName.toLowerCase();
+
+            }
+        );
+
+
+    if (duplicate) {
+
+        alert(
+            "⚠️ এই নামে Category আগে থেকেই আছে।"
+        );
+
+        return;
+
+    }
+
+
+    categories[index] =
+        cleanName;
+
+
+    saveCategories(categories);
+
+
+    loadCategoryManager();
+
+
+    alert(
+        "✅ Category-এর নাম পরিবর্তন হয়েছে।"
+    );
+
+}
+
+
+/* =========================================
+   DELETE CATEGORY
+========================================= */
+
+function deleteCategory(index) {
+
+    const categories =
+        getCategories();
+
+
+    if (
+        index < 0 ||
+        index >= categories.length
+    ) {
+
+        return;
+
+    }
+
+
+    const categoryName =
+        categories[index];
+
+
+    const confirmDelete =
+        confirm(
+            "আপনি কি সত্যিই \"" +
+            categoryName +
+            "\" Category মুছে ফেলতে চান?"
+        );
+
+
+    if (!confirmDelete) {
+
+        return;
+
+    }
+
+
+    categories.splice(
+        index,
+        1
+    );
+
+
+    saveCategories(categories);
+
+
+    loadCategoryManager();
+
+
+    alert(
+        "🗑️ Category মুছে ফেলা হয়েছে।"
+    );
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHTML(text) {
+
+    return String(text || "")
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =========================================
+   ENTER KEY
+========================================= */
+
+document
+    .getElementById("newCategory")
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key ===
+                "Enter"
+            ) {
+
+                addNewCategory();
+
+            }
+
+        }
+    );
+
+
+/* =========================================
+   START
+========================================= */
+
+loadCategoryManager();
+
+</script>
+
+
+</body>
+
+</html>

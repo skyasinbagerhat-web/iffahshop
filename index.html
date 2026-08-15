@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>IFFAH Shop</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+/* ==========================================
+   PRODUCT CATEGORY MENU
+========================================== */
+
+.product-category-bar {
+    position: relative;
+    margin: 15px 0;
+}
+.category-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    background: linear-gradient(
+        135deg,
+        #2da527,
+        #1163d7
+    );
+
+    color: #ffffff;
+
+    border: none;
+
+    border-radius: 10px;
+
+    padding: 12px 18px;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,0.20);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.category-button:hover {
+    background: linear-gradient(
+        135deg,
+        #1f2937,
+        #374151
+    );
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 16px rgba(0,0,0,0.25);
+}
+
+.category-button:active {
+    transform: scale(0.98);
+}
+
+
+
+/* তিনটি আড়াআড়ি দাগ */
+
+.menu-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.menu-lines span {
+    display: block;
+
+    width: 22px;
+    height: 3px;
+
+    background: hwb(0 95% 4%);
+
+    border-radius: 3px;
+}
+
+
+/* ==========================================
+   PROFESSIONAL CATEGORY DROPDOWN
+========================================== */
+
+.category-dropdown {
+    display: none;
+
+    position: absolute;
+    left: 0;
+    top: 56px;
+
+    width: 280px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 14px;
+
+    padding: 8px;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.16);
+
+    z-index: 9999;
+
+    animation: categoryMenuOpen 0.2s ease;
+}
+
+.category-dropdown.show {
+    display: block;
+}
+
+
+/* Menu Open Animation */
+
+@keyframes categoryMenuOpen {
+
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* Category Title */
+
+.category-dropdown-title {
+
+    font-size: 17px;
+
+    font-weight: 700;
+
+    color: #111827;
+
+    padding: 12px 13px;
+
+    border-bottom:
+        1px solid #eeeeee;
+
+    margin-bottom: 5px;
+
+}
+
+
+/* Category Items */
+
+.category-dropdown a {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    text-decoration: none;
+
+    color: #374151;
+
+    padding: 11px 13px;
+
+    margin: 2px 0;
+
+    border-radius: 9px;
+
+    font-size: 15px;
+
+    font-weight: 500;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+/* Hover */
+
+.category-dropdown a:hover {
+
+    background: #f3f4f6;
+
+    color: #111827;
+
+    transform: translateX(3px);
+
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 600px) {
+
+    .category-dropdown {
+        width: 240px;
+    }
+
+}
+/* =====================================================
+   HOMEPAGE PROFESSIONAL PRODUCT CARDS
+===================================================== */
+
+#productList {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    align-items: start;
+}
+
+/* Product Card */
+.professional-product-card {
+    background: #ffffff;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid #eeeeee;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+    transition: 0.25s ease;
+    min-width: 0;
+}
+
+.professional-product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+}
+
+/* Product Image */
+.professional-product-image {
+    width: 100%;
+    height: 190px;
+    background: linear-gradient(
+        135deg,
+        #f8fafc,
+        #eef2f7
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    box-sizing: border-box;
+}
+
+.professional-product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Product Info */
+.professional-product-card .product-info {
+    padding: 13px;
+}
+
+/* Category */
+.professional-product-card .product-category {
+    display: inline-block;
+    font-size: 11px;
+    background: #f1f5f9;
+    color: #475569;
+    padding: 4px 8px;
+    border-radius: 20px;
+    margin-bottom: 5px;
+}
+
+/* Product Name */
+.professional-product-card h3 {
+    font-size: 16px;
+    line-height: 1.35;
+    margin: 4px 0 6px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Price */
+.professional-product-card .professional-price {
+    font-size: 19px;
+    font-weight: 700;
+    margin: 4px 0 6px;
+}
+
+/* Description */
+.professional-product-card .professional-description {
+    color: #666;
+    font-size: 12px;
+    line-height: 1.4;
+    margin: 0 0 10px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Buttons */
+.professional-product-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+
+.professional-btn {
+    border: none;
+    text-decoration: none;
+    text-align: center;
+    padding: 8px 5px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+    box-sizing: border-box;
+}
+
+.professional-btn:hover {
+    transform: translateY(-1px);
+}
+
+.professional-product-buttons .details-btn {
+    background: #111827;
+    color: #ffffff;
+}
+
+.professional-product-buttons .cart-btn {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+.professional-product-buttons .order-btn {
+    grid-column: 1 / -1;
+    background: #16a34a;
+    color: #ffffff;
+}
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 900px) {
+
+    #productList {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 15px;
+    }
+
+    .professional-product-image {
+        height: 180px;
+    }
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    #productList {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .professional-product-image {
+        height: 155px;
+        padding: 8px;
+    }
+
+    .professional-product-card .product-info {
+        padding: 10px;
+    }
+
+    .professional-product-card h3 {
+        font-size: 14px;
+    }
+
+    .professional-product-card .professional-price {
+        font-size: 17px;
+    }
+
+    .professional-product-card .professional-description {
+        font-size: 11px;
+    }
+
+    .professional-btn {
+        font-size: 11px;
+        padding: 7px 4px;
+    }
+}
+
+</style>
+
+
+
+</head>
+
+
+<body>
+
+
+<!-- ==========================================
+     HEADER
+========================================== -->
+
+<header class="header">
+
+<div class="container">
+
+<h1>
+🛍️ IFFAH Shop
+</h1>
+
+<p>
+বিশ্বাসের সাথে মানসম্মত পণ্য
+</p>
+
+
+<!-- USER MENU -->
+
+<div class="menu">
+
+<a
+href="index.html"
+class="btn">
+
+🏠 হোম
+
+</a>
+
+
+<a
+href="products.html"
+class="btn">
+
+🛍️ পণ্য
+
+</a>
+
+
+<a
+href="cart.html"
+class="btn">
+
+🛒 কার্ট
+(<span id="cart-count">0</span>)
+
+</a>
+
+</div>
+
+</div>
+
+<div id="userAuthBox"></div>
+
+</header>
+
+
+<!-- ==========================================
+     PRODUCT CATEGORY
+========================================== -->
+
+<div class="container">
+
+<div class="product-category-bar">
+
+
+<button
+class="category-button"
+onclick="toggleProductCategory()">
+
+
+<span class="menu-lines">
+
+<span></span>
+<span></span>
+<span></span>
+
+</span>
+
+
+<span>
+Product Category
+</span>
+
+
+</button>
+
+
+
+<div
+id="productCategoryMenu"
+class="category-dropdown">
+
+
+<div class="category-dropdown-title">
+
+📂 Product Category
+
+</div>
+
+
+<a href="category.html?category=সব%20পণ্য">
+🛍️ সব পণ্য
+</a>
+
+
+
+<a href="category.html?category=পোশাক">
+
+👕 পোশাক
+
+</a>
+
+
+<a href="category.html?category=আতর%20ও%20পারফিউম">
+
+🧴 আতর ও পারফিউম
+
+</a>
+
+
+<a href="category.html?category=খাবার%20ও%20মধু">
+
+🍯 খাবার ও মধু
+
+</a>
+
+
+<a href="category.html?category=তাজা%20সবজি">
+
+🥬 তাজা সবজি
+
+</a>
+
+
+<a href="category.html?category=তেল">
+
+🛢️ তেল
+
+</a>
+
+
+<a href="category.html?category=মসলা">
+
+🌶️ মসলা
+
+</a>
+
+
+<a href="category.html?category=ইলেকট্রনিক্স">
+
+📱 ইলেকট্রনিক্স
+
+</a>
+
+
+<a href="category.html?category=ঘরোয়া%20পণ্য">
+
+🏠 ঘরোয়া পণ্য
+
+</a>
+
+
+<a href="category.html?category=অন্যান্য">
+
+🎁 অন্যান্য
+
+</a>
+
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- ==========================================
+     HERO
+========================================== -->
+
+<section class="hero">
+
+<div class="container">
+
+
+<h2>
+
+স্বাগতম IFFAH Shop-এ
+
+</h2>
+
+
+<p>
+
+আপনার পছন্দের মানসম্মত পণ্য এখন এক জায়গায়।
+
+</p>
+
+
+<br>
+
+
+<a
+href="products.html"
+class="btn">
+
+🛍️ এখনই কেনাকাটা করুন
+
+</a>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==========================================
+     FEATURED PRODUCTS
+========================================== -->
+
+<section>
+
+<div class="container">
+
+
+<h2 class="text-center">
+
+🔥 জনপ্রিয় পণ্য
+
+</h2>
+
+
+<br>
+
+
+<div
+class="product-grid"
+id="productList">
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- ==========================================
+     ABOUT
+========================================== -->
+
+<section>
+
+<div class="container">
+
+
+<div class="card">
+
+
+<h2 class="text-center">
+
+আমাদের সম্পর্কে
+
+</h2>
+
+
+<br>
+
+
+<p style="text-align:center;">
+
+IFFAH Shop-এ আপনাকে স্বাগতম।
+
+আমরা সাশ্রয়ী মূল্যে মানসম্মত পণ্য
+সরবরাহ করতে প্রতিশ্রুতিবদ্ধ।
+
+আপনার সন্তুষ্টিই আমাদের প্রধান লক্ষ্য।
+
+</p>
+
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ==========================================
+     SERVICES
+========================================== -->
+
+<section>
+
+<div class="container">
+
+
+<h2 class="text-center">
+
+আমাদের সেবা
+
+</h2>
+
+
+<br>
+
+
+<div class="product-grid">
+
+
+<div class="card">
+
+<h3>
+🚚 দ্রুত ডেলিভারি
+</h3>
+
+<p>
+বাংলাদেশের যেকোনো স্থানে দ্রুত ডেলিভারি।
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>
+💯 মানসম্মত পণ্য
+</h3>
+
+<p>
+শুধু যাচাইকৃত ও মানসম্মত পণ্য।
+</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>
+📞 ২৪/৭ সাপোর্ট
+</h3>
+
+<p>
+যেকোনো প্রয়োজনে আমাদের সাথে যোগাযোগ করুন।
+</p>
+
+</div>
+
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ==========================================
+     FOOTER
+========================================== -->
+
+<footer class="footer">
+
+
+<div class="footer-container">
+
+
+<div class="footer-box">
+
+
+<h3>
+IFFAH Shop
+</h3>
+
+
+<p>
+বিশ্বাসের সাথে মানসম্মত পণ্য।
+</p>
+
+
+</div>
+
+
+
+<div class="footer-box">
+
+
+<h3>
+যোগাযোগ
+</h3>
+
+
+<p>
+📞 01978236232
+</p>
+
+
+<p>
+📍 বাংলাদেশ
+</p>
+
+
+</div>
+
+
+</div>
+
+
+<p class="copyright">
+
+© 2026 IFFAH Shop. All Rights Reserved.
+
+</p>
+
+
+</footer>
+
+
+
+<!-- ==========================================
+     PRODUCT CATEGORY SCRIPT
+========================================== -->
+
+<script>
+
+function toggleProductCategory() {
+
+    const menu =
+        document.getElementById(
+            "productCategoryMenu"
+        );
+
+    menu.classList.toggle("show");
+
+}
+
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        const bar =
+            document.querySelector(
+                ".product-category-bar"
+            );
+
+        const menu =
+            document.getElementById(
+                "productCategoryMenu"
+            );
+
+
+        if (
+            bar &&
+            !bar.contains(event.target)
+        ) {
+
+            menu.classList.remove("show");
+
+        }
+
+    }
+);
+
+</script>
+
+
+
+<!-- ==========================================
+     MAIN SCRIPT
+========================================== -->
+
+<script src="script.js"></script>
+
+<script>
+/* =====================================================
+   IFFAH SHOP - DYNAMIC CATEGORY SYNC
+   Category Manager → Home Page
+===================================================== */
+
+(function () {
+
+    function loadDynamicCategories() {
+
+        const menu =
+            document.getElementById("productCategoryMenu");
+
+        if (!menu) return;
+
+        let categories = [];
+
+        try {
+
+            categories =
+                JSON.parse(
+                    localStorage.getItem("iffahCategories")
+                ) || [];
+
+        } catch (error) {
+
+            categories = [];
+
+        }
+
+        /* Category Manager-এ কোনো Category না থাকলে
+           পুরোনো Menu-ই থাকবে */
+        if (!Array.isArray(categories) ||
+            categories.length === 0) {
+
+            return;
+        }
+
+        let html = `
+            <div class="category-dropdown-title">
+                📂 Product Category
+            </div>
+
+            <a href="category.html">
+                🛍️ সব পণ্য
+            </a>
+        `;
+
+        categories.forEach(function (category) {
+
+            const name =
+                String(category || "").trim();
+
+            if (!name) return;
+
+            html += `
+                <a href="category.html?category=${encodeURIComponent(name)}">
+                    📂 ${escapeCategoryHTML(name)}
+                </a>
+            `;
+
+        });
+
+        menu.innerHTML = html;
+
+    }
+
+
+    function escapeCategoryHTML(text) {
+
+        return String(text)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* Page সম্পূর্ণ Load হওয়ার পর চালু হবে */
+
+    if (document.readyState === "loading") {
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            loadDynamicCategories
+        );
+
+    } else {
+
+        loadDynamicCategories();
+
+    }
+
+})();
+</script>
+
+<script src="user-auth.js"></script>
+</body>
+
+</html>

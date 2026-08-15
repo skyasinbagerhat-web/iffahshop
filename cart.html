@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cart | IFFAH Shop</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header class="header">
+
+<div class="container">
+
+<h1>🛒 আপনার কার্ট</h1>
+
+<p>IFFAH Shop</p>
+
+<div class="menu">
+
+<a href="index.html" class="btn">🏠 Home</a>
+
+<a href="products.html" class="btn">🛍️ Products</a>
+
+<a href="cart.html" class="btn">
+
+🛒 Cart
+(<span id="cart-count">0</span>)
+
+</a>
+
+</div>
+
+</div>
+
+<div id="userAuthBox"></div>
+
+</header>
+
+<section class="products-page">
+
+<div class="container">
+
+<h2 class="text-center">
+
+আপনার কার্ট
+
+</h2>
+
+<br>
+
+<div id="cartList">
+
+<!-- Cart Products এখানে দেখাবে -->
+
+</div>
+
+<div class="card" style="margin-top:20px;text-align:center;">
+
+<h2>
+
+মোট মূল্য:
+<span id="totalPrice">৳0</span>
+
+</h2>
+
+<br>
+
+<button
+class="btn"
+onclick="clearCart();location.reload();">
+
+🗑️ কার্ট খালি করুন
+
+</button>
+
+<a
+href="checkout.html"
+class="btn">
+
+✅ Checkout
+
+</a>
+
+</div>
+</div>
+
+</section>
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div class="footer-box">
+
+<h3>IFFAH Shop</h3>
+
+<p>বিশ্বাসের সাথে মানসম্মত পণ্য।</p>
+
+</div>
+
+<div class="footer-box">
+
+<h3>যোগাযোগ</h3>
+
+<p>📞 01978236232</p>
+
+<p>📍 বাংলাদেশ</p>
+
+</div>
+
+</div>
+
+<p class="copyright">
+
+© 2026 IFFAH Shop. All Rights Reserved.
+
+</p>
+
+</footer>
+
+<script src="script.js"></script>
+
+<script src="user-auth.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Product Details | IFFAH Shop</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+/* =====================================================
+   IFFAH SHOP - PROFESSIONAL PRODUCT DETAILS
+===================================================== */
+
+.product-details-page {
+    padding: 30px 0 50px;
+}
+
+/* Back Button */
+
+.product-back {
+    margin-bottom: 18px;
+}
+
+.product-back a {
+    text-decoration: none;
+    color: #166534;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* Main Product Box */
+
+.product-details-box {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 35px;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 20px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.07);
+}
+
+/* Product Image */
+
+.product-details-image {
+    min-width: 0;
+    height: 470px;
+    background: linear-gradient(
+        135deg,
+        #f8fafc,
+        #eef2f7
+    );
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.product-details-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 20px;
+    transition: transform 0.3s ease;
+}
+
+.product-details-image:hover img {
+    transform: scale(1.04);
+}
+
+/* Product Information */
+
+.product-details-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Category */
+
+.product-category-badge {
+    display: inline-block;
+    width: fit-content;
+    background: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+/* Product Name */
+
+.product-details-info h1 {
+    font-size: 32px;
+    line-height: 1.35;
+    color: #111827;
+    margin: 0 0 12px;
+}
+
+/* Price */
+
+.product-details-price {
+    font-size: 30px;
+    font-weight: 700;
+    color: #dc2626;
+    margin: 5px 0 15px;
+}
+
+/* Availability */
+
+.product-availability {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    width: fit-content;
+    color: #15803d;
+    background: #f0fdf4;
+    padding: 6px 10px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+/* Description */
+
+.product-details-description {
+    color: #4b5563;
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+/* Buttons */
+
+.product-details-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.product-details-btn {
+    border: none;
+    text-decoration: none;
+    min-height: 48px;
+    padding: 12px 10px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s ease;
+}
+
+.product-details-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Cart */
+
+.product-cart-btn {
+    background: #111827;
+    color: #ffffff;
+}
+
+/* Buy Now */
+
+.product-buy-btn {
+    background: #16a34a;
+    color: #ffffff;
+}
+
+/* WhatsApp */
+
+.product-whatsapp-btn {
+    grid-column: 1 / -1;
+    background: #25d366;
+    color: #ffffff;
+}
+
+/* Trust Section */
+
+.product-trust-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.product-trust-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 18px 12px;
+    text-align: center;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+}
+
+.product-trust-card .trust-icon {
+    font-size: 26px;
+    margin-bottom: 6px;
+}
+
+.product-trust-card h3 {
+    font-size: 15px;
+    color: #111827;
+    margin-bottom: 4px;
+}
+
+.product-trust-card p {
+    font-size: 12px;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* Product Description Box */
+
+.product-description-box {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 22px;
+    margin-top: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.product-description-box h2 {
+    font-size: 21px;
+    color: #166534;
+    margin-bottom: 12px;
+}
+
+.product-description-box p {
+    color: #4b5563;
+    line-height: 1.8;
+}
+
+/* Mobile */
+
+@media (max-width: 800px) {
+
+    .product-details-box {
+        grid-template-columns: 1fr;
+        padding: 15px;
+        gap: 20px;
+    }
+
+    .product-details-image {
+        height: 350px;
+    }
+
+    .product-details-info h1 {
+        font-size: 25px;
+    }
+
+    .product-details-price {
+        font-size: 26px;
+    }
+
+    .product-trust-section {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* Small Mobile */
+
+@media (max-width: 500px) {
+
+    .product-details-page {
+        padding-top: 18px;
+    }
+
+    .product-details-image {
+        height: 280px;
+    }
+
+    .product-details-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .product-whatsapp-btn {
+        grid-column: auto;
+    }
+
+    .product-details-btn {
+        min-height: 46px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+<div class="container">
+
+<h1>🛍️ IFFAH Shop</h1>
+
+<p>পণ্যের বিস্তারিত</p>
+
+<div class="menu">
+
+<a href="index.html" class="btn">
+🏠 Home
+</a>
+
+<a href="products.html" class="btn">
+🛍️ Products
+</a>
+
+<a href="cart.html" class="btn">
+🛒 Cart
+(<span id="cart-count">0</span>)
+</a>
+
+</div>
+
+</div>
+
+<div id="userAuthBox"></div>
+
+</header>
+
+
+<!-- =====================================================
+     PRODUCT DETAILS
+===================================================== -->
+
+<section class="product-details-page">
+
+<div class="container">
+
+
+<!-- BACK -->
+
+<div class="product-back">
+
+<a href="products.html">
+← সব পণ্যে ফিরে যান
+</a>
+
+</div>
+
+
+<!-- MAIN PRODUCT -->
+
+<div class="product-details-box">
+
+
+<!-- PRODUCT IMAGE -->
+
+<div class="product-details-image">
+
+<img
+id="productImage"
+src=""
+alt="Product"
+onerror="this.src='images/no-image.png'"
+>
+
+</div>
+
+
+<!-- PRODUCT INFO -->
+
+<div class="product-details-info">
+
+
+<!-- CATEGORY -->
+
+<div
+id="productCategory"
+class="product-category-badge"
+style="display:none;">
+
+📂 Product Category
+
+</div>
+
+
+<!-- NAME -->
+
+<h1 id="productName">
+Loading...
+</h1>
+
+
+<!-- PRICE -->
+
+<p
+id="productPrice"
+class="product-details-price">
+
+৳0
+
+</p>
+
+
+<!-- AVAILABILITY -->
+
+<div class="product-availability">
+
+🟢 পণ্যটি বর্তমানে উপলব্ধ
+
+</div>
+
+
+<!-- DESCRIPTION -->
+
+<p
+id="productDescription"
+class="product-details-description">
+
+Loading...
+
+</p>
+
+
+<!-- BUTTONS -->
+
+<div class="product-details-buttons">
+
+
+<button
+id="addCartBtn"
+class="product-details-btn product-cart-btn">
+
+🛒 কার্টে যোগ করুন
+
+</button>
+
+
+<button
+id="buyNowBtn"
+class="product-details-btn product-buy-btn">
+
+⚡ এখনই অর্ডার করুন
+
+</button>
+
+
+<a
+id="whatsappBtn"
+class="product-details-btn product-whatsapp-btn"
+target="_blank">
+
+📱 WhatsApp-এ অর্ডার করুন
+
+</a>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     TRUST CARDS
+===================================================== -->
+
+<div class="product-trust-section">
+
+
+<div class="product-trust-card">
+
+<div class="trust-icon">
+🚚
+</div>
+
+<h3>
+সারা দেশে ডেলিভারি
+</h3>
+
+<p>
+আপনার ঠিকানায় পণ্য পৌঁছে যাবে
+</p>
+
+</div>
+
+
+<div class="product-trust-card">
+
+<div class="trust-icon">
+💯
+</div>
+
+<h3>
+মানসম্মত পণ্য
+</h3>
+
+<p>
+মানকে আমরা সর্বোচ্চ গুরুত্ব দিই
+</p>
+
+</div>
+
+
+<div class="product-trust-card">
+
+<div class="trust-icon">
+🔒
+</div>
+
+<h3>
+নিরাপদ অর্ডার
+</h3>
+
+<p>
+সহজ ও নিরাপদে অর্ডার করুন
+</p>
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     DESCRIPTION
+===================================================== -->
+
+<div class="product-description-box">
+
+<h2>
+📋 পণ্য সম্পর্কে
+</h2>
+
+<p id="productDescriptionBottom">
+পণ্যের বিস্তারিত তথ্য এখানে দেখা যাবে।
+</p>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+
+<div class="footer-box">
+
+<h3>
+IFFAH Shop
+</h3>
+
+<p>
+বিশ্বাসের সাথে মানসম্মত পণ্য।
+</p>
+
+</div>
+
+
+<div class="footer-box">
+
+<h3>
+যোগাযোগ
+</h3>
+
+<p>
+📞 01978236232
+</p>
+
+<p>
+📍 বাংলাদেশ
+</p>
+
+</div>
+
+
+</div>
+
+
+<p class="copyright">
+
+© 2026 IFFAH Shop. All Rights Reserved.
+
+</p>
+
+</footer>
+
+
+<script src="script.js"></script>
+
+<script src="user-auth.js"></script>
+
+
+</body>
+
+</html>

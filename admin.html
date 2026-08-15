@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Admin Dashboard | IFFAH Shop</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header class="header">
+
+<div class="container">
+
+<h1>⚙️ IFFAH Shop</h1>
+
+<p>Admin Dashboard</p>
+
+</div>
+
+</header>
+
+
+<!-- ============================= -->
+<!-- DASHBOARD -->
+<!-- ============================= -->
+
+<section>
+
+<div class="container">
+
+<h2 class="text-center">
+📊 Dashboard Overview
+</h2>
+
+
+<div class="dashboard">
+
+
+<!-- 1. TOTAL PRODUCTS -->
+
+<a
+href="products-admin.html"
+class="dashboard-card"
+style="text-decoration:none; color:inherit; cursor:pointer;">
+
+<h3>📦 Total Products</h3>
+
+<h2 id="totalProducts">
+0
+</h2>
+
+<p>
+সব Product দেখুন →
+</p>
+
+</a>
+
+
+
+<!-- 2. TOTAL ORDERS -->
+
+<a
+href="orders.html"
+class="dashboard-card"
+style="text-decoration:none; color:inherit; cursor:pointer;">
+
+<h3>🛒 Total Orders</h3>
+
+<h2 id="totalOrders">
+0
+</h2>
+
+<p>
+সব Order দেখুন →
+</p>
+
+</a>
+
+
+
+<!-- 3. CUSTOMERS -->
+
+<a
+href="customers.html"
+class="dashboard-card"
+style="text-decoration:none; color:inherit; cursor:pointer;">
+
+<h3>👤 Customers</h3>
+
+<h2 id="totalCustomers">
+0
+</h2>
+
+<p>
+Customer List দেখুন →
+</p>
+
+</a>
+
+
+
+<!-- 4. PENDING -->
+
+<a
+href="pending-orders.html"
+class="dashboard-card"
+style="text-decoration:none; color:inherit; cursor:pointer;">
+
+<h3>⏳ Pending Orders</h3>
+
+<h2 id="pendingOrders">
+0
+</h2>
+
+<p>
+Pending Order দেখুন →
+</p>
+
+</a>
+
+
+
+<!-- 5. CONFIRMED -->
+
+<a
+href="confirmed-orders.html"
+class="dashboard-card"
+style="text-decoration:none; color:inherit; cursor:pointer;">
+
+<h3>✅ Confirmed Orders</h3>
+
+<h2 id="confirmedOrders">
+0
+</h2>
+
+<p>
+Confirmed Order দেখুন →
+</p>
+
+</a>
+
+
+
+<!-- 6. DELIVERED -->
+
+<a
+href="delivered-orders.html"
+class="dashboard-card"
+style="text-decoration:none; color:inherit; cursor:pointer;">
+
+<h3>🚚 Delivered Orders</h3>
+
+<h2 id="deliveredOrders">
+0
+</h2>
+
+<p>
+Delivered Order দেখুন →
+</p>
+
+</a>
+
+
+
+<!-- 7. CANCELLED -->
+
+<a
+href="cancelled-orders.html"
+class="dashboard-card"
+style="text-decoration:none; color:inherit; cursor:pointer;">
+
+<h3>❌ Cancelled Orders</h3>
+
+<h2 id="cancelledOrders">
+0
+</h2>
+
+<p>
+Cancelled Order দেখুন →
+</p>
+
+</a>
+
+
+
+<!-- 8. TOTAL SALES -->
+
+<a
+href="sales-summary.html"
+class="dashboard-card"
+style="text-decoration:none; color:inherit; cursor:pointer;">
+
+<h3>💰 Total Sales</h3>
+
+<h2 id="totalSales">
+৳0
+</h2>
+
+<p>
+Sales Summary দেখুন →
+</p>
+
+</a>
+
+
+</div>
+
+
+</section>
+
+
+
+<!-- ============================= -->
+<!-- ADMIN MENU -->
+<!-- ============================= -->
+
+<section>
+
+<div class="container">
+
+<h2 class="text-center">
+⚙️ Management
+</h2>
+
+
+<div class="btn-group">
+
+
+<a
+href="add-product.html"
+class="btn">
+
+➕ Add Product
+
+</a>
+
+
+<a
+href="products.html"
+class="btn">
+
+🛍️ View Shop
+
+</a>
+
+<a href="Category-Manager.html" class="btn">
+    📂 Category Manager
+</a>
+
+<a href="edit-product.html" class="btn">
+    ✏️ Edit Product
+</a>
+
+<a href="registered-user.html" class="btn">
+    👥 Registered Users
+</a>
+
+<button
+class="btn"
+onclick="logout()">
+
+🚪 Logout
+
+
+</button>
+
+
+</div>
+
+</div>
+
+</section>
+
+
+
+
+<!-- ============================= -->
+<!-- FOOTER -->
+<!-- ============================= -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+
+<div class="footer-box">
+
+<h3>
+IFFAH Shop
+</h3>
+
+<p>
+Admin Dashboard
+</p>
+
+</div>
+
+
+<div class="footer-box">
+
+<h3>
+যোগাযোগ
+</h3>
+
+<p>
+📞 01978236232
+</p>
+
+<p>
+📍 বাংলাদেশ
+</p>
+
+</div>
+
+
+</div>
+
+
+<p class="copyright">
+
+© 2026 IFFAH Shop. All Rights Reserved.
+
+</p>
+
+</footer>
+
+
+
+<!-- ============================= -->
+<!-- LOGIN PROTECTION -->
+<!-- ============================= -->
+
+<script>
+
+if (
+localStorage.getItem("isLoggedIn")
+!== "true"
+) {
+
+window.location.href =
+"login.html";
+
+}
+
+</script>
+
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>

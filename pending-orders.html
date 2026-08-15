@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Pending Orders | IFFAH Shop</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header class="header">
+
+<div class="container">
+
+<h1>⏳ Pending Orders</h1>
+
+<p>IFFAH Shop Admin Dashboard</p>
+
+</div>
+
+</header>
+
+
+<!-- ============================= -->
+<!-- SUMMARY -->
+<!-- ============================= -->
+
+<section>
+
+<div class="container">
+
+<div class="dashboard-card"
+style="text-align:center;">
+
+<h3>⏳ Pending Orders</h3>
+
+<h2 id="pendingPageTotal">
+0
+</h2>
+
+<p>অপেক্ষমাণ অর্ডার</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ============================= -->
+<!-- PENDING ORDERS -->
+<!-- ============================= -->
+
+<section>
+
+<div class="container">
+
+<h2 class="text-center">
+⏳ Pending Order List
+</h2>
+
+<div id="pendingOrdersList">
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ============================= -->
+<!-- MENU -->
+<!-- ============================= -->
+
+<section>
+
+<div class="container"
+style="text-align:center;">
+
+<a
+href="admin.html"
+class="btn">
+
+⚙️ Dashboard
+
+</a>
+
+<a
+href="orders.html"
+class="btn">
+
+🛒 All Orders
+
+</a>
+
+<a
+href="confirmed-orders.html"
+class="btn">
+
+✅ Confirmed
+
+</a>
+
+<a
+href="delivered-orders.html"
+class="btn">
+
+🚚 Delivered
+
+</a>
+
+<a
+href="cancelled-orders.html"
+class="btn">
+
+❌ Cancelled
+
+</a>
+
+<button
+class="btn"
+onclick="logout()">
+
+🚪 Logout
+
+</button>
+
+</div>
+
+</section>
+
+
+<!-- ============================= -->
+<!-- FOOTER -->
+<!-- ============================= -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div class="footer-box">
+
+<h3>
+IFFAH Shop
+</h3>
+
+<p>
+Pending Order Management
+</p>
+
+</div>
+
+
+<div class="footer-box">
+
+<h3>
+যোগাযোগ
+</h3>
+
+<p>
+📞 01978236232
+</p>
+
+<p>
+📍 বাংলাদেশ
+</p>
+
+</div>
+
+</div>
+
+
+<p class="copyright">
+
+© 2026 IFFAH Shop. All Rights Reserved.
+
+</p>
+
+</footer>
+
+
+<!-- ============================= -->
+<!-- LOGIN PROTECTION -->
+<!-- ============================= -->
+
+<script>
+
+if (
+localStorage.getItem("isLoggedIn")
+!== "true"
+) {
+
+window.location.href =
+"login.html";
+
+}
+
+</script>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
