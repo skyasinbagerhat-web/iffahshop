@@ -111,7 +111,7 @@ async function loadProductsFromFirebase() {
     try {
 
         console.log("🔥 Firebase থেকে Product Load শুরু...");
-
+console.log(products);
         const snapshot = await db
             .collection("products")
             .get();
