@@ -10,6 +10,54 @@
 
 let products = JSON.parse(localStorage.getItem("products")) || [];
 
+// ======================================================
+// FIREBASE - LOAD PRODUCTS
+// ======================================================
+
+async function loadProductsFromFirebase() {
+
+    try {
+
+        const snapshot = await db
+            .collection("products")
+            .get();
+
+        products = [];
+
+        snapshot.forEach(function(doc) {
+
+            products.push({
+                id: doc.id,
+                ...doc.data()
+            });
+
+        });
+
+        console.log(
+            "🔥 Firebase থেকে Product Load হয়েছে:",
+            products.length
+        );
+
+        // Product Load করার পর Website-এ দেখাবে
+        loadProducts();
+
+        // Admin Product List থাকলে সেটাও Load করবে
+        loadAdminProducts();
+
+        loadProductsAdmin();
+
+    } catch (error) {
+
+        console.error(
+            "❌ Firebase Product Load Error:",
+            error
+        );
+
+    }
+
+}
+
+
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 let orders = JSON.parse(localStorage.getItem("orders")) || [];
@@ -2898,3 +2946,6 @@ loadDashboardStats();
 // ======================================================
 // END
 // ======================================================
+
+loadProductsFromFirebase();
+
