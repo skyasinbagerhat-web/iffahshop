@@ -1464,7 +1464,333 @@ if (productForm) {
 }
 
 
+// ======================================================
+// STEP 4
+// CART + ORDER → FIREBASE
+// ======================================================
+
 
 // ======================================================
-// END STEP 1
+// CART
 // ======================================================
+
+let cart = [];
+
+
+// Cart Firebase নয়,
+// কারণ Cart প্রতিটি Customer-এর নিজের ডিভাইসের জন্য।
+// তাই Cart আপাতত LocalStorage-এ থাকবে।
+
+try {
+
+    cart =
+        JSON.parse(
+            localStorage.getItem("cart")
+        ) || [];
+
+}
+catch (error) {
+
+    cart = [];
+
+}
+
+
+// ======================================================
+// CART COUNTER
+// ======================================================
+
+function updateCartCount() {
+
+    const count =
+        document.getElementById("cart-count");
+
+    if (count) {
+
+        count.innerText =
+            cart.length;
+
+    }
+
+}
+
+
+// ======================================================
+// ADD TO CART
+// ======================================================
+
+function addToCart(name, price) {
+
+    cart.push({
+
+        id: Date.now(),
+
+        name: name,
+
+        price: Number(price)
+
+    });
+
+
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
+
+
+    updateCartCount();
+
+
+    alert(
+        "✅ " + name +
+        " কার্টে যোগ হয়েছে"
+    );
+
+}
+
+
+// ======================================================
+// BUY NOW
+// ======================================================
+
+function buyNow(name, price) {
+
+    cart = [];
+
+    cart.push({
+
+        id: Date.now(),
+
+        name: name,
+
+        price: Number(price)
+
+    });
+
+
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
+
+
+    updateCartCount();
+
+
+    window.location.href =
+        "checkout.html";
+
+}
+
+
+// ======================================================
+// CHECKOUT → FIREBASE ORDER
+// ======================================================
+
+const checkoutForm =
+    document.getElementById("checkoutForm");
+
+
+if (checkoutForm) {
+
+    checkoutForm.addEventListener(
+        "submit",
+        async function(e) {
+
+            e.preventDefault();
+
+
+            // --------------------------------------
+            // CART CHECK
+            // --------------------------------------
+
+            if (cart.length === 0) {
+
+                alert(
+                    "🛒 আপনার কার্ট খালি"
+                );
+
+                return;
+
+            }
+
+
+            // --------------------------------------
+            // CUSTOMER DATA
+            // --------------------------------------
+
+            const name =
+                document
+                    .getElementById("name")
+                    .value
+                    .trim();
+
+
+            const phone =
+                document
+                    .getElementById("phone")
+                    .value
+                    .trim();
+
+
+            const address =
+                document
+                    .getElementById("address")
+                    .value
+                    .trim();
+
+
+            const paymentElement =
+                document.getElementById("payment");
+
+
+            const payment =
+                paymentElement
+                    ? paymentElement.value
+                    : "Cash on Delivery";
+
+
+            // --------------------------------------
+            // VALIDATION
+            // --------------------------------------
+
+            if (
+                !name ||
+                !phone ||
+                !address
+            ) {
+
+                alert(
+                    "❌ নাম, মোবাইল নম্বর ও ঠিকানা পূরণ করুন"
+                );
+
+                return;
+
+            }
+
+
+            // --------------------------------------
+            // ORDER ID
+            // --------------------------------------
+
+            const orderId =
+                "ORD" +
+                Date.now();
+
+
+            // --------------------------------------
+            // ORDER DATA
+            // --------------------------------------
+
+            const order = {
+
+                orderId: orderId,
+
+                name: name,
+
+                phone: phone,
+
+                address: address,
+
+                payment: payment,
+
+                products: cart,
+
+                status: "Pending",
+
+                createdAt:
+                    firebase.firestore.FieldValue.serverTimestamp()
+
+            };
+
+
+            // --------------------------------------
+            // FIREBASE SAVE
+            // --------------------------------------
+
+            try {
+
+                console.log(
+                    "🔥 Order Firebase-এ Save হচ্ছে..."
+                );
+
+
+                const docRef =
+                    await db
+                        .collection("orders")
+                        .add(order);
+
+
+                console.log(
+                    "✅ Order Firebase-এ Save হয়েছে:",
+                    docRef.id
+                );
+
+
+                // ----------------------------------
+                // CART EMPTY
+                // ----------------------------------
+
+                cart = [];
+
+
+                localStorage.removeItem(
+                    "cart"
+                );
+
+
+                updateCartCount();
+
+
+                // ----------------------------------
+                // SUCCESS
+                // ----------------------------------
+
+                alert(
+                    "✅ আপনার অর্ডার সফলভাবে গ্রহণ করা হয়েছে!\n\n" +
+                    "Order ID: " +
+                    orderId
+                );
+
+
+                window.location.href =
+                    "index.html";
+
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "❌ Order Save Error:",
+                    error
+                );
+
+
+                alert(
+                    "❌ অর্ডার Save হয়নি!\n\n" +
+                    error.message
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+// ======================================================
+// START CART COUNTER
+// ======================================================
+
+updateCartCount();
+
+
+// ======================================================
+// STEP 4 END
+// ======================================================
+
+
+
+
