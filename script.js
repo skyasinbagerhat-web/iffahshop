@@ -1058,5 +1058,413 @@ loadSingleProduct();
 
 
 // ======================================================
+// IFFAH SHOP
+// FIREBASE PRODUCT LOAD - STEP 2
+// ======================================================
+
+let products = [];
+
+// ------------------------------------------------------
+// Firebase থেকে Product আনা
+// ------------------------------------------------------
+
+async function loadProductsFromFirebase() {
+
+    try {
+
+        console.log("🔥 Firebase থেকে Product Load শুরু...");
+
+        const snapshot = await db
+            .collection("products")
+            .get();
+
+        products = [];
+
+        snapshot.forEach(function(doc) {
+
+            const data = doc.data();
+
+            products.push({
+
+                id: doc.id,
+
+                name: data.name || "",
+
+                price: Number(data.price) || 0,
+
+                category: data.category || "",
+
+                image: data.image || "",
+
+                description: data.description || "",
+
+                createdAt: data.createdAt || ""
+
+            });
+
+        });
+
+        console.log(
+            "🔥 Firebase থেকে Product Load হয়েছে:",
+            products.length
+        );
+
+        console.log("📦 Products:", products);
+
+        displayProducts();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "❌ Firebase Product Load Error:",
+            error
+        );
+
+    }
+
+}
+
+
+// ------------------------------------------------------
+// Homepage-এ Product দেখানো
+// ------------------------------------------------------
+
+function displayProducts() {
+
+    const container =
+        document.getElementById("productList");
+
+    if (!container) {
+
+        console.log(
+            "ℹ️ productList পাওয়া যায়নি"
+        );
+
+        return;
+
+    }
+
+
+    if (products.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="card"
+                style="
+                    grid-column:1/-1;
+                    text-align:center;
+                    padding:30px;
+                ">
+
+                <h2>📦 কোনো Product নেই</h2>
+
+                <p>
+                    শীঘ্রই নতুন পণ্য যুক্ত করা হবে।
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    let html = "";
+
+
+    products.forEach(function(product) {
+
+        html += `
+
+        <div class="product-card">
+
+            <div class="product-image">
+
+                ${
+                    product.image
+                    ?
+                    `
+                    <img
+                        src="${product.image}"
+                        alt="${product.name}"
+                    >
+                    `
+                    :
+                    `
+                    <div
+                        style="
+                            padding:40px;
+                            text-align:center;
+                            font-size:50px;
+                        "
+                    >
+                        📦
+                    </div>
+                    `
+                }
+
+            </div>
+
+
+            <div class="product-info">
+
+                ${
+                    product.category
+                    ?
+                    `
+                    <span>
+                        📂 ${product.category}
+                    </span>
+                    `
+                    :
+                    ""
+                }
+
+
+                <h3>
+                    ${product.name}
+                </h3>
+
+
+                <p class="price">
+                    ৳${product.price}
+                </p>
+
+
+                <p>
+                    ${
+                        product.description || 
+                        "মানসম্মত পণ্য"
+                    }
+                </p>
+
+
+                <div class="btn-group">
+
+                    <a
+                        href="product.html?id=${product.id}"
+                        class="btn-small"
+                    >
+                        👁️ বিস্তারিত
+                    </a>
+
+
+                    <button
+                        class="btn-small"
+                        onclick="
+                            addToCart(
+                                '${String(product.name)
+                                    .replace(/'/g, "\\'")}',
+                                ${product.price}
+                            )
+                        "
+                    >
+                        🛒 কার্ট
+                    </button>
+
+
+                    <button
+                        class="btn-small"
+                        onclick="
+                            buyNow(
+                                '${String(product.name)
+                                    .replace(/'/g, "\\'")}',
+                                ${product.price}
+                            )
+                        "
+                    >
+                        ⚡ অর্ডার
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+
+    container.innerHTML = html;
+
+}
+
+
+// ------------------------------------------------------
+// Firebase Product Load চালু
+// ------------------------------------------------------
+
+loadProductsFromFirebase();
+
+
+
+// ======================================================
+// STEP 3
+// ADD PRODUCT → FIREBASE
+// ======================================================
+
+const productForm =
+    document.getElementById("productForm");
+
+
+if (productForm) {
+
+    productForm.addEventListener("submit", async function(e) {
+
+        e.preventDefault();
+
+        // ------------------------------------------
+        // FORM DATA
+        // ------------------------------------------
+
+        const name =
+            document.getElementById("name").value.trim();
+
+        const price =
+            Number(
+                document.getElementById("price").value
+            );
+
+        const categoryElement =
+            document.getElementById("category");
+
+        const category =
+            categoryElement
+                ? categoryElement.value.trim()
+                : "";
+
+        const imageElement =
+            document.getElementById("image");
+
+        const image =
+            imageElement
+                ? imageElement.value.trim()
+                : "";
+
+        const descriptionElement =
+            document.getElementById("description");
+
+        const description =
+            descriptionElement
+                ? descriptionElement.value.trim()
+                : "";
+
+
+        // ------------------------------------------
+        // VALIDATION
+        // ------------------------------------------
+
+        if (!name) {
+
+            alert("❌ Product Name দিন");
+
+            return;
+
+        }
+
+
+        if (!price || price <= 0) {
+
+            alert("❌ সঠিক Price দিন");
+
+            return;
+
+        }
+
+
+        // ------------------------------------------
+        // PRODUCT DATA
+        // ------------------------------------------
+
+        const product = {
+
+            name: name,
+
+            price: price,
+
+            category: category,
+
+            image: image,
+
+            description: description,
+
+            createdAt:
+                firebase.firestore.FieldValue.serverTimestamp()
+
+        };
+
+
+        // ------------------------------------------
+        // FIREBASE SAVE
+        // ------------------------------------------
+
+        try {
+
+            console.log(
+                "🔥 Product Firebase-এ Save হচ্ছে..."
+            );
+
+
+            const docRef =
+                await db
+                    .collection("products")
+                    .add(product);
+
+
+            console.log(
+                "✅ Product Firebase-এ Save হয়েছে:",
+                docRef.id
+            );
+
+
+            alert(
+                "✅ Product সফলভাবে যোগ হয়েছে!"
+            );
+
+
+            // --------------------------------------
+            // FORM RESET
+            // --------------------------------------
+
+            productForm.reset();
+
+
+            // --------------------------------------
+            // FIREBASE থেকে আবার PRODUCTS LOAD
+            // --------------------------------------
+
+            await loadProductsFromFirebase();
+
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "❌ Product Save Error:",
+                error
+            );
+
+
+            alert(
+                "❌ Product Save হয়নি!\n\n" +
+                error.message
+            );
+
+        }
+
+    });
+
+}
+
+
+
+// ======================================================
 // END STEP 1
 // ======================================================
