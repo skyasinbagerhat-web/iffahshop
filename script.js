@@ -1791,6 +1791,34 @@ updateCartCount();
 // STEP 4 END
 // ======================================================
 
+// ======================================================
+// CHECKOUT FORM TEST
+// ======================================================
+
+console.log("🟢 Checkout Test Code Loaded");
+
+const checkoutTestForm =
+    document.getElementById("checkoutForm");
+
+if (checkoutTestForm) {
+
+    console.log("✅ Checkout Form পাওয়া গেছে");
+
+    checkoutTestForm.addEventListener("submit", function(e) {
+
+        e.preventDefault();
+
+        console.log("🔥 ORDER BUTTON CLICKED");
+
+        alert("✅ Order Button কাজ করছে");
+
+    });
+
+} else {
+
+    console.log("❌ Checkout Form পাওয়া যায়নি");
+
+}
 
 
 
