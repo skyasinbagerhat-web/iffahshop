@@ -106,54 +106,65 @@ function escapeQuotes(text) {
 // ======================================================
 // FIREBASE - LOAD PRODUCTS
 // ======================================================
-
 async function loadProductsFromFirebase() {
 
     try {
 
-        if (!window.db) {
+        console.log("🔥 Firebase থেকে Product Load শুরু...");
 
-            console.error(
-                "❌ Firebase Firestore connection পাওয়া যায়নি"
-            );
-
-            return;
-
-        }
-
-
-        const snapshot =
-            await db
-                .collection("products")
-                .get();
-
+        const snapshot = await db
+            .collection("products")
+            .get();
 
         products = [];
 
-
         snapshot.forEach(function(doc) {
+
+            const data = doc.data();
 
             products.push({
 
                 id: doc.id,
 
-                ...doc.data()
+                name: data.name || "",
+
+                price: Number(data.price) || 0,
+
+                category: data.category || "",
+
+                image: data.image || "images/no-image.png",
+
+                description: data.description || "",
+
+                createdAt: data.createdAt || ""
 
             });
 
         });
 
 
+        // LocalStorage-এ Firebase-এর Product রাখবে
+        localStorage.setItem(
+            "products",
+            JSON.stringify(products)
+        );
+
+
         console.log(
-            "🔥 Firebase Products:",
+            "🔥 Firebase থেকে মোট Product:",
             products.length
         );
 
 
+        // Homepage Product
         loadProducts();
 
+
+        // Admin Product
         loadAdminProducts();
 
+
+        // Products Admin
         loadProductsAdmin();
 
 
@@ -164,9 +175,16 @@ async function loadProductsFromFirebase() {
             error
         );
 
+        alert(
+            "❌ Firebase থেকে Product Load হচ্ছে না।\n\n" +
+            error.message
+        );
+
     }
 
 }
+
+loadProductsFromFirebase();
 
 
 // ======================================================
