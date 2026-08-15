@@ -23,8 +23,4 @@ const db = firebase.firestore();
 // অন্য JS ফাইল থেকেও ব্যবহার করা যাবে
 window.db = db;
 
-console.log("🔥 Firebase Connected");
-console.log("🔥 Iffah Shop Firebase Connected");<script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore-compat.js"></script>
-
-<script src="firebase-config.js"></script>
+console.log("🔥 Iffah Shop Firebase Connected");
