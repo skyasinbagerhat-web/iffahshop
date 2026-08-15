@@ -1811,3 +1811,101 @@ loadAdminProducts();
 
 loadProductsAdmin();
 
+// ======================================================
+// IFFAH SHOP - LOAD PRODUCTS FROM FIREBASE
+// PART 3 / 4
+// ======================================================
+
+async function loadProductsFromFirebase() {
+
+    try {
+
+        if (!window.db) {
+            console.error("❌ Firebase Database পাওয়া যায়নি");
+            return;
+        }
+
+        const snapshot =
+            await db
+                .collection("products")
+                .orderBy("createdAt", "desc")
+                .get();
+
+
+        // Firebase থেকে নতুন Product List
+        products = [];
+
+
+        snapshot.forEach(function(doc) {
+
+            const data = doc.data();
+
+            products.push({
+
+                id: doc.id,
+
+                name:
+                    data.name || "",
+
+                price:
+                    Number(data.price) || 0,
+
+                category:
+                    data.category || "",
+
+                image:
+                    data.image || "images/no-image.png",
+
+                description:
+                    data.description || "",
+
+                createdAt:
+                    data.createdAt || ""
+
+            });
+
+        });
+
+
+        // LocalStorage-এও আপডেট
+        localStorage.setItem(
+            "products",
+            JSON.stringify(products)
+        );
+
+
+        console.log(
+            "🔥 Firebase থেকে Product Load হয়েছে:",
+            products.length
+        );
+
+
+        // Homepage
+        loadProducts();
+
+
+        // Admin Product
+        loadAdminProducts();
+
+
+        // Products Admin
+        loadProductsAdmin();
+
+
+    } catch (error) {
+
+        console.error(
+            "❌ Firebase Product Load Error:",
+            error
+        );
+
+    }
+
+}
+
+
+// ======================================================
+// LOAD FIREBASE PRODUCTS
+// ======================================================
+
+loadProductsFromFirebase();
