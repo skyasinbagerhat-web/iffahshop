@@ -1,6 +1,7 @@
 // ======================================================
 // IFFAH SHOP - COMPLETE FIREBASE SCRIPT.JS
-// Firebase Firestore + LocalStorage
+// VERSION 3.0
+// PRODUCT + ORDER FIREBASE SYSTEM
 // ======================================================
 
 
@@ -19,17 +20,24 @@ try {
 
         firebaseReady = true;
 
-        console.log("🔥 Iffah Shop Firebase Connected");
+        console.log(
+            "🔥 IFFAH Shop Firebase Connected"
+        );
 
     } else {
 
-        console.warn("⚠️ Firebase / db পাওয়া যায়নি");
+        console.error(
+            "❌ Firebase / db পাওয়া যায়নি"
+        );
 
     }
 
 } catch (error) {
 
-    console.error("❌ Firebase Check Error:", error);
+    console.error(
+        "❌ Firebase Check Error:",
+        error
+    );
 
 }
 
@@ -46,7 +54,11 @@ const DEFAULT_IMAGE =
              height="600"
              viewBox="0 0 600 600">
 
-            <rect width="600" height="600" fill="#f1f5f9"/>
+            <rect
+                width="600"
+                height="600"
+                fill="#f1f5f9"
+            />
 
             <text
                 x="300"
@@ -73,17 +85,18 @@ const DEFAULT_IMAGE =
 // LOCAL STORAGE
 // ======================================================
 
+// Product-এর মূল তথ্য Firebase-এ থাকবে
+// LocalStorage এখানে শুধু cache হিসেবে ব্যবহার হবে
+
 let products =
     JSON.parse(
         localStorage.getItem("products")
     ) || [];
 
-
 let cart =
     JSON.parse(
         localStorage.getItem("cart")
     ) || [];
-
 
 let orders =
     JSON.parse(
@@ -92,7 +105,7 @@ let orders =
 
 
 // ======================================================
-// SAVE LOCAL DATA
+// LOCAL STORAGE SAVE
 // ======================================================
 
 function saveProducts() {
@@ -126,12 +139,14 @@ function saveOrders() {
 
 
 // ======================================================
-// SAFE VALUE
+// SAFE TEXT
 // ======================================================
 
 function safeText(value) {
 
-    return String(value ?? "");
+    return String(
+        value ?? ""
+    );
 
 }
 
@@ -153,7 +168,7 @@ function escapeHTML(value) {
 
 
 // ======================================================
-// ESCAPE JAVASCRIPT QUOTES
+// ESCAPE JAVASCRIPT
 // ======================================================
 
 function escapeQuotes(value) {
@@ -169,14 +184,17 @@ function escapeQuotes(value) {
 
 
 // ======================================================
-// FIREBASE PRODUCT NORMALIZE
+// NORMALIZE PRODUCT
 // ======================================================
 
-function normalizeProduct(data, id) {
+function normalizeProduct(
+    data,
+    id
+) {
 
     return {
 
-        id: id,
+        id: String(id),
 
         name:
             data.name || "",
@@ -205,10 +223,13 @@ function normalizeProduct(data, id) {
 
 
 // ======================================================
-// FIREBASE ORDER NORMALIZE
+// NORMALIZE ORDER
 // ======================================================
 
-function normalizeOrder(data, id) {
+function normalizeOrder(
+    data,
+    id
+) {
 
     return {
 
@@ -256,7 +277,9 @@ function normalizeOrder(data, id) {
 function updateCartCount() {
 
     const count =
-        document.getElementById("cart-count");
+        document.getElementById(
+            "cart-count"
+        );
 
     if (count) {
 
@@ -274,7 +297,9 @@ function updateCartCount() {
 
 function darkMode() {
 
-    document.body.classList.toggle("dark");
+    document.body.classList.toggle(
+        "dark"
+    );
 
 }
 
@@ -283,7 +308,10 @@ function darkMode() {
 // ADD TO CART
 // ======================================================
 
-function addToCart(name, price) {
+function addToCart(
+    name,
+    price
+) {
 
     cart.push({
 
@@ -315,7 +343,10 @@ function addToCart(name, price) {
 // BUY NOW
 // ======================================================
 
-function buyNow(name, price) {
+function buyNow(
+    name,
+    price
+) {
 
     cart = [];
 
@@ -343,7 +374,7 @@ function buyNow(name, price) {
 
 
 // ======================================================
-// REMOVE FROM CART
+// REMOVE CART
 // ======================================================
 
 function removeFromCart(index) {
@@ -357,7 +388,10 @@ function removeFromCart(index) {
 
     }
 
-    cart.splice(index, 1);
+    cart.splice(
+        index,
+        1
+    );
 
     saveCart();
 
@@ -413,16 +447,11 @@ async function loadProductsFromFirebase() {
 
     if (!firebaseReady) {
 
-        console.warn(
-            "⚠️ Firebase নেই। LocalStorage Product ব্যবহার করা হচ্ছে।"
+        console.error(
+            "❌ Firebase Connected নয়। Product Load বন্ধ।"
         );
 
-        loadProducts();
-        loadSingleProduct();
-        loadAdminProducts();
-        loadProductsAdmin();
-
-        return;
+        return false;
 
     }
 
@@ -439,24 +468,28 @@ async function loadProductsFromFirebase() {
 
         const firebaseProducts = [];
 
-        snapshot.forEach(function(doc) {
+        snapshot.forEach(
+            function(doc) {
 
-            firebaseProducts.push(
-                normalizeProduct(
-                    doc.data(),
-                    doc.id
-                )
-            );
+                firebaseProducts.push(
+                    normalizeProduct(
+                        doc.data(),
+                        doc.id
+                    )
+                );
 
-        });
+            }
+        );
 
+        // Firebase-ই হবে মূল source
         products =
             firebaseProducts;
 
+        // Cache
         saveProducts();
 
         console.log(
-            "🔥 Firebase থেকে Product Load হয়েছে:",
+            "✅ Firebase থেকে Product Load হয়েছে:",
             products.length
         );
 
@@ -470,8 +503,9 @@ async function loadProductsFromFirebase() {
 
         loadDashboardStats();
 
-    }
+        return true;
 
+    }
     catch (error) {
 
         console.error(
@@ -480,16 +514,11 @@ async function loadProductsFromFirebase() {
         );
 
         alert(
-            "⚠️ Firebase থেকে Product Load করা যায়নি। LocalStorage ব্যবহার করা হচ্ছে।"
+            "❌ Firebase থেকে Product Load করা যায়নি।\n\n" +
+            error.message
         );
 
-        loadProducts();
-
-        loadSingleProduct();
-
-        loadAdminProducts();
-
-        loadProductsAdmin();
+        return false;
 
     }
 
@@ -500,76 +529,91 @@ async function loadProductsFromFirebase() {
 // FIREBASE - ADD PRODUCT
 // ======================================================
 
-async function saveProductToFirebase(product) {
+async function saveProductToFirebase(
+    product
+) {
 
     if (!firebaseReady) {
 
-        console.warn(
-            "⚠️ Firebase নেই। LocalStorage-এ Product Save করা হচ্ছে।"
-        );
-
-        products.push(product);
-
-        saveProducts();
-
-        return;
-
-    }
-
-    try {
-
-        const docRef =
-            await db
-                .collection("products")
-                .add({
-
-                    name:
-                        product.name,
-
-                    price:
-                        Number(product.price) || 0,
-
-                    category:
-                        product.category || "",
-
-                    image:
-                        product.image || DEFAULT_IMAGE,
-
-                    description:
-                        product.description || "",
-
-                    createdAt:
-                        new Date().toISOString(),
-
-                    updatedAt:
-                        new Date().toISOString()
-
-                });
-
-        product.id =
-            docRef.id;
-
-        products.push(product);
-
-        saveProducts();
-
-        console.log(
-            "✅ Product Firebase-এ Save হয়েছে:",
-            docRef.id
+        throw new Error(
+            "Firebase Connected নয়"
         );
 
     }
 
-    catch (error) {
+    const now =
+        new Date().toISOString();
 
-        console.error(
-            "❌ Product Firebase Save Error:",
-            error
-        );
+    const docRef =
+        await db
+            .collection("products")
+            .add({
 
-        throw error;
+                name:
+                    product.name,
 
-    }
+                price:
+                    Number(product.price) || 0,
+
+                category:
+                    product.category || "",
+
+                image:
+                    product.image ||
+                    DEFAULT_IMAGE,
+
+                description:
+                    product.description || "",
+
+                createdAt:
+                    now,
+
+                updatedAt:
+                    now
+
+            });
+
+    const savedProduct = {
+
+        id:
+            docRef.id,
+
+        name:
+            product.name,
+
+        price:
+            Number(product.price) || 0,
+
+        category:
+            product.category || "",
+
+        image:
+            product.image ||
+            DEFAULT_IMAGE,
+
+        description:
+            product.description || "",
+
+        createdAt:
+            now,
+
+        updatedAt:
+            now
+
+    };
+
+    products.push(
+        savedProduct
+    );
+
+    saveProducts();
+
+    console.log(
+        "✅ Product Firebase-এ Save হয়েছে:",
+        docRef.id
+    );
+
+    return savedProduct;
 
 }
 
@@ -585,54 +629,47 @@ async function updateProductInFirebase(
 
     if (!firebaseReady) {
 
-        return;
-
-    }
-
-    try {
-
-        await db
-            .collection("products")
-            .doc(String(productId))
-            .update({
-
-                name:
-                    productData.name,
-
-                price:
-                    Number(productData.price) || 0,
-
-                category:
-                    productData.category || "",
-
-                image:
-                    productData.image || DEFAULT_IMAGE,
-
-                description:
-                    productData.description || "",
-
-                updatedAt:
-                    new Date().toISOString()
-
-            });
-
-        console.log(
-            "✅ Firebase Product Update হয়েছে:",
-            productId
+        throw new Error(
+            "Firebase Connected নয়"
         );
 
     }
 
-    catch (error) {
+    const now =
+        new Date().toISOString();
 
-        console.error(
-            "❌ Firebase Product Update Error:",
-            error
-        );
+    await db
+        .collection("products")
+        .doc(String(productId))
+        .update({
 
-        throw error;
+            name:
+                productData.name,
 
-    }
+            price:
+                Number(
+                    productData.price
+                ) || 0,
+
+            category:
+                productData.category || "",
+
+            image:
+                productData.image ||
+                DEFAULT_IMAGE,
+
+            description:
+                productData.description || "",
+
+            updatedAt:
+                now
+
+        });
+
+    console.log(
+        "✅ Firebase Product Update হয়েছে:",
+        productId
+    );
 
 }
 
@@ -647,34 +684,23 @@ async function deleteProductFromFirebase(
 
     if (!firebaseReady) {
 
-        return;
-
-    }
-
-    try {
-
-        await db
-            .collection("products")
-            .doc(String(productId))
-            .delete();
-
-        console.log(
-            "🗑️ Firebase Product Delete হয়েছে:",
-            productId
+        throw new Error(
+            "Firebase Connected নয়"
         );
 
     }
 
-    catch (error) {
+    await db
+        .collection("products")
+        .doc(
+            String(productId)
+        )
+        .delete();
 
-        console.error(
-            "❌ Firebase Product Delete Error:",
-            error
-        );
-
-        throw error;
-
-    }
+    console.log(
+        "🗑️ Firebase Product Delete হয়েছে:",
+        productId
+    );
 
 }
 
@@ -741,10 +767,18 @@ function loadProducts() {
 
                     <img
                         src="${escapeHTML(
-                            product.image || DEFAULT_IMAGE
+                            product.image ||
+                            DEFAULT_IMAGE
                         )}"
-                        alt="${escapeHTML(product.name)}"
-                        onerror="this.onerror=null;this.src='${DEFAULT_IMAGE}'"
+
+                        alt="${escapeHTML(
+                            product.name
+                        )}"
+
+                        onerror="
+                            this.onerror=null;
+                            this.src='${DEFAULT_IMAGE}'
+                        "
                     >
 
                 </div>
@@ -756,7 +790,10 @@ function loadProducts() {
                         ?
                         `
                         <span class="product-category">
-                            📂 ${escapeHTML(product.category)}
+                            📂
+                            ${escapeHTML(
+                                product.category
+                            )}
                         </span>
                         `
                         :
@@ -764,11 +801,15 @@ function loadProducts() {
                     }
 
                     <h3>
-                        ${escapeHTML(product.name)}
+                        ${escapeHTML(
+                            product.name
+                        )}
                     </h3>
 
                     <p class="price professional-price">
-                        ৳${Number(product.price) || 0}
+                        ৳${Number(
+                            product.price
+                        ) || 0}
                     </p>
 
                     <p class="professional-description">
@@ -779,7 +820,10 @@ function loadProducts() {
                             escapeHTML(
                                 product.description.length > 70
                                 ?
-                                product.description.substring(0, 70) + "..."
+                                product.description.substring(
+                                    0,
+                                    70
+                                ) + "..."
                                 :
                                 product.description
                             )
@@ -792,7 +836,9 @@ function loadProducts() {
                     <div class="professional-product-buttons">
 
                         <a
-                            href="product.html?id=${encodeURIComponent(product.id)}"
+                            href="product.html?id=${encodeURIComponent(
+                                product.id
+                            )}"
                             class="professional-btn details-btn">
 
                             👁️ বিস্তারিত
@@ -801,10 +847,15 @@ function loadProducts() {
 
                         <button
                             class="professional-btn cart-btn"
+
                             onclick="
                                 addToCart(
-                                    '${escapeQuotes(product.name)}',
-                                    ${Number(product.price) || 0}
+                                    '${escapeQuotes(
+                                        product.name
+                                    )}',
+                                    ${Number(
+                                        product.price
+                                    ) || 0}
                                 )
                             ">
 
@@ -814,10 +865,15 @@ function loadProducts() {
 
                         <button
                             class="professional-btn order-btn"
+
                             onclick="
                                 buyNow(
-                                    '${escapeQuotes(product.name)}',
-                                    ${Number(product.price) || 0}
+                                    '${escapeQuotes(
+                                        product.name
+                                    )}',
+                                    ${Number(
+                                        product.price
+                                    ) || 0}
                                 )
                             ">
 
@@ -849,12 +905,19 @@ function loadProducts() {
 function searchProduct() {
 
     const search =
-        document.getElementById("search");
+        document.getElementById(
+            "search"
+        );
 
     const container =
-        document.getElementById("productList");
+        document.getElementById(
+            "productList"
+        );
 
-    if (!search || !container) {
+    if (
+        !search ||
+        !container
+    ) {
 
         return;
 
@@ -870,14 +933,25 @@ function searchProduct() {
             function(product) {
 
                 return (
-                    safeText(product.name)
+
+                    safeText(
+                        product.name
+                    )
                         .toLowerCase()
-                        .includes(keyword)
+                        .includes(
+                            keyword
+                        )
+
                     ||
 
-                    safeText(product.category)
+                    safeText(
+                        product.category
+                    )
                         .toLowerCase()
-                        .includes(keyword)
+                        .includes(
+                            keyword
+                        )
+
                 );
 
             }
@@ -916,32 +990,47 @@ function searchProduct() {
 
                 <img
                     src="${escapeHTML(
-                        product.image || DEFAULT_IMAGE
+                        product.image ||
+                        DEFAULT_IMAGE
                     )}"
-                    alt="${escapeHTML(product.name)}"
-                    onerror="this.onerror=null;this.src='${DEFAULT_IMAGE}'"
+
+                    alt="${escapeHTML(
+                        product.name
+                    )}"
+
+                    onerror="
+                        this.onerror=null;
+                        this.src='${DEFAULT_IMAGE}'
+                    "
                 >
 
                 <div class="product-info">
 
                     <h3>
-                        ${escapeHTML(product.name)}
+                        ${escapeHTML(
+                            product.name
+                        )}
                     </h3>
 
                     <p class="price">
-                        ৳${Number(product.price) || 0}
+                        ৳${Number(
+                            product.price
+                        ) || 0}
                     </p>
 
                     <p>
                         ${escapeHTML(
-                            product.description || ""
+                            product.description ||
+                            ""
                         )}
                     </p>
 
                     <div class="btn-group">
 
                         <a
-                            href="product.html?id=${encodeURIComponent(product.id)}"
+                            href="product.html?id=${encodeURIComponent(
+                                product.id
+                            )}"
                             class="btn-small">
 
                             👁️ বিস্তারিত
@@ -950,10 +1039,15 @@ function searchProduct() {
 
                         <button
                             class="btn-small"
+
                             onclick="
                                 addToCart(
-                                    '${escapeQuotes(product.name)}',
-                                    ${Number(product.price) || 0}
+                                    '${escapeQuotes(
+                                        product.name
+                                    )}',
+                                    ${Number(
+                                        product.price
+                                    ) || 0}
                                 )
                             ">
 
@@ -963,10 +1057,15 @@ function searchProduct() {
 
                         <button
                             class="btn-small"
+
                             onclick="
                                 buyNow(
-                                    '${escapeQuotes(product.name)}',
-                                    ${Number(product.price) || 0}
+                                    '${escapeQuotes(
+                                        product.name
+                                    )}',
+                                    ${Number(
+                                        product.price
+                                    ) || 0}
                                 )
                             ">
 
@@ -1063,7 +1162,9 @@ function loadSingleProduct() {
 
         price.innerText =
             "৳" +
-            Number(product.price);
+            Number(
+                product.price
+            );
 
     }
 
@@ -1094,7 +1195,8 @@ function loadSingleProduct() {
         image.onerror =
             function() {
 
-                this.onerror = null;
+                this.onerror =
+                    null;
 
                 this.src =
                     DEFAULT_IMAGE;
@@ -1151,11 +1253,13 @@ function loadSingleProduct() {
         whatsappBtn.href =
             "https://wa.me/8801978236232?text=" +
             encodeURIComponent(
+
                 "আমি " +
                 product.name +
                 " অর্ডার করতে চাই।\n\n" +
                 "দাম: ৳" +
                 product.price
+
             );
 
     }
@@ -1214,7 +1318,9 @@ function loadCart() {
         function(item, index) {
 
             const price =
-                Number(item.price) || 0;
+                Number(
+                    item.price
+                ) || 0;
 
             total +=
                 price;
@@ -1224,7 +1330,9 @@ function loadCart() {
             <div class="card">
 
                 <h3>
-                    ${escapeHTML(item.name)}
+                    ${escapeHTML(
+                        item.name
+                    )}
                 </h3>
 
                 <p class="price">
@@ -1233,8 +1341,11 @@ function loadCart() {
 
                 <button
                     class="btn-small"
+
                     onclick="
-                        removeFromCart(${index})
+                        removeFromCart(
+                            ${index}
+                        )
                     ">
 
                     ❌ Remove
@@ -1263,7 +1374,7 @@ function loadCart() {
 
 
 // ======================================================
-// IMAGE FILE PREVIEW
+// ADD PRODUCT IMAGE PREVIEW
 // ======================================================
 
 const productForm =
@@ -1312,7 +1423,8 @@ if (imageFile) {
                     "❌ শুধু Image নির্বাচন করুন"
                 );
 
-                this.value = "";
+                this.value =
+                    "";
 
                 return;
 
@@ -1340,7 +1452,9 @@ if (imageFile) {
 
                 };
 
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(
+                file
+            );
 
         }
     );
@@ -1349,7 +1463,7 @@ if (imageFile) {
 
 
 // ======================================================
-// ADD PRODUCT
+// ADD PRODUCT TO FIREBASE
 // ======================================================
 
 if (productForm) {
@@ -1395,7 +1509,9 @@ if (productForm) {
             const price =
                 priceElement
                 ?
-                Number(priceElement.value)
+                Number(
+                    priceElement.value
+                )
                 :
                 0;
 
@@ -1420,7 +1536,10 @@ if (productForm) {
                 :
                 "";
 
-            if (!name || !price) {
+            if (
+                !name ||
+                !price
+            ) {
 
                 alert(
                     "❌ Product Name ও Price দিন"
@@ -1456,8 +1575,13 @@ if (productForm) {
 
             }
 
+            // Firestore document-এর আকার সীমা
+            // মাথায় রেখে বড় image আটকানো
+
             if (
-                image.startsWith("data:image") &&
+                image.startsWith(
+                    "data:image"
+                ) &&
                 image.length > 950000
             ) {
 
@@ -1468,32 +1592,6 @@ if (productForm) {
                 return;
 
             }
-
-            const product = {
-
-                id:
-                    "TEMP" +
-                    Date.now(),
-
-                name:
-                    name,
-
-                price:
-                    price,
-
-                category:
-                    category,
-
-                image:
-                    image,
-
-                description:
-                    description,
-
-                createdAt:
-                    new Date().toISOString()
-
-            };
 
             const submitButton =
                 productForm.querySelector(
@@ -1512,9 +1610,24 @@ if (productForm) {
 
             try {
 
-                await saveProductToFirebase(
-                    product
-                );
+                await saveProductToFirebase({
+
+                    name:
+                        name,
+
+                    price:
+                        price,
+
+                    category:
+                        category,
+
+                    image:
+                        image,
+
+                    description:
+                        description
+
+                });
 
                 alert(
                     "✅ Product সফলভাবে Firebase-এ Save হয়েছে"
@@ -1542,17 +1655,22 @@ if (productForm) {
 
                 loadProductsAdmin();
 
-            }
+                loadDashboardStats();
 
+            }
             catch (error) {
 
+                console.error(
+                    "❌ Product Save Error:",
+                    error
+                );
+
                 alert(
-                    "❌ Product Save করা যায়নি।\n\n" +
+                    "❌ Product Firebase-এ Save করা যায়নি।\n\n" +
                     error.message
                 );
 
             }
-
             finally {
 
                 if (submitButton) {
@@ -1577,78 +1695,70 @@ if (productForm) {
 // FIREBASE - SAVE ORDER
 // ======================================================
 
-async function saveOrderToFirebase(order) {
+async function saveOrderToFirebase(
+    order
+) {
 
     if (!firebaseReady) {
 
-        orders.push(order);
-
-        saveOrders();
-
-        return;
-
-    }
-
-    try {
-
-        await db
-            .collection("orders")
-            .doc(String(order.id))
-            .set({
-
-                id:
-                    order.id,
-
-                name:
-                    order.name,
-
-                phone:
-                    order.phone,
-
-                address:
-                    order.address,
-
-                payment:
-                    order.payment,
-
-                products:
-                    order.products,
-
-                status:
-                    order.status,
-
-                date:
-                    order.date,
-
-                createdAt:
-                    new Date().toISOString(),
-
-                updatedAt:
-                    new Date().toISOString()
-
-            });
-
-        orders.push(order);
-
-        saveOrders();
-
-        console.log(
-            "✅ Order Firebase-এ Save হয়েছে:",
-            order.id
+        throw new Error(
+            "Firebase Connected নয়"
         );
 
     }
 
-    catch (error) {
+    const now =
+        new Date().toISOString();
 
-        console.error(
-            "❌ Firebase Order Save Error:",
-            error
-        );
+    await db
+        .collection("orders")
+        .doc(
+            String(order.id)
+        )
+        .set({
 
-        throw error;
+            id:
+                order.id,
 
-    }
+            name:
+                order.name,
+
+            phone:
+                order.phone,
+
+            address:
+                order.address,
+
+            payment:
+                order.payment,
+
+            products:
+                order.products,
+
+            status:
+                order.status,
+
+            date:
+                order.date,
+
+            createdAt:
+                now,
+
+            updatedAt:
+                now
+
+        });
+
+    orders.push(
+        order
+    );
+
+    saveOrders();
+
+    console.log(
+        "✅ Order Firebase-এ Save হয়েছে:",
+        order.id
+    );
 
 }
 
@@ -1661,21 +1771,19 @@ async function loadOrdersFromFirebase() {
 
     if (!firebaseReady) {
 
-        loadOrders();
+        console.error(
+            "❌ Firebase Connected নয়"
+        );
 
-        loadOrdersPage();
-
-        loadCustomersPage();
-
-        loadPendingOrdersPage();
-
-        loadDashboardStats();
-
-        return;
+        return false;
 
     }
 
     try {
+
+        console.log(
+            "🔥 Firebase থেকে Order Load শুরু..."
+        );
 
         const snapshot =
             await db
@@ -1700,10 +1808,17 @@ async function loadOrdersFromFirebase() {
         firebaseOrders.sort(
             function(a, b) {
 
-                return String(b.date)
-                    .localeCompare(
-                        String(a.date)
-                    );
+                return String(
+                    b.createdAt ||
+                    b.date ||
+                    ""
+                ).localeCompare(
+                    String(
+                        a.createdAt ||
+                        a.date ||
+                        ""
+                    )
+                );
 
             }
         );
@@ -1728,8 +1843,9 @@ async function loadOrdersFromFirebase() {
 
         loadDashboardStats();
 
-    }
+        return true;
 
+    }
     catch (error) {
 
         console.error(
@@ -1737,15 +1853,7 @@ async function loadOrdersFromFirebase() {
             error
         );
 
-        loadOrders();
-
-        loadOrdersPage();
-
-        loadCustomersPage();
-
-        loadPendingOrdersPage();
-
-        loadDashboardStats();
+        return false;
 
     }
 
@@ -1753,7 +1861,7 @@ async function loadOrdersFromFirebase() {
 
 
 // ======================================================
-// CHECKOUT / ORDER
+// CHECKOUT
 // ======================================================
 
 const checkoutForm =
@@ -1782,25 +1890,33 @@ if (checkoutForm) {
 
             const name =
                 document
-                    .getElementById("name")
+                    .getElementById(
+                        "name"
+                    )
                     .value
                     .trim();
 
             const phone =
                 document
-                    .getElementById("phone")
+                    .getElementById(
+                        "phone"
+                    )
                     .value
                     .trim();
 
             const address =
                 document
-                    .getElementById("address")
+                    .getElementById(
+                        "address"
+                    )
                     .value
                     .trim();
 
             const payment =
                 document
-                    .getElementById("payment")
+                    .getElementById(
+                        "payment"
+                    )
                     .value;
 
             if (
@@ -1838,7 +1954,9 @@ if (checkoutForm) {
 
                 products:
                     JSON.parse(
-                        JSON.stringify(cart)
+                        JSON.stringify(
+                            cart
+                        )
                     ),
 
                 status:
@@ -1889,8 +2007,12 @@ if (checkoutForm) {
                     "index.html";
 
             }
-
             catch (error) {
+
+                console.error(
+                    "❌ Order Save Error:",
+                    error
+                );
 
                 alert(
                     "❌ Order Firebase-এ Save হয়নি।\n\n" +
@@ -1898,7 +2020,6 @@ if (checkoutForm) {
                 );
 
             }
-
             finally {
 
                 if (submitButton) {
@@ -1962,7 +2083,9 @@ function loadOrders() {
                     function(item) {
 
                         total +=
-                            Number(item.price) || 0;
+                            Number(
+                                item.price
+                            ) || 0;
 
                     }
                 );
@@ -1974,31 +2097,49 @@ function loadOrders() {
             <div class="card">
 
                 <h3>
-                    👤 ${escapeHTML(order.name)}
+                    👤 ${escapeHTML(
+                        order.name
+                    )}
                 </h3>
 
                 <p>
                     🆔 Order ID:
                     <strong>
-                        ${escapeHTML(order.id)}
+                        ${escapeHTML(
+                            order.id
+                        )}
                     </strong>
                 </p>
 
                 <p>
-                    📞 ${escapeHTML(order.phone)}
+                    📞 ${escapeHTML(
+                        order.phone
+                    )}
                 </p>
 
                 <p>
-                    📍 ${escapeHTML(order.address)}
+                    📍 ${escapeHTML(
+                        order.address
+                    )}
                 </p>
 
                 <p>
-                    💳 ${escapeHTML(order.payment)}
+                    💳 ${escapeHTML(
+                        order.payment
+                    )}
                 </p>
 
                 <p>
                     📦 মোট পণ্য:
-                    ${order.products.length}
+                    ${
+                        Array.isArray(
+                            order.products
+                        )
+                        ?
+                        order.products.length
+                        :
+                        0
+                    }
                 </p>
 
                 <p>
@@ -2007,14 +2148,17 @@ function loadOrders() {
                 </p>
 
                 <p>
-                    📅 ${escapeHTML(order.date)}
+                    📅 ${escapeHTML(
+                        order.date
+                    )}
                 </p>
 
                 <p>
                     📌 Status:
                     <strong>
                         ${escapeHTML(
-                            order.status || "Pending"
+                            order.status ||
+                            "Pending"
                         )}
                     </strong>
                 </p>
@@ -2057,6 +2201,19 @@ function loadOrders() {
                         ">
 
                         🚚 Delivered
+
+                    </button>
+
+                    <button
+                        class="btn-small"
+                        onclick="
+                            updateOrderStatus(
+                                ${index},
+                                'Cancelled'
+                            )
+                        ">
+
+                        ❌ Cancelled
 
                     </button>
 
@@ -2103,16 +2260,25 @@ async function updateOrderStatus(
 
             await db
                 .collection("orders")
-                .doc(String(order.id))
+                .doc(
+                    String(order.id)
+                )
                 .update({
 
                     status:
                         status,
 
                     updatedAt:
-                        new Date().toISOString()
+                        new Date()
+                            .toISOString()
 
                 });
+
+        } else {
+
+            throw new Error(
+                "Firebase Connected নয়"
+            );
 
         }
 
@@ -2135,7 +2301,6 @@ async function updateOrderStatus(
         loadDashboardStats();
 
     }
-
     catch (error) {
 
         console.error(
@@ -2144,7 +2309,8 @@ async function updateOrderStatus(
         );
 
         alert(
-            "❌ Order Status Update করা যায়নি"
+            "❌ Order Status Update করা যায়নি।\n\n" +
+            error.message
         );
 
     }
@@ -2202,9 +2368,7 @@ if (loginForm) {
                 window.location.href =
                     "admin.html";
 
-            }
-
-            else {
+            } else {
 
                 alert(
                     "❌ Username অথবা Password ভুল"
@@ -2252,12 +2416,10 @@ const protectedPages = [
 
 ];
 
-
 const currentPage =
     window.location.pathname
         .split("/")
         .pop();
-
 
 if (
     protectedPages.includes(
@@ -2342,7 +2504,7 @@ function submitPayment() {
 
 
 // ======================================================
-// ADMIN PRODUCT MANAGEMENT
+// ADMIN PRODUCT LIST
 // ======================================================
 
 function loadAdminProducts() {
@@ -2388,34 +2550,51 @@ function loadAdminProducts() {
                 <div style="text-align:center;">
 
                     <img
+
                         src="${escapeHTML(
-                            product.image || DEFAULT_IMAGE
+                            product.image ||
+                            DEFAULT_IMAGE
                         )}"
-                        alt="${escapeHTML(product.name)}"
-                        onerror="this.onerror=null;this.src='${DEFAULT_IMAGE}'"
+
+                        alt="${escapeHTML(
+                            product.name
+                        )}"
+
+                        onerror="
+                            this.onerror=null;
+                            this.src='${DEFAULT_IMAGE}'
+                        "
+
                         style="
                             width:150px;
                             height:150px;
                             object-fit:contain;
                             border-radius:10px;
                         "
+
                     >
 
                 </div>
 
                 <h3>
-                    📦 ${escapeHTML(product.name)}
+                    📦 ${escapeHTML(
+                        product.name
+                    )}
                 </h3>
 
                 <p class="price">
-                    💰 ৳${Number(product.price) || 0}
+                    💰 ৳${Number(
+                        product.price
+                    ) || 0}
                 </p>
 
                 <p>
-                    ${escapeHTML(
-                        product.description ||
-                        "কোনো বিবরণ নেই"
-                    )}
+                    ${
+                        escapeHTML(
+                            product.description ||
+                            "কোনো বিবরণ নেই"
+                        )
+                    }
                 </p>
 
                 <div class="btn-group">
@@ -2423,7 +2602,9 @@ function loadAdminProducts() {
                     <button
                         class="btn-small"
                         onclick="
-                            editProduct(${index})
+                            editProduct(
+                                ${index}
+                            )
                         ">
 
                         ✏️ Edit
@@ -2433,7 +2614,9 @@ function loadAdminProducts() {
                     <button
                         class="btn-small"
                         onclick="
-                            deleteProduct(${index})
+                            deleteProduct(
+                                ${index}
+                            )
                         ">
 
                         🗑️ Delete
@@ -2456,7 +2639,7 @@ function loadAdminProducts() {
 
 
 // ======================================================
-// EDIT PRODUCT
+// EDIT PRODUCT LINK
 // ======================================================
 
 function editProduct(index) {
@@ -2487,7 +2670,9 @@ function editProduct(index) {
 // DELETE PRODUCT
 // ======================================================
 
-async function deleteProduct(index) {
+async function deleteProduct(
+    index
+) {
 
     if (!products[index]) {
 
@@ -2504,12 +2689,15 @@ async function deleteProduct(index) {
 
     const confirmDelete =
         confirm(
+
             "⚠️ আপনি কি এই Product মুছে ফেলতে চান?\n\n" +
+
             "📦 Product: " +
             product.name +
-            "\n" +
-            "💰 দাম: ৳" +
+
+            "\n💰 দাম: ৳" +
             product.price
+
         );
 
     if (!confirmDelete) {
@@ -2520,13 +2708,12 @@ async function deleteProduct(index) {
 
     try {
 
-        if (firebaseReady) {
+        await deleteProductFromFirebase(
+            product.id
+        );
 
-            await deleteProductFromFirebase(
-                product.id
-            );
-
-        }
+        // Firebase থেকে delete সফল হলে
+        // তারপর local array থেকে delete
 
         products =
             products.filter(
@@ -2534,7 +2721,9 @@ async function deleteProduct(index) {
 
                     return (
                         String(item.id) !==
-                        String(product.id)
+                        String(
+                            product.id
+                        )
                     );
 
                 }
@@ -2555,7 +2744,6 @@ async function deleteProduct(index) {
         loadDashboardStats();
 
     }
-
     catch (error) {
 
         console.error(
@@ -2564,7 +2752,8 @@ async function deleteProduct(index) {
         );
 
         alert(
-            "❌ Product Delete করা যায়নি"
+            "❌ Product Delete করা যায়নি।\n\n" +
+            error.message
         );
 
     }
@@ -2696,7 +2885,8 @@ function loadEditProduct() {
         preview.onerror =
             function() {
 
-                this.onerror = null;
+                this.onerror =
+                    null;
 
                 this.src =
                     DEFAULT_IMAGE;
@@ -2735,7 +2925,8 @@ function loadEditProduct() {
                         "❌ শুধু Image নির্বাচন করুন"
                     );
 
-                    this.value = "";
+                    this.value =
+                        "";
 
                     return;
 
@@ -2756,7 +2947,9 @@ function loadEditProduct() {
 
                     };
 
-                reader.readAsDataURL(file);
+                reader.readAsDataURL(
+                    file
+                );
 
             }
         );
@@ -2771,6 +2964,7 @@ function loadEditProduct() {
 
                 if (
                     editImageFile &&
+                    editImageFile.files &&
                     editImageFile.files.length > 0
                 ) {
 
@@ -2807,7 +3001,9 @@ function loadEditProduct() {
             const price =
                 editPrice
                 ?
-                Number(editPrice.value)
+                Number(
+                    editPrice.value
+                )
                 :
                 0;
 
@@ -2855,7 +3051,10 @@ function loadEditProduct() {
 
             }
 
-            if (!name || !price) {
+            if (
+                !name ||
+                !price
+            ) {
 
                 alert(
                     "❌ Product Name ও Price দিন"
@@ -2866,7 +3065,9 @@ function loadEditProduct() {
             }
 
             if (
-                image.startsWith("data:image") &&
+                image.startsWith(
+                    "data:image"
+                ) &&
                 image.length > 950000
             ) {
 
@@ -2896,7 +3097,9 @@ function loadEditProduct() {
             try {
 
                 await updateProductInFirebase(
+
                     product.id,
+
                     {
 
                         name:
@@ -2915,43 +3118,35 @@ function loadEditProduct() {
                             description
 
                     }
+
                 );
-
-                product.name =
-                    name;
-
-                product.price =
-                    price;
-
-                product.category =
-                    category;
-
-                product.image =
-                    image;
-
-                product.description =
-                    description;
-
-                saveProducts();
 
                 alert(
-                    "✅ Product সফলভাবে Update হয়েছে"
+                    "✅ Product সফলভাবে Firebase-এ Update হয়েছে"
                 );
+
+                // আবার Firebase থেকেই load হবে
+                // যাতে local data ভুল না থাকে
+
+                await loadProductsFromFirebase();
 
                 window.location.href =
                     "admin.html";
 
             }
-
             catch (error) {
 
+                console.error(
+                    "❌ Product Update Error:",
+                    error
+                );
+
                 alert(
-                    "❌ Product Update করা যায়নি.\n\n" +
+                    "❌ Product Update করা যায়নি।\n\n" +
                     error.message
                 );
 
             }
-
             finally {
 
                 if (submitButton) {
@@ -3031,27 +3226,42 @@ function loadProductsAdmin() {
                 <div style="text-align:center;">
 
                     <img
+
                         src="${escapeHTML(
-                            product.image || DEFAULT_IMAGE
+                            product.image ||
+                            DEFAULT_IMAGE
                         )}"
-                        alt="${escapeHTML(product.name)}"
-                        onerror="this.onerror=null;this.src='${DEFAULT_IMAGE}'"
+
+                        alt="${escapeHTML(
+                            product.name
+                        )}"
+
+                        onerror="
+                            this.onerror=null;
+                            this.src='${DEFAULT_IMAGE}'
+                        "
+
                         style="
                             width:180px;
                             height:180px;
                             object-fit:contain;
                             border-radius:10px;
                         "
+
                     >
 
                 </div>
 
                 <h3>
-                    📦 ${escapeHTML(product.name)}
+                    📦 ${escapeHTML(
+                        product.name
+                    )}
                 </h3>
 
                 <p class="price">
-                    💰 ৳${Number(product.price) || 0}
+                    💰 ৳${Number(
+                        product.price
+                    ) || 0}
                 </p>
 
                 <p>
@@ -3066,7 +3276,9 @@ function loadProductsAdmin() {
                     <button
                         class="btn-small"
                         onclick="
-                            editProduct(${index})
+                            editProduct(
+                                ${index}
+                            )
                         ">
 
                         ✏️ Edit
@@ -3076,7 +3288,9 @@ function loadProductsAdmin() {
                     <button
                         class="btn-small"
                         onclick="
-                            deleteProduct(${index})
+                            deleteProduct(
+                                ${index}
+                            )
                         ">
 
                         🗑️ Delete
@@ -3114,7 +3328,10 @@ function searchAdminProducts() {
             "productsAdminList"
         );
 
-    if (!search || !container) {
+    if (
+        !search ||
+        !container
+    ) {
 
         return;
 
@@ -3131,15 +3348,23 @@ function searchAdminProducts() {
 
                 return (
 
-                    safeText(product.name)
+                    safeText(
+                        product.name
+                    )
                         .toLowerCase()
-                        .includes(keyword)
+                        .includes(
+                            keyword
+                        )
 
                     ||
 
-                    safeText(product.category)
+                    safeText(
+                        product.category
+                    )
                         .toLowerCase()
-                        .includes(keyword)
+                        .includes(
+                            keyword
+                        )
 
                 );
 
@@ -3175,7 +3400,9 @@ function searchAdminProducts() {
 
                         return (
                             String(item.id) ===
-                            String(product.id)
+                            String(
+                                product.id
+                            )
                         );
 
                     }
@@ -3188,27 +3415,42 @@ function searchAdminProducts() {
                 <div style="text-align:center;">
 
                     <img
+
                         src="${escapeHTML(
-                            product.image || DEFAULT_IMAGE
+                            product.image ||
+                            DEFAULT_IMAGE
                         )}"
-                        alt="${escapeHTML(product.name)}"
-                        onerror="this.onerror=null;this.src='${DEFAULT_IMAGE}'"
+
+                        alt="${escapeHTML(
+                            product.name
+                        )}"
+
+                        onerror="
+                            this.onerror=null;
+                            this.src='${DEFAULT_IMAGE}'
+                        "
+
                         style="
                             width:180px;
                             height:180px;
                             object-fit:contain;
                             border-radius:10px;
                         "
+
                     >
 
                 </div>
 
                 <h3>
-                    📦 ${escapeHTML(product.name)}
+                    📦 ${escapeHTML(
+                        product.name
+                    )}
                 </h3>
 
                 <p class="price">
-                    💰 ৳${Number(product.price) || 0}
+                    💰 ৳${Number(
+                        product.price
+                    ) || 0}
                 </p>
 
                 <p>
@@ -3223,7 +3465,9 @@ function searchAdminProducts() {
                     <button
                         class="btn-small"
                         onclick="
-                            editProduct(${index})
+                            editProduct(
+                                ${index}
+                            )
                         ">
 
                         ✏️ Edit
@@ -3233,7 +3477,9 @@ function searchAdminProducts() {
                     <button
                         class="btn-small"
                         onclick="
-                            deleteProduct(${index})
+                            deleteProduct(
+                                ${index}
+                            )
                         ">
 
                         🗑️ Delete
@@ -3319,7 +3565,9 @@ function loadOrdersPage() {
                     function(item) {
 
                         total +=
-                            Number(item.price) || 0;
+                            Number(
+                                item.price
+                            ) || 0;
 
                     }
                 );
@@ -3331,32 +3579,50 @@ function loadOrdersPage() {
             <div class="card">
 
                 <h3>
-                    🆔 ${escapeHTML(order.id)}
+                    🆔 ${escapeHTML(
+                        order.id
+                    )}
                 </h3>
 
                 <p>
-                    👤 <strong>
-                    ${escapeHTML(order.name)}
+                    👤
+                    <strong>
+                        ${escapeHTML(
+                            order.name
+                        )}
                     </strong>
                 </p>
 
                 <p>
-                    📞 ${escapeHTML(order.phone)}
+                    📞 ${escapeHTML(
+                        order.phone
+                    )}
                 </p>
 
                 <p>
-                    📍 ${escapeHTML(order.address)}
+                    📍 ${escapeHTML(
+                        order.address
+                    )}
                 </p>
 
                 <p>
                     💳 ${escapeHTML(
-                        order.payment || "N/A"
+                        order.payment ||
+                        "N/A"
                     )}
                 </p>
 
                 <p>
                     📦 মোট পণ্য:
-                    ${order.products.length}
+                    ${
+                        Array.isArray(
+                            order.products
+                        )
+                        ?
+                        order.products.length
+                        :
+                        0
+                    }
                 </p>
 
                 <p class="price">
@@ -3365,16 +3631,18 @@ function loadOrdersPage() {
                 </p>
 
                 <p>
-                    📅 ${escapeHTML(order.date)}
+                    📅 ${escapeHTML(
+                        order.date
+                    )}
                 </p>
 
                 <p>
                     📌 Status:
                     <strong>
-                    ${escapeHTML(
-                        order.status ||
-                        "Pending"
-                    )}
+                        ${escapeHTML(
+                            order.status ||
+                            "Pending"
+                        )}
                     </strong>
                 </p>
 
@@ -3385,7 +3653,9 @@ function loadOrdersPage() {
                 </h4>
 
                 ${
-                    Array.isArray(order.products)
+                    Array.isArray(
+                        order.products
+                    )
                     ?
                     order.products
                         .map(
@@ -3394,8 +3664,13 @@ function loadOrdersPage() {
                                 return `
 
                                 <p>
-                                    • ${escapeHTML(item.name)}
-                                    — ৳${Number(item.price) || 0}
+                                    • ${escapeHTML(
+                                        item.name
+                                    )}
+
+                                    — ৳${Number(
+                                        item.price
+                                    ) || 0}
                                 </p>
 
                                 `;
@@ -3514,7 +3789,9 @@ function loadCustomersPage() {
 
             }
 
-            if (!customerMap[phone]) {
+            if (
+                !customerMap[phone]
+            ) {
 
                 customerMap[phone] = {
 
@@ -3539,7 +3816,9 @@ function loadCustomersPage() {
 
             }
 
-            customerMap[phone].orders += 1;
+            customerMap[
+                phone
+            ].orders += 1;
 
             let orderTotal = 0;
 
@@ -3553,23 +3832,35 @@ function loadCustomersPage() {
                     function(item) {
 
                         orderTotal +=
-                            Number(item.price) || 0;
+                            Number(
+                                item.price
+                            ) || 0;
 
                     }
                 );
 
             }
 
-            customerMap[phone].total +=
+            customerMap[
+                phone
+            ].total +=
                 orderTotal;
 
-            customerMap[phone].name =
+            customerMap[
+                phone
+            ].name =
                 order.name ||
-                customerMap[phone].name;
+                customerMap[
+                    phone
+                ].name;
 
-            customerMap[phone].address =
+            customerMap[
+                phone
+            ].address =
                 order.address ||
-                customerMap[phone].address;
+                customerMap[
+                    phone
+                ].address;
 
         }
     );
@@ -3586,7 +3877,9 @@ function loadCustomersPage() {
 
     }
 
-    if (customers.length === 0) {
+    if (
+        customers.length === 0
+    ) {
 
         container.innerHTML = `
 
@@ -3609,42 +3902,57 @@ function loadCustomersPage() {
     customers.forEach(
         function(customer) {
 
+            const phoneDigits =
+                customer.phone.replace(
+                    /[^0-9]/g,
+                    ""
+                );
+
             html += `
 
             <div class="card">
 
                 <h3>
-                    👤 ${escapeHTML(customer.name)}
+                    👤 ${escapeHTML(
+                        customer.name
+                    )}
                 </h3>
 
                 <p>
-                    📞 <strong>
-                    ${escapeHTML(customer.phone)}
+                    📞
+                    <strong>
+                        ${escapeHTML(
+                            customer.phone
+                        )}
                     </strong>
                 </p>
 
                 <p>
-                    📍 ${escapeHTML(customer.address)}
+                    📍 ${escapeHTML(
+                        customer.address
+                    )}
                 </p>
 
                 <p>
                     🛒 মোট Order:
                     <strong>
-                    ${customer.orders}
+                        ${customer.orders}
                     </strong>
                 </p>
 
                 <p class="price">
                     💰 মোট কেনাকাটা:
                     <strong>
-                    ৳${customer.total}
+                        ৳${customer.total}
                     </strong>
                 </p>
 
                 <div class="btn-group">
 
                     <a
-                        href="tel:${escapeHTML(customer.phone)}"
+                        href="tel:${escapeHTML(
+                            customer.phone
+                        )}"
                         class="btn-small">
 
                         📞 Call
@@ -3652,7 +3960,7 @@ function loadCustomersPage() {
                     </a>
 
                     <a
-                        href="https://wa.me/88${customer.phone.replace(/[^0-9]/g, '')}"
+                        href="https://wa.me/88${phoneDigits}"
                         class="btn-small"
                         target="_blank">
 
@@ -3676,7 +3984,7 @@ function loadCustomersPage() {
 
 
 // ======================================================
-// PENDING ORDERS PAGE
+// PENDING ORDERS
 // ======================================================
 
 function loadPendingOrdersPage() {
@@ -3703,7 +4011,8 @@ function loadPendingOrdersPage() {
 
                 return (
                     !order.status ||
-                    order.status === "Pending"
+                    order.status ===
+                    "Pending"
                 );
 
             }
@@ -3716,7 +4025,9 @@ function loadPendingOrdersPage() {
 
     }
 
-    if (pendingOrders.length === 0) {
+    if (
+        pendingOrders.length === 0
+    ) {
 
         container.innerHTML = `
 
@@ -3748,8 +4059,12 @@ function loadPendingOrdersPage() {
                     function(item) {
 
                         return (
-                            String(item.id) ===
-                            String(order.id)
+                            String(
+                                item.id
+                            ) ===
+                            String(
+                                order.id
+                            )
                         );
 
                     }
@@ -3767,7 +4082,9 @@ function loadPendingOrdersPage() {
                     function(item) {
 
                         total +=
-                            Number(item.price) || 0;
+                            Number(
+                                item.price
+                            ) || 0;
 
                     }
                 );
@@ -3785,37 +4102,48 @@ function loadPendingOrdersPage() {
                 <p>
                     🆔 Order ID:
                     <strong>
-                    ${escapeHTML(order.id)}
+                        ${escapeHTML(
+                            order.id
+                        )}
                     </strong>
                 </p>
 
                 <p>
                     👤 Customer:
                     <strong>
-                    ${escapeHTML(order.name)}
+                        ${escapeHTML(
+                            order.name
+                        )}
                     </strong>
                 </p>
 
                 <p>
                     📞 Phone:
-                    ${escapeHTML(order.phone)}
+                    ${escapeHTML(
+                        order.phone
+                    )}
                 </p>
 
                 <p>
                     📍 Address:
-                    ${escapeHTML(order.address)}
+                    ${escapeHTML(
+                        order.address
+                    )}
                 </p>
 
                 <p>
                     💳 Payment:
                     ${escapeHTML(
-                        order.payment || "N/A"
+                        order.payment ||
+                        "N/A"
                     )}
                 </p>
 
                 <p>
                     📅 Date:
-                    ${escapeHTML(order.date)}
+                    ${escapeHTML(
+                        order.date
+                    )}
                 </p>
 
                 <hr>
@@ -3825,7 +4153,9 @@ function loadPendingOrdersPage() {
                 </h4>
 
                 ${
-                    Array.isArray(order.products)
+                    Array.isArray(
+                        order.products
+                    )
                     ?
                     order.products
                         .map(
@@ -3834,8 +4164,13 @@ function loadPendingOrdersPage() {
                                 return `
 
                                 <p>
-                                    • ${escapeHTML(item.name)}
-                                    — ৳${Number(item.price) || 0}
+                                    • ${escapeHTML(
+                                        item.name
+                                    )}
+
+                                    — ৳${Number(
+                                        item.price
+                                    ) || 0}
                                 </p>
 
                                 `;
@@ -3851,7 +4186,7 @@ function loadPendingOrdersPage() {
 
                     💰 মোট:
                     <strong>
-                    ৳${total}
+                        ৳${total}
                     </strong>
 
                 </p>
@@ -3860,7 +4195,7 @@ function loadPendingOrdersPage() {
 
                     📌 Status:
                     <strong>
-                    Pending
+                        Pending
                     </strong>
 
                 </p>
@@ -3927,13 +4262,16 @@ async function updatePendingOrderStatus(
 
     }
 
+    const message =
+        status === "Confirmed"
+        ?
+        "আপনি কি এই Order Confirm করতে চান?"
+        :
+        "আপনি কি এই Order Cancel করতে চান?";
+
     if (
         !confirm(
-            status === "Confirmed"
-            ?
-            "আপনি কি এই Order Confirm করতে চান?"
-            :
-            "আপনি কি এই Order Cancel করতে চান?"
+            message
         )
     ) {
 
@@ -4020,7 +4358,8 @@ function loadDashboardStats() {
                 "Pending";
 
             if (
-                status === "Pending"
+                status ===
+                "Pending"
             ) {
 
                 pending++;
@@ -4028,7 +4367,8 @@ function loadDashboardStats() {
             }
 
             else if (
-                status === "Confirmed"
+                status ===
+                "Confirmed"
             ) {
 
                 confirmed++;
@@ -4036,7 +4376,8 @@ function loadDashboardStats() {
             }
 
             else if (
-                status === "Delivered"
+                status ===
+                "Delivered"
             ) {
 
                 delivered++;
@@ -4044,7 +4385,8 @@ function loadDashboardStats() {
             }
 
             else if (
-                status === "Cancelled"
+                status ===
+                "Cancelled"
             ) {
 
                 cancelled++;
@@ -4087,8 +4429,7 @@ function loadDashboardStats() {
             "totalCustomers"
         );
 
-    const customers =
-        [];
+    const customers = [];
 
     allOrders.forEach(
         function(order) {
@@ -4141,7 +4482,9 @@ function loadDashboardStats() {
                         function(item) {
 
                             sales +=
-                                Number(item.price) || 0;
+                                Number(
+                                    item.price
+                                ) || 0;
 
                         }
                     );
@@ -4172,9 +4515,24 @@ document.addEventListener(
     "DOMContentLoaded",
     async function() {
 
+        console.log(
+            "🚀 IFFAH SHOP SCRIPT START"
+        );
+
         updateCartCount();
 
         loadCart();
+
+        // প্রথমে Firebase Product Load
+        // তারপর UI render
+
+        await loadProductsFromFirebase();
+
+        // Firebase Order Load
+
+        await loadOrdersFromFirebase();
+
+        // UI refresh
 
         loadProducts();
 
@@ -4194,16 +4552,19 @@ document.addEventListener(
 
         loadDashboardStats();
 
+        // Edit page-এর জন্য
+        // Firebase Product load হওয়ার পর চালু হবে
+
         loadEditProduct();
 
-        await loadProductsFromFirebase();
-
-        await loadOrdersFromFirebase();
+        console.log(
+            "✅ IFFAH SHOP SCRIPT READY"
+        );
 
     }
 );
 
 
 // ======================================================
-// END OF SCRIPT
+// END
 // ======================================================
