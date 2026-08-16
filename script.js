@@ -1,47 +1,66 @@
 // ======================================================
-// IFFAH SHOP
-// COMPLETE FIREBASE SCRIPT
-// STEP 1
-// Firebase + Products + Cart
+// IFFAH SHOP - SCRIPT.JS
+// PART 1 / 4
+// Firebase + Global Data + Basic Functions
 // ======================================================
 
-"use strict";
-
+console.log("🔥 Firebase SDK Loaded");
 
 // ======================================================
-// GLOBAL DATA
+// GLOBAL PRODUCTS
 // ======================================================
 
 let products = [];
 
-let cart =
-    JSON.parse(localStorage.getItem("cart")) || [];
-
-let orders =
-    JSON.parse(localStorage.getItem("orders")) || [];
-
 
 // ======================================================
-// FIREBASE CHECK
+// GLOBAL CART
 // ======================================================
 
-if (!window.db) {
+let cart = [];
+
+try {
+
+    cart =
+        JSON.parse(
+            localStorage.getItem("cart")
+        ) || [];
+
+} catch (error) {
 
     console.error(
-        "❌ Firebase Database পাওয়া যায়নি"
+        "❌ Cart Load Error:",
+        error
+    );
+
+    cart = [];
+}
+
+
+// ======================================================
+// FIREBASE DATABASE CHECK
+// ======================================================
+
+if (
+    typeof db === "undefined" ||
+    !db
+) {
+
+    console.error(
+        "❌ Firebase Database পাওয়া যাচ্ছে না!"
     );
 
 } else {
 
     console.log(
-        "🔥 Iffah Shop Firebase Connected"
+        "🔥 Firebase Database Ready"
     );
 
 }
 
 
 // ======================================================
-// CART STORAGE
+// CART SAVE
 // ======================================================
 
 function saveCart() {
@@ -55,82 +74,161 @@ function saveCart() {
 
 
 // ======================================================
-// ORDER STORAGE
-// ======================================================
-
-function saveOrders() {
-
-    localStorage.setItem(
-        "orders",
-        JSON.stringify(orders)
-    );
-
-}
-
-
-// ======================================================
-// CART COUNTER
+// CART COUNT
 // ======================================================
 
 function updateCartCount() {
 
-    const element =
+    const cartCount =
         document.getElementById("cart-count");
 
-    if (!element) return;
+    if (!cartCount) {
+        return;
+    }
 
-    element.innerText =
+    cartCount.textContent =
         cart.length;
 
 }
 
 
 // ======================================================
-// ESCAPE HTML
+// ADD TO CART
 // ======================================================
 
-function escapeHTML(value) {
+function addToCart(
+    name,
+    price,
+    image = "",
+    id = ""
+) {
 
-    return String(value || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    const product = {
+
+        id: id,
+
+        name: name,
+
+        price: Number(price) || 0,
+
+        image: image || ""
+
+    };
+
+    cart.push(product);
+
+    saveCart();
+
+    updateCartCount();
+
+    console.log(
+        "🛒 Cart-এ Product Added:",
+        product
+    );
+
+    alert(
+        "✅ Product Cart-এ যোগ হয়েছে"
+    );
 
 }
 
 
 // ======================================================
-// ESCAPE JAVASCRIPT QUOTES
+// REMOVE FROM CART
 // ======================================================
 
-function escapeQuotes(value) {
+function removeFromCart(index) {
 
-    return String(value || "")
-        .replace(/\\/g, "\\\\")
-        .replace(/'/g, "\\'")
-        .replace(/"/g, '\\"');
-
-}
-
-
-// ======================================================
-// FIREBASE LOAD PRODUCTS
-// ======================================================
-
-async function loadProductsFromFirebase() {
-
-    if (!window.db) {
-
-        console.error(
-            "❌ Firebase DB পাওয়া যায়নি"
-        );
+    if (
+        index < 0 ||
+        index >= cart.length
+    ) {
 
         return;
 
     }
 
+    cart.splice(index, 1);
+
+    saveCart();
+
+    updateCartCount();
+
+    console.log(
+        "🗑️ Cart থেকে Product Remove হয়েছে"
+    );
+
+}
+
+
+// ======================================================
+// CLEAR CART
+// ======================================================
+
+function clearCart() {
+
+    cart = [];
+
+    saveCart();
+
+    updateCartCount();
+
+    console.log(
+        "🗑️ Cart পরিষ্কার করা হয়েছে"
+    );
+
+}
+
+
+// ======================================================
+// CART TOTAL
+// ======================================================
+
+function getCartTotal() {
+
+    let total = 0;
+
+    cart.forEach(function (item) {
+
+        total +=
+            Number(item.price) || 0;
+
+    });
+
+    return total;
+
+}
+
+
+// ======================================================
+// PAGE LOAD
+// ======================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        console.log(
+            "🚀 IFFAH Shop Script Ready"
+        );
+
+        updateCartCount();
+
+    }
+);
+
+// ======================================================
+// IFFAH SHOP - SCRIPT.JS
+// PART 2 / 4
+// FIREBASE PRODUCT SYSTEM
+// ======================================================
+
+
+// ======================================================
+// LOAD PRODUCTS FROM FIREBASE
+// ======================================================
+
+async function loadProductsFromFirebase() {
 
     try {
 
@@ -138,26 +236,33 @@ async function loadProductsFromFirebase() {
             "🔥 Firebase থেকে Product Load শুরু..."
         );
 
+        if (
+            typeof db === "undefined" ||
+            !db
+        ) {
+
+            console.error(
+                "❌ Firebase Database পাওয়া যাচ্ছে না"
+            );
+
+            return;
+
+        }
 
         const snapshot =
             await db
                 .collection("products")
                 .get();
 
-
         products = [];
 
+        snapshot.forEach(function (doc) {
 
-        snapshot.forEach(function(doc) {
-
-            const data =
-                doc.data();
-
+            const data = doc.data();
 
             products.push({
 
-                id:
-                    doc.id,
+                id: doc.id,
 
                 name:
                     data.name || "",
@@ -181,34 +286,20 @@ async function loadProductsFromFirebase() {
 
         });
 
-
         console.log(
             "🔥 Firebase থেকে Product Load হয়েছে:",
             products.length
         );
 
-
         console.log(
-            "📦 Firebase Products:",
+            "📦 Products:",
             products
         );
 
+        // Product দেখানোর Function
+        displayProducts(products);
 
-        // Homepage
-        loadProducts();
-
-
-        // Admin
-        loadAdminProducts();
-
-
-        // Cart
-        updateCartCount();
-
-
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "❌ Firebase Product Load Error:",
@@ -221,1241 +312,258 @@ async function loadProductsFromFirebase() {
 
 
 // ======================================================
-// IMAGE HTML
+// DISPLAY PRODUCTS
 // ======================================================
 
-function getProductImage(product) {
-
-    if (!product.image) {
-
-        return `
-            <div
-                style="
-                    width:100%;
-                    min-height:180px;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                    font-size:60px;
-                "
-            >
-                📦
-            </div>
-        `;
-
-    }
-
-
-    return `
-
-        <img
-            src="${escapeHTML(product.image)}"
-            alt="${escapeHTML(product.name)}"
-            style="
-                width:100%;
-                max-height:220px;
-                object-fit:contain;
-                display:block;
-            "
-        >
-
-    `;
-
-}
-
-
-// ======================================================
-// HOMEPAGE PRODUCTS
-// ======================================================
-
-function loadProducts() {
-
-    const container =
-        document.getElementById("productList");
-
-
-    if (!container) return;
-
-
-    if (products.length === 0) {
-
-        container.innerHTML = `
-
-            <div
-                class="card"
-                style="
-                    grid-column:1/-1;
-                    text-align:center;
-                    padding:30px;
-                "
-            >
-
-                <h2>
-                    📦 কোনো Product নেই
-                </h2>
-
-                <p>
-                    শীঘ্রই নতুন পণ্য যুক্ত করা হবে।
-                </p>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    const featured =
-        products
-            .slice()
-            .reverse()
-            .slice(0, 6);
-
-
-    let html = "";
-
-
-    featured.forEach(function(product) {
-
-        html += `
-
-            <div class="product-card">
-
-                <div class="product-image">
-
-                    ${getProductImage(product)}
-
-                </div>
-
-
-                <div class="product-info">
-
-                    ${
-                        product.category
-                        ?
-
-                        `
-                        <span class="product-category">
-                            📂
-                            ${escapeHTML(product.category)}
-                        </span>
-                        `
-
-                        :
-
-                        ""
-                    }
-
-
-                    <h3>
-                        ${escapeHTML(product.name)}
-                    </h3>
-
-
-                    <p class="price">
-                        ৳${product.price}
-                    </p>
-
-
-                    <p>
-                        ${
-                            escapeHTML(
-                                product.description ||
-                                "মানসম্মত পণ্য"
-                            )
-                        }
-                    </p>
-
-
-                    <div class="btn-group">
-
-                        <a
-                            href="product.html?id=${encodeURIComponent(product.id)}"
-                            class="btn-small"
-                        >
-                            👁️ বিস্তারিত
-                        </a>
-
-
-                        <button
-                            class="btn-small"
-                            onclick="
-                                addToCart(
-                                    '${escapeQuotes(product.name)}',
-                                    ${product.price}
-                                )
-                            "
-                        >
-                            🛒 কার্ট
-                        </button>
-
-
-                        <button
-                            class="btn-small"
-                            onclick="
-                                buyNow(
-                                    '${escapeQuotes(product.name)}',
-                                    ${product.price}
-                                )
-                            "
-                        >
-                            ⚡ অর্ডার
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        `;
-
-    });
-
-
-    container.innerHTML =
-        html;
-
-}
-
-
-// ======================================================
-// SEARCH PRODUCTS
-// ======================================================
-
-function searchProduct() {
-
-    const input =
-        document.getElementById("search");
-
-    const container =
-        document.getElementById("productList");
-
-
-    if (!input || !container) return;
-
-
-    const keyword =
-        input.value
-            .toLowerCase()
-            .trim();
-
-
-    const result =
-        products.filter(function(product) {
-
-            return (
-
-                String(product.name)
-                    .toLowerCase()
-                    .includes(keyword)
-
-                ||
-
-                String(product.category)
-                    .toLowerCase()
-                    .includes(keyword)
-
-            );
-
-        });
-
-
-    if (result.length === 0) {
-
-        container.innerHTML = `
-
-            <div
-                style="
-                    text-align:center;
-                    padding:30px;
-                "
-            >
-
-                <h2>
-                    ❌ কোনো Product পাওয়া যায়নি
-                </h2>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    let html = "";
-
-
-    result.forEach(function(product) {
-
-        html += `
-
-            <div class="product-card">
-
-                <div class="product-image">
-
-                    ${getProductImage(product)}
-
-                </div>
-
-
-                <div class="product-info">
-
-                    <h3>
-                        ${escapeHTML(product.name)}
-                    </h3>
-
-
-                    <p class="price">
-                        ৳${product.price}
-                    </p>
-
-
-                    <p>
-                        ${
-                            escapeHTML(
-                                product.description || ""
-                            )
-                        }
-                    </p>
-
-
-                    <div class="btn-group">
-
-                        <a
-                            href="product.html?id=${encodeURIComponent(product.id)}"
-                            class="btn-small"
-                        >
-                            👁️ বিস্তারিত
-                        </a>
-
-
-                        <button
-                            class="btn-small"
-                            onclick="
-                                addToCart(
-                                    '${escapeQuotes(product.name)}',
-                                    ${product.price}
-                                )
-                            "
-                        >
-                            🛒 কার্ট
-                        </button>
-
-
-                        <button
-                            class="btn-small"
-                            onclick="
-                                buyNow(
-                                    '${escapeQuotes(product.name)}',
-                                    ${product.price}
-                                )
-                            "
-                        >
-                            ⚡ Order Now
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        `;
-
-    });
-
-
-    container.innerHTML =
-        html;
-
-}
-
-
-// ======================================================
-// ADD TO CART
-// ======================================================
-
-function addToCart(name, price) {
-
-    cart.push({
-
-        id:
-            Date.now(),
-
-        name:
-            name,
-
-        price:
-            Number(price)
-
-    });
-
-
-    saveCart();
-
-    updateCartCount();
-
-
-    alert(
-        "✅ " +
-        name +
-        " কার্টে যোগ হয়েছে"
+function displayProducts(productList) {
+
+    console.log(
+        "📦 Product Display শুরু:",
+        productList.length
     );
 
-}
+    const containers = [
 
+        document.getElementById("productList"),
 
-// ======================================================
-// BUY NOW
-// ======================================================
+        document.getElementById("products"),
 
-function buyNow(name, price) {
+        document.getElementById("productGrid"),
 
-    cart = [];
+        document.getElementById("productsGrid")
 
+    ];
 
-    cart.push({
+    let container = null;
 
-        id:
-            Date.now(),
-
-        name:
-            name,
-
-        price:
-            Number(price)
-
-    });
-
-
-    saveCart();
-
-    updateCartCount();
-
-
-    window.location.href =
-        "checkout.html";
-
-}
-
-
-// ======================================================
-// REMOVE CART
-// ======================================================
-
-function removeFromCart(index) {
-
-    if (
-        index < 0 ||
-        index >= cart.length
+    for (
+        let i = 0;
+        i < containers.length;
+        i++
     ) {
 
-        return;
+        if (containers[i]) {
+
+            container = containers[i];
+
+            break;
+
+        }
 
     }
 
+    if (!container) {
 
-    cart.splice(index, 1);
-
-
-    saveCart();
-
-    updateCartCount();
-
-
-    loadCart();
-
-}
-
-
-// ======================================================
-// CLEAR CART
-// ======================================================
-
-function clearCart() {
-
-    if (cart.length === 0) {
-
-        alert(
-            "🛒 কার্ট ইতিমধ্যে খালি"
+        console.log(
+            "ℹ️ Product Container এই Page-এ নেই"
         );
 
         return;
 
     }
 
+    container.innerHTML = "";
 
-    if (
-        !confirm(
-            "আপনি কি পুরো কার্ট খালি করতে চান?"
-        )
-    ) {
-
-        return;
-
-    }
-
-
-    cart = [];
-
-
-    saveCart();
-
-    updateCartCount();
-
-
-    loadCart();
-
-}
-
-
-// ======================================================
-// LOAD CART
-// ======================================================
-
-function loadCart() {
-
-    const container =
-        document.getElementById("cartList");
-
-    const totalElement =
-        document.getElementById("totalPrice");
-
-
-    if (!container) return;
-
-
-    if (cart.length === 0) {
+    if (!productList.length) {
 
         container.innerHTML = `
-
-            <div class="card">
-
-                <h2>
-                    🛒 আপনার কার্ট খালি
-                </h2>
-
+            <div class="no-products">
+                <p>📦 এখনো কোনো Product নেই</p>
             </div>
-
         `;
-
-
-        if (totalElement) {
-
-            totalElement.innerText =
-                "৳0";
-
-        }
-
 
         return;
 
     }
 
+    productList.forEach(function (product) {
 
-    let total = 0;
+        const card =
+            document.createElement("div");
 
-    let html = "";
+        card.className =
+            "product-card";
 
+        const image =
+            product.image ||
+            "images/no-image.png";
 
-    cart.forEach(function(item, index) {
+        card.innerHTML = `
 
-        total +=
-            Number(item.price) || 0;
+            <img
+                src="${image}"
+                alt="${product.name}"
+                class="product-image"
+                onerror="this.style.display='none'"
+            >
 
-
-        html += `
-
-            <div class="card">
+            <div class="product-info">
 
                 <h3>
-                    ${escapeHTML(item.name)}
+                    ${product.name}
                 </h3>
 
-
-                <p class="price">
-                    ৳${item.price}
+                <p>
+                    ${product.description || ""}
                 </p>
 
+                <strong>
+                    ৳${product.price}
+                </strong>
 
                 <button
-                    class="btn-small"
+                    class="btn"
                     onclick="
-                        removeFromCart(${index})
+                        addToCart(
+                            '${escapeQuotes(product.name)}',
+                            ${product.price},
+                            '${escapeQuotes(product.image || "")}',
+                            '${product.id}'
+                        )
                     "
                 >
-                    ❌ Remove
+                    🛒 Cart-এ যোগ করুন
                 </button>
 
             </div>
 
         `;
 
+        container.appendChild(card);
+
     });
 
-
-    container.innerHTML =
-        html;
+}
 
 
-    if (totalElement) {
+// ======================================================
+// ESCAPE QUOTES
+// ======================================================
 
-        totalElement.innerText =
-            "৳" + total;
+function escapeQuotes(text) {
 
-    }
+    return String(text)
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'");
 
 }
 
 
 // ======================================================
-// SINGLE PRODUCT
+// LOAD PRODUCTS WHEN PAGE OPENS
 // ======================================================
 
-async function loadSingleProduct() {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    const nameElement =
-        document.getElementById(
-            "productName"
-        );
-
-
-    if (!nameElement) return;
-
-
-    const params =
-        new URLSearchParams(
-            window.location.search
-        );
-
-
-    const id =
-        params.get("id");
-
-
-    if (!id) return;
-
-
-    let product =
-        products.find(function(item) {
-
-            return String(item.id) ===
-                String(id);
-
-        });
-
-
-    // Firebase load শেষ হওয়ার আগে page খুললে
-    if (!product) {
-
-        try {
-
-            const doc =
-                await db
-                    .collection("products")
-                    .doc(id)
-                    .get();
-
-
-            if (doc.exists) {
-
-                const data =
-                    doc.data();
-
-
-                product = {
-
-                    id:
-                        doc.id,
-
-                    name:
-                        data.name || "",
-
-                    price:
-                        Number(data.price) || 0,
-
-                    category:
-                        data.category || "",
-
-                    image:
-                        data.image || "",
-
-                    description:
-                        data.description || "",
-
-                    createdAt:
-                        data.createdAt || ""
-
-                };
-
-            }
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "❌ Product Load Error:",
-                error
-            );
-
-        }
+        loadProductsFromFirebase();
 
     }
+);
+
+// ======================================================
+// IFFAH SHOP - SCRIPT.JS
+// PART 3 / 4
+// CART + CHECKOUT + FIREBASE ORDER
+// ======================================================
 
 
-    if (!product) {
+// ======================================================
+// DISPLAY CART
+// ======================================================
 
-        nameElement.innerText =
-            "❌ Product পাওয়া যায়নি";
+function displayCart() {
 
+    const cartContainer =
+        document.getElementById("cartItems");
+
+    if (!cartContainer) {
         return;
-
     }
 
+    cartContainer.innerHTML = "";
 
-    nameElement.innerText =
-        product.name;
+    if (!cart.length) {
 
-
-    const priceElement =
-        document.getElementById(
-            "productPrice"
-        );
-
-
-    if (priceElement) {
-
-        priceElement.innerText =
-            "৳" + product.price;
-
-    }
-
-
-    const descriptionElement =
-        document.getElementById(
-            "productDescription"
-        );
-
-
-    if (descriptionElement) {
-
-        descriptionElement.innerText =
-            product.description ||
-            "কোনো বিবরণ নেই";
-
-    }
-
-
-    const imageElement =
-        document.getElementById(
-            "productImage"
-        );
-
-
-    if (imageElement) {
-
-        if (product.image) {
-
-            imageElement.src =
-                product.image;
-
-        } else {
-
-            imageElement.style.display =
-                "none";
-
-        }
-
-    }
-
-
-    const cartButton =
-        document.getElementById(
-            "addCartBtn"
-        );
-
-
-    if (cartButton) {
-
-        cartButton.onclick =
-            function() {
-
-                addToCart(
-                    product.name,
-                    product.price
-                );
-
-            };
-
-    }
-
-
-    const buyButton =
-        document.getElementById(
-            "buyNowBtn"
-        );
-
-
-    if (buyButton) {
-
-        buyButton.onclick =
-            function() {
-
-                buyNow(
-                    product.name,
-                    product.price
-                );
-
-            };
-
-    }
-
-
-    const whatsappButton =
-        document.getElementById(
-            "whatsappBtn"
-        );
-
-
-    if (whatsappButton) {
-
-        whatsappButton.href =
-            "https://wa.me/8801978236232?text=" +
-
-            encodeURIComponent(
-
-                "আমি " +
-                product.name +
-                " অর্ডার করতে চাই।\n\n" +
-
-                "দাম: ৳" +
-                product.price
-
-            );
-
-    }
-
-}
-
-
-// ======================================================
-// START
-// ======================================================
-
-updateCartCount();
-
-loadProductsFromFirebase();
-
-loadCart();
-
-loadSingleProduct();
-
-
-// ======================================================
-// IFFAH SHOP
-// FIREBASE PRODUCT LOAD - STEP 2
-// ======================================================
-
-let products = [];
-
-// ------------------------------------------------------
-// Firebase থেকে Product আনা
-// ------------------------------------------------------
-
-async function loadProductsFromFirebase() {
-
-    try {
-
-        console.log("🔥 Firebase থেকে Product Load শুরু...");
-
-        const snapshot = await db
-            .collection("products")
-            .get();
-
-        products = [];
-
-        snapshot.forEach(function(doc) {
-
-            const data = doc.data();
-
-            products.push({
-
-                id: doc.id,
-
-                name: data.name || "",
-
-                price: Number(data.price) || 0,
-
-                category: data.category || "",
-
-                image: data.image || "",
-
-                description: data.description || "",
-
-                createdAt: data.createdAt || ""
-
-            });
-
-        });
-
-        console.log(
-            "🔥 Firebase থেকে Product Load হয়েছে:",
-            products.length
-        );
-
-        console.log("📦 Products:", products);
-
-        displayProducts();
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "❌ Firebase Product Load Error:",
-            error
-        );
-
-    }
-
-}
-
-
-// ------------------------------------------------------
-// Homepage-এ Product দেখানো
-// ------------------------------------------------------
-
-function displayProducts() {
-
-    const container =
-        document.getElementById("productList");
-
-    if (!container) {
-
-        console.log(
-            "ℹ️ productList পাওয়া যায়নি"
-        );
-
-        return;
-
-    }
-
-
-    if (products.length === 0) {
-
-        container.innerHTML = `
-
-            <div class="card"
-                style="
-                    grid-column:1/-1;
-                    text-align:center;
-                    padding:30px;
-                ">
-
-                <h2>📦 কোনো Product নেই</h2>
-
-                <p>
-                    শীঘ্রই নতুন পণ্য যুক্ত করা হবে।
-                </p>
-
+        cartContainer.innerHTML = `
+            <div class="no-products">
+                <h3>🛒 আপনার Cart খালি</h3>
+                <p>Product যোগ করে আবার আসুন।</p>
             </div>
-
         `;
 
-        return;
+        updateCartTotal();
 
+        return;
     }
 
 
-    let html = "";
+    cart.forEach(function (item, index) {
 
+        const itemDiv =
+            document.createElement("div");
 
-    products.forEach(function(product) {
+        itemDiv.className =
+            "cart-item";
 
-        html += `
+        itemDiv.innerHTML = `
 
-        <div class="product-card">
-
-            <div class="product-image">
-
-                ${
-                    product.image
-                    ?
-                    `
-                    <img
-                        src="${product.image}"
-                        alt="${product.name}"
-                    >
-                    `
-                    :
-                    `
-                    <div
-                        style="
-                            padding:40px;
-                            text-align:center;
-                            font-size:50px;
-                        "
-                    >
-                        📦
-                    </div>
-                    `
-                }
-
-            </div>
-
-
-            <div class="product-info">
-
-                ${
-                    product.category
-                    ?
-                    `
-                    <span>
-                        📂 ${product.category}
-                    </span>
-                    `
-                    :
-                    ""
-                }
-
+            <div>
 
                 <h3>
-                    ${product.name}
+                    ${item.name}
                 </h3>
 
-
-                <p class="price">
-                    ৳${product.price}
-                </p>
-
-
                 <p>
-                    ${
-                        product.description || 
-                        "মানসম্মত পণ্য"
-                    }
+                    মূল্য: ৳${Number(item.price) || 0}
                 </p>
-
-
-                <div class="btn-group">
-
-                    <a
-                        href="product.html?id=${product.id}"
-                        class="btn-small"
-                    >
-                        👁️ বিস্তারিত
-                    </a>
-
-
-                    <button
-                        class="btn-small"
-                        onclick="
-                            addToCart(
-                                '${String(product.name)
-                                    .replace(/'/g, "\\'")}',
-                                ${product.price}
-                            )
-                        "
-                    >
-                        🛒 কার্ট
-                    </button>
-
-
-                    <button
-                        class="btn-small"
-                        onclick="
-                            buyNow(
-                                '${String(product.name)
-                                    .replace(/'/g, "\\'")}',
-                                ${product.price}
-                            )
-                        "
-                    >
-                        ⚡ অর্ডার
-                    </button>
-
-                </div>
 
             </div>
 
-        </div>
+            <button
+                class="btn"
+                onclick="removeFromCart(${index})"
+            >
+                🗑️ Remove
+            </button>
 
         `;
 
+        cartContainer.appendChild(itemDiv);
+
     });
 
-
-    container.innerHTML = html;
+    updateCartTotal();
 
 }
 
 
-// ------------------------------------------------------
-// Firebase Product Load চালু
-// ------------------------------------------------------
-
-loadProductsFromFirebase();
-
-
-
 // ======================================================
-// STEP 3
-// ADD PRODUCT → FIREBASE
+// UPDATE CART TOTAL
 // ======================================================
 
-const productForm =
-    document.getElementById("productForm");
+function updateCartTotal() {
 
+    const total =
+        getCartTotal();
 
-if (productForm) {
+    const totalElements = [
 
-    productForm.addEventListener("submit", async function(e) {
+        document.getElementById("cartTotal"),
 
-        e.preventDefault();
+        document.getElementById("total"),
 
-        // ------------------------------------------
-        // FORM DATA
-        // ------------------------------------------
+        document.getElementById("totalAmount")
 
-        const name =
-            document.getElementById("name").value.trim();
+    ];
 
-        const price =
-            Number(
-                document.getElementById("price").value
-            );
+    totalElements.forEach(function (element) {
 
-        const categoryElement =
-            document.getElementById("category");
+        if (element) {
 
-        const category =
-            categoryElement
-                ? categoryElement.value.trim()
-                : "";
-
-        const imageElement =
-            document.getElementById("image");
-
-        const image =
-            imageElement
-                ? imageElement.value.trim()
-                : "";
-
-        const descriptionElement =
-            document.getElementById("description");
-
-        const description =
-            descriptionElement
-                ? descriptionElement.value.trim()
-                : "";
-
-
-        // ------------------------------------------
-        // VALIDATION
-        // ------------------------------------------
-
-        if (!name) {
-
-            alert("❌ Product Name দিন");
-
-            return;
-
-        }
-
-
-        if (!price || price <= 0) {
-
-            alert("❌ সঠিক Price দিন");
-
-            return;
-
-        }
-
-
-        // ------------------------------------------
-        // PRODUCT DATA
-        // ------------------------------------------
-
-        const product = {
-
-            name: name,
-
-            price: price,
-
-            category: category,
-
-            image: image,
-
-            description: description,
-
-            createdAt:
-                firebase.firestore.FieldValue.serverTimestamp()
-
-        };
-
-
-        // ------------------------------------------
-        // FIREBASE SAVE
-        // ------------------------------------------
-
-        try {
-
-            console.log(
-                "🔥 Product Firebase-এ Save হচ্ছে..."
-            );
-
-
-            const docRef =
-                await db
-                    .collection("products")
-                    .add(product);
-
-
-            console.log(
-                "✅ Product Firebase-এ Save হয়েছে:",
-                docRef.id
-            );
-
-
-            alert(
-                "✅ Product সফলভাবে যোগ হয়েছে!"
-            );
-
-
-            // --------------------------------------
-            // FORM RESET
-            // --------------------------------------
-
-            productForm.reset();
-
-
-            // --------------------------------------
-            // FIREBASE থেকে আবার PRODUCTS LOAD
-            // --------------------------------------
-
-            await loadProductsFromFirebase();
-
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "❌ Product Save Error:",
-                error
-            );
-
-
-            alert(
-                "❌ Product Save হয়নি!\n\n" +
-                error.message
-            );
+            element.textContent =
+                "৳" + total;
 
         }
 
@@ -1465,203 +573,77 @@ if (productForm) {
 
 
 // ======================================================
-// STEP 4
-// CART + ORDER → FIREBASE
+// CHECKOUT - FIREBASE ORDER SAVE
 // ======================================================
 
+function setupCheckout() {
 
-// ======================================================
-// CART
-// ======================================================
+    const checkoutForm =
+        document.getElementById("checkoutForm");
 
-let cart = [];
+    if (!checkoutForm) {
 
-
-// Cart Firebase নয়,
-// কারণ Cart প্রতিটি Customer-এর নিজের ডিভাইসের জন্য।
-// তাই Cart আপাতত LocalStorage-এ থাকবে।
-
-try {
-
-    cart =
-        JSON.parse(
-            localStorage.getItem("cart")
-        ) || [];
-
-}
-catch (error) {
-
-    cart = [];
-
-}
-
-
-// ======================================================
-// CART COUNTER
-// ======================================================
-
-function updateCartCount() {
-
-    const count =
-        document.getElementById("cart-count");
-
-    if (count) {
-
-        count.innerText =
-            cart.length;
+        return;
 
     }
 
-}
-
-
-// ======================================================
-// ADD TO CART
-// ======================================================
-
-function addToCart(name, price) {
-
-    cart.push({
-
-        id: Date.now(),
-
-        name: name,
-
-        price: Number(price)
-
-    });
-
-
-    localStorage.setItem(
-        "cart",
-        JSON.stringify(cart)
+    console.log(
+        "🛒 Checkout Form Ready"
     );
 
-
-    updateCartCount();
-
-
-    alert(
-        "✅ " + name +
-        " কার্টে যোগ হয়েছে"
-    );
-
-}
-
-
-// ======================================================
-// BUY NOW
-// ======================================================
-
-function buyNow(name, price) {
-
-    cart = [];
-
-    cart.push({
-
-        id: Date.now(),
-
-        name: name,
-
-        price: Number(price)
-
-    });
-
-
-    localStorage.setItem(
-        "cart",
-        JSON.stringify(cart)
-    );
-
-
-    updateCartCount();
-
-
-    window.location.href =
-        "checkout.html";
-
-}
-
-
-// ======================================================
-// CHECKOUT → FIREBASE ORDER
-// ======================================================
-
-const checkoutForm =
-    document.getElementById("checkoutForm");
-
-
-if (checkoutForm) {
 
     checkoutForm.addEventListener(
         "submit",
-        async function(e) {
+        async function (event) {
 
-            e.preventDefault();
+            event.preventDefault();
 
-
-            // --------------------------------------
-            // CART CHECK
-            // --------------------------------------
-
-            if (cart.length === 0) {
-
-                alert(
-                    "🛒 আপনার কার্ট খালি"
-                );
-
-                return;
-
-            }
+            console.log(
+                "🚀 Order Submit শুরু..."
+            );
 
 
-            // --------------------------------------
-            // CUSTOMER DATA
-            // --------------------------------------
+            // ------------------------------------------
+            // CUSTOMER INFORMATION
+            // ------------------------------------------
 
             const name =
                 document
                     .getElementById("name")
-                    .value
-                    .trim();
-
+                    ?.value
+                    .trim() || "";
 
             const phone =
                 document
                     .getElementById("phone")
-                    .value
-                    .trim();
-
+                    ?.value
+                    .trim() || "";
 
             const address =
                 document
                     .getElementById("address")
-                    .value
-                    .trim();
-
-
-            const paymentElement =
-                document.getElementById("payment");
-
+                    ?.value
+                    .trim() || "";
 
             const payment =
-                paymentElement
-                    ? paymentElement.value
-                    : "Cash on Delivery";
+                document
+                    .getElementById("payment")
+                    ?.value || "";
 
 
-            // --------------------------------------
+            // ------------------------------------------
             // VALIDATION
-            // --------------------------------------
+            // ------------------------------------------
 
             if (
                 !name ||
                 !phone ||
-                !address
+                !address ||
+                !payment
             ) {
 
                 alert(
-                    "❌ নাম, মোবাইল নম্বর ও ঠিকানা পূরণ করুন"
+                    "⚠️ অনুগ্রহ করে সব তথ্য পূরণ করুন।"
                 );
 
                 return;
@@ -1669,50 +651,86 @@ if (checkoutForm) {
             }
 
 
-            // --------------------------------------
-            // ORDER ID
-            // --------------------------------------
+            // ------------------------------------------
+            // CART CHECK
+            // ------------------------------------------
 
-            const orderId =
-                "ORD" +
-                Date.now();
+            if (!cart.length) {
+
+                alert(
+                    "⚠️ আপনার Cart খালি।"
+                );
+
+                return;
+
+            }
 
 
-            // --------------------------------------
-            // ORDER DATA
-            // --------------------------------------
+            // ------------------------------------------
+            // TOTAL
+            // ------------------------------------------
+
+            const total =
+                getCartTotal();
+
+
+            // ------------------------------------------
+            // ORDER OBJECT
+            // ------------------------------------------
 
             const order = {
 
-                orderId: orderId,
+                customerName:
+                    name,
 
-                name: name,
+                phone:
+                    phone,
 
-                phone: phone,
+                address:
+                    address,
 
-                address: address,
+                paymentMethod:
+                    payment,
 
-                payment: payment,
+                products:
+                    cart,
 
-                products: cart,
+                totalAmount:
+                    total,
 
-                status: "Pending",
+                status:
+                    "Pending",
 
                 createdAt:
-                    firebase.firestore.FieldValue.serverTimestamp()
+                    firebase.firestore
+                        .FieldValue
+                        .serverTimestamp()
 
             };
 
 
-            // --------------------------------------
-            // FIREBASE SAVE
-            // --------------------------------------
+            console.log(
+                "📦 Order Data:",
+                order
+            );
+
+
+            // ------------------------------------------
+            // SAVE TO FIRESTORE
+            // ------------------------------------------
 
             try {
 
-                console.log(
-                    "🔥 Order Firebase-এ Save হচ্ছে..."
-                );
+                if (
+                    typeof db === "undefined" ||
+                    !db
+                ) {
+
+                    throw new Error(
+                        "Firebase Database পাওয়া যাচ্ছে না"
+                    );
+
+                }
 
 
                 const docRef =
@@ -1722,53 +740,50 @@ if (checkoutForm) {
 
 
                 console.log(
-                    "✅ Order Firebase-এ Save হয়েছে:",
+                    "✅ Order Firebase-এ Save হয়েছে:",
                     docRef.id
                 );
 
 
-                // ----------------------------------
-                // CART EMPTY
-                // ----------------------------------
+                // --------------------------------------
+                // CLEAR CART
+                // --------------------------------------
 
                 cart = [];
 
-
-                localStorage.removeItem(
-                    "cart"
-                );
-
+                saveCart();
 
                 updateCartCount();
 
 
-                // ----------------------------------
+                // --------------------------------------
                 // SUCCESS
-                // ----------------------------------
+                // --------------------------------------
 
                 alert(
-                    "✅ আপনার অর্ডার সফলভাবে গ্রহণ করা হয়েছে!\n\n" +
+                    "✅ অর্ডার সফলভাবে গ্রহণ করা হয়েছে!\n\n" +
                     "Order ID: " +
-                    orderId
+                    docRef.id
                 );
 
+
+                // --------------------------------------
+                // REDIRECT
+                // --------------------------------------
 
                 window.location.href =
                     "index.html";
 
 
-            }
-
-            catch (error) {
+            } catch (error) {
 
                 console.error(
                     "❌ Order Save Error:",
                     error
                 );
 
-
                 alert(
-                    "❌ অর্ডার Save হয়নি!\n\n" +
+                    "❌ অর্ডার Save হয়নি।\n\n" +
                     error.message
                 );
 
@@ -1781,44 +796,282 @@ if (checkoutForm) {
 
 
 // ======================================================
-// START CART COUNTER
+// PAGE READY
 // ======================================================
 
-updateCartCount();
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        displayCart();
+
+        setupCheckout();
+
+    }
+);
+
+// ======================================================
+// IFFAH SHOP - SCRIPT.JS
+// PART 4 / 4
+// ADMIN PRODUCT + SEARCH + FILTER + FINAL INITIALIZATION
+// ======================================================
 
 
 // ======================================================
-// STEP 4 END
+// LOAD ADMIN PRODUCTS
 // ======================================================
 
-// ======================================================
-// CHECKOUT FORM TEST
-// ======================================================
+function loadAdminProducts() {
 
-console.log("🟢 Checkout Test Code Loaded");
+    const container =
+        document.getElementById("adminProductList");
 
-const checkoutTestForm =
-    document.getElementById("checkoutForm");
+    if (!container) {
+        return;
+    }
 
-if (checkoutTestForm) {
+    container.innerHTML = "";
 
-    console.log("✅ Checkout Form পাওয়া গেছে");
+    if (!products.length) {
 
-    checkoutTestForm.addEventListener("submit", function(e) {
+        container.innerHTML = `
+            <p>📦 কোনো Product পাওয়া যায়নি।</p>
+        `;
 
-        e.preventDefault();
+        return;
+    }
 
-        console.log("🔥 ORDER BUTTON CLICKED");
+    products.forEach(function (product) {
 
-        alert("✅ Order Button কাজ করছে");
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "admin-product-item";
+
+        item.innerHTML = `
+
+            <div>
+
+                <h3>
+                    ${product.name}
+                </h3>
+
+                <p>
+                    মূল্য: ৳${product.price}
+                </p>
+
+                <p>
+                    Category: ${product.category}
+                </p>
+
+            </div>
+
+            <button
+                class="btn"
+                onclick="deleteProduct('${product.id}')"
+            >
+                🗑️ Delete
+            </button>
+
+        `;
+
+        container.appendChild(item);
 
     });
-
-} else {
-
-    console.log("❌ Checkout Form পাওয়া যায়নি");
 
 }
 
 
+// ======================================================
+// DELETE PRODUCT FROM FIREBASE
+// ======================================================
 
+async function deleteProduct(productId) {
+
+    if (!productId) {
+        return;
+    }
+
+    const confirmDelete =
+        confirm(
+            "আপনি কি এই Product Delete করতে চান?"
+        );
+
+    if (!confirmDelete) {
+        return;
+    }
+
+    try {
+
+        await db
+            .collection("products")
+            .doc(productId)
+            .delete();
+
+        console.log(
+            "🗑️ Product Firebase থেকে Delete হয়েছে:",
+            productId
+        );
+
+        products =
+            products.filter(function (product) {
+
+                return product.id !== productId;
+
+            });
+
+        displayProducts(products);
+
+        loadAdminProducts();
+
+        alert(
+            "✅ Product Delete হয়েছে"
+        );
+
+    } catch (error) {
+
+        console.error(
+            "❌ Product Delete Error:",
+            error
+        );
+
+        alert(
+            "❌ Product Delete করা যায়নি।\n\n" +
+            error.message
+        );
+
+    }
+
+}
+
+
+// ======================================================
+// SEARCH PRODUCTS
+// ======================================================
+
+function searchProducts(keyword) {
+
+    const search =
+        String(keyword || "")
+            .toLowerCase()
+            .trim();
+
+    if (!search) {
+
+        displayProducts(products);
+
+        return;
+
+    }
+
+    const filtered =
+        products.filter(function (product) {
+
+            const name =
+                String(product.name || "")
+                    .toLowerCase();
+
+            const category =
+                String(product.category || "")
+                    .toLowerCase();
+
+            const description =
+                String(product.description || "")
+                    .toLowerCase();
+
+            return (
+                name.includes(search) ||
+                category.includes(search) ||
+                description.includes(search)
+            );
+
+        });
+
+    displayProducts(filtered);
+
+}
+
+
+// ======================================================
+// SEARCH BOX
+// ======================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const searchInput =
+            document.getElementById(
+                "productSearch"
+            );
+
+        if (searchInput) {
+
+            searchInput.addEventListener(
+                "input",
+                function () {
+
+                    searchProducts(
+                        this.value
+                    );
+
+                }
+            );
+
+        }
+
+    }
+);
+
+
+// ======================================================
+// ADMIN PRODUCTS LOAD
+// ======================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        setTimeout(function () {
+
+            loadAdminProducts();
+
+        }, 500);
+
+    }
+);
+
+
+// ======================================================
+// FINAL START
+// ======================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        console.log(
+            "================================="
+        );
+
+        console.log(
+            "🔥 IFFAH SHOP SCRIPT.JS READY"
+        );
+
+        console.log(
+            "📦 Products:",
+            products.length
+        );
+
+        console.log(
+            "🛒 Cart:",
+            cart.length
+        );
+
+        console.log(
+            "================================="
+        );
+
+    }
+);
